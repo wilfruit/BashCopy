@@ -6,19 +6,11 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:54:46 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/05 13:26:10 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/05 17:11:03 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_shell.h"
-
-void	free_exec_pack(t_exec_single *pack)
-{
-	if (pack->allpaths[0])
-		ft_free_chr(pack->allpaths);
-	if (pack->cmdargs[0])
-		ft_free_chr(pack->cmdargs);
-}
 
 char	**get_allpaths(t_shell *data)
 {
@@ -44,12 +36,13 @@ char	**get_allpaths(t_shell *data)
 void	init_single_exe(t_shell *data, t_exec_single *exec_pack)
 {
 	exec_pack->cmdargs = build_command(data, 0);
-	if (data->our_env->next == NULL && ft_is_built_in(exec_pack->cmdargs[0]) != 1)
+	if (data->our_env->next == NULL \
+	&& ft_is_built_in(exec_pack->cmdargs[0]) != 1)
 	{
 		exec_pack->allpaths = (char **)malloc(sizeof(char *));
 		exec_pack->allpaths[0] = NULL;
 	}
-	else if(data->our_env->next && ft_is_built_in(exec_pack->cmdargs[0]) != 1)
+	else if (data->our_env->next && ft_is_built_in(exec_pack->cmdargs[0]) != 1)
 		exec_pack->allpaths = get_allpaths(data);
 	if (ft_is_built_in(exec_pack->cmdargs[0]) != 1)
 	{
@@ -74,9 +67,11 @@ static void	ft_normal_exe(t_exec_single *exec_pack, t_shell *data)
 	c1 = fork();
 	if (c1 < 0)
 		perror("Fork : ");
-	if (c1 == 0 && (exec_pack->nb_redirin || exec_pack->nb_redirout || exec_pack->is_here_doc))
+	if (c1 == 0 && (exec_pack->nb_redirin \
+	|| exec_pack->nb_redirout || exec_pack->is_here_doc))
 		redir_dup_single(data, exec_pack);
-	if (c1 == 0 && !exec_pack->nb_redirin && !exec_pack->nb_redirout && !exec_pack->is_here_doc)
+	if (c1 == 0 && !exec_pack->nb_redirin \
+	&& !exec_pack->nb_redirout && !exec_pack->is_here_doc)
 		ft_execve_one(data, charize_env(data->our_env), exec_pack);
 	waitpid(c1, &status, 0);
 	if (exec_pack->cmdstat)
@@ -94,10 +89,11 @@ void	execute_single_cmd(t_shell *data)
 	t_exec_single	exec_pack;
 
 	init_single_exe(data, &exec_pack);
-	if (ft_is_built_in(exec_pack.cmdargs[0]) == 1 && exec_pack.nb_redirin <= 0 && \
-	exec_pack.nb_redirout <= 0)
+	if (ft_is_built_in(exec_pack.cmdargs[0]) == 1 && exec_pack.nb_redirin <= 0 \
+	&& exec_pack.nb_redirout <= 0)
             ft_exec_built_in(data, exec_pack.cmdargs);
-	else if (ft_is_built_in(exec_pack.cmdargs[0]) == 1 && (exec_pack.nb_redirin > 0 || \
+	else if (ft_is_built_in(exec_pack.cmdargs[0]) == 1 \
+	&& (exec_pack.nb_redirin > 0 || \
 	exec_pack.nb_redirout > 0))
 		redir_dup_single(data, &exec_pack);
 	else

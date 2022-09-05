@@ -6,27 +6,11 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:22:47 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/05 12:21:57 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/05 16:28:48 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_shell.h"
-
-int	is_pathed(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i])
-	{
-		if (str[i] == '/')
-			return (0);
-		i++;
-	}
-	return (-1);
-}
 
 int	count_args(t_shell *data, int cell_nb)
 {
@@ -44,7 +28,7 @@ int	count_args(t_shell *data, int cell_nb)
 	return (count);
 }
 
-int		has_space_in(t_shell *data, int cell_nb)
+int	has_space_in(t_shell *data, int cell_nb)
 {
 	int	i;
 	int	n;
@@ -63,7 +47,7 @@ int		has_space_in(t_shell *data, int cell_nb)
 	return (n);
 }
 
-int		search_in_charray(char **super, char needle)
+int	search_in_charray(char **super, char needle)
 {
 	int	i;
 	int	j;
@@ -99,7 +83,8 @@ data->token[cell_nb].scmd[i].type == TOKEN_ARG)
 			if (data->token[cell_nb].scmd[i].is_dollar == 0)
 				args[j] = ft_strdup(data->token[cell_nb].scmd[i].value);
 			else
-				args[j] = dollar_swap(data, ft_strdup(data->token[cell_nb].scmd[i].value));
+				args[j] = dollar_swap(data, \
+			ft_strdup(data->token[cell_nb].scmd[i].value));
 			j++;
 		}
 		i++;
@@ -123,7 +108,8 @@ char	**build_command(t_shell *data, int cell_nb)
 	if (data->token[cell_nb].scmd[i].is_dollar == 0)
 		args[0] = ft_strdup(data->token[cell_nb].scmd[i].value);
 	else
-		args[0] = dollar_swap(data, ft_strdup(data->token[cell_nb].scmd[i].value));
+		args[0] = dollar_swap(data, \
+		ft_strdup(data->token[cell_nb].scmd[i].value));
 	i++;
 	fill_args(data, cell_nb, i, args);
 	if (search_in_charray(args, ' '))

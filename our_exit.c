@@ -12,6 +12,13 @@
 
 #include "mini_shell.h"
 
+char	*ft_exit_set_manage(t_manage_pipe *mpipe)
+{
+	free(mpipe->size_cmd);
+	free(mpipe->pipecmd);
+	return (NULL);
+}
+
 static int	ft_isonlynum(char *str)
 {
 	int	i;

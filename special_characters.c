@@ -2,24 +2,18 @@
 
 int	len_cmd_pipe(t_manage_pipe *mpipe, char *line)
 {
-	mpipe->i = 0;
-	mpipe->j = 0;
-	mpipe->size = 0;
+	ft_init_cmdpipe(mpipe);
 	while (line[mpipe->i])
 	{
 		if (line[mpipe->i] == '\'' || line[mpipe->i] == '\"')
 		{
 			if (len_d_quote(&mpipe->i, mpipe, line) == NULL)
-			{
 				return (1);
-			}
 		}
 		else if (is_redirection(line[mpipe->i]) == 1)
 		{
 			if(len_redir(&mpipe->i, mpipe, line) == 1)
-			{
 				return (1);
-			}
 		}
 		else if (line[mpipe->i] == '|')
 			cpt_pipe(&mpipe->i, &mpipe->j, mpipe, line);
@@ -38,12 +32,7 @@ void	*set_manage(t_manage_pipe *mpipe, char *line)
 	int	tmp;
 
 	tmp = -1;
-	mpipe->i = 0;
-	mpipe->j = 0;
-	mpipe->k = 0;
-	mpipe->end = -1;
-	mpipe->size = 0;
-	mpipe->nb_cmd = size_cmd_tab(line);
+	ft_initsetman(mpipe, line);
 	if (mpipe->nb_cmd == 0)
 		return (NULL);
 	mpipe->size_cmd = ft_calloc(sizeof(int), mpipe->nb_cmd);
@@ -53,11 +42,7 @@ void	*set_manage(t_manage_pipe *mpipe, char *line)
 	while (++tmp < mpipe->nb_cmd)
 		mpipe->size_cmd[tmp] = 0;
 	if (len_cmd_pipe(mpipe, line) == 1)
-	{
-		free(mpipe->size_cmd);
-		free(mpipe->pipecmd);
-		return (NULL);
-	}
+		return (ft_exit_set_manage(mpipe));
 	tmp = -1;
 	while (++tmp < mpipe->nb_cmd)
 	{

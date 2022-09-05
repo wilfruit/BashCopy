@@ -32,7 +32,7 @@
 # define DOLLAR_NO 0
 # define DOLLAR_MACRO 1
 
-extern int	glob;
+extern int	g_glob;
 
 typedef struct s_manage_pipe
 {
@@ -90,6 +90,30 @@ typedef struct s_unset
 	char	*vari;
 }				t_unset;
 
+typedef struct s_nested
+{
+	char	**exp;
+	char	**split;
+	int		i;
+	int		j;
+	int		k;
+}				t_nested;
+
+typedef struct s_cmdtab
+{
+	int		i;
+	int		vu;
+	int		size;
+}				t_cmdtab;
+
+typedef struct s_macro
+{
+	t_envi	*copy;
+	char	*ret;
+	char	*macro;
+	int		i;
+}				t_macro;
+
 typedef struct s_exec_multi
 {
 	char	**allpaths;
@@ -138,6 +162,9 @@ void	*first_help_len_token(int *i, int *j, int *k, t_pipe **prompt);
 void	*last_help_len_token(int *i, int *j, int *k, t_pipe **prompt);
 void	*found_len_token(t_manage_pipe utils, t_pipe **prompt);
 void	*malloc_set_token(t_manage_pipe utils, t_pipe **prompt);
+/* void	*first_help_set_token(t_manage_pipe *data, int *v, t_pipe **prompt);
+void	*last_help_set_token(t_manage_pipe *data, int *v, t_pipe **prompt);
+void	*last_more_help_set_token(t_manage_pipe *data, int *v, t_pipe **prompt); */
 void	*first_help_set_token(int *i, int *j, int *k, int *v, t_pipe **prompt);
 void	*last_help_set_token(int *i, int *j, int *k, int *v, t_pipe **prompt);
 void	*last_more_help_set_token(int *i, int *j, \
@@ -190,6 +217,7 @@ int		my_export(char **cmd, t_envi *env, t_envi *exports);
 void    set_newpwd(char *path, t_envi *our_env);
 int 	error_cd(char **cmd);
 int		my_exit(char **cmd, t_shell *data);
+char	*quit_dollar_deluxe(char *str, char *ret, char **split);
 char    *dollar_swap(t_shell *shpack, char *str);
 void	pipex(t_shell *data);
 void	wrap_execve_multi(t_exec_multi *data, char *cmd, char **args, char **env, t_shell *shell);
@@ -245,6 +273,12 @@ void	ft_free_env(t_envi *head);
 int		dollar_count(char *str);
 char	*dollar_deluxe(t_shell *shpack, char *str);
 char	*ft_strjoinmod(char *s1, char *s2);
+void	free_exec_pack(t_exec_single *pack);
 void	clean_redir_single(t_exec_single *p, int in, int out1);
+void	ft_init_cmdtab(t_cmdtab *data);
+void 	ft_init_cmdpipe(t_manage_pipe *mpipe);
+void	ft_increment_cmdtab(t_cmdtab *data);
+void	ft_initsetman(t_manage_pipe *mpipe, char *line);
+char	*ft_exit_set_manage(t_manage_pipe *mpipe);
 
 #endif

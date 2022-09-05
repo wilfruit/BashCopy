@@ -14,7 +14,7 @@
 
 void	forced_prompt(int sig)
 {
-	glob = 130;
+	g_glob = 130;
 	ft_putstr_fd("\n", 1);
 	ft_putstr_fd("\e[1;31mmshell> \e[0m", 1);
 }

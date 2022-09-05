@@ -43,6 +43,12 @@ int	len_redir(int *r, t_manage_pipe *mpipe, char *line)
 		return (0);
 }
 
+static int	ft_increment(t_manage_pipe *mpipe)
+{
+	mpipe->size += 1;
+	return (1);
+}
+
 void	*len_d_quote(int *r, t_manage_pipe *mpipe, char *line)
 {
 	if (line[*r] == '\"')
@@ -50,10 +56,7 @@ void	*len_d_quote(int *r, t_manage_pipe *mpipe, char *line)
         *r += 1;
 	    mpipe->size += 1;
 	    while (line[*r] && line[*r] != '\"')
-	    {
-		    mpipe->size += 1;
-	    	*r += 1;
-	    }
+	    	*r += ft_increment(mpipe);
 	    if (line[*r] != '\"')
 	    	return (write(1, "invalid syntax\n", 15), NULL);
 	    mpipe->size += 1;
@@ -64,10 +67,7 @@ void	*len_d_quote(int *r, t_manage_pipe *mpipe, char *line)
         *r += 1;
 	    mpipe->size += 1;
 	    while (line[*r] && line[*r] != '\'')
-	    {
-		    mpipe->size += 1;
-	    	*r += 1;
-	    }
+	    	*r += ft_increment(mpipe);
 	    if (line[*r] != '\'')
 	    	return (write(1, "invalid syntax\n", 15), NULL);
 	    mpipe->size += 1;

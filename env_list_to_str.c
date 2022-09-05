@@ -6,7 +6,7 @@
 /*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:26:29 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/07/28 12:28:21 by wgaspar          ###   ########.fr       */
+/*   Updated: 2022/09/05 17:03:48 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	count_nodes(t_envi	*env)
 
 	count = 0;
 	counter = env;
- 	if (counter)
+	if (counter)
 	{
 		count++;
 		counter = counter->next;
@@ -53,6 +53,6 @@ char	**charize_env(t_envi	*env)
 		temp = temp->next;
 		i++;
 	}
- 	ret[i] = NULL;
+	ret[i] = NULL;
 	return (ret);
 }

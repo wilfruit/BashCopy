@@ -16,7 +16,7 @@ is_redir_bis.c \
 strjoinmod.c \
 treat_redir_bis.c
 
-CC = gcc  -g -fsanitize=address
+CC = gcc  -g
 
 HEADER = mini_shell.h
 

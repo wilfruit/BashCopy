@@ -34,7 +34,35 @@ int	help_double(int *i, char *line)
 	return (0);
 }
 
-int	size_cmd_tab(char *line)
+/* int	size_cmd_tab(char *line)
+{
+	t_cmdtab	data;
+
+	ft_init_cmdtab(&data);
+	while (line[data.i])
+	{
+		if (line[data.i] == ' ')
+		{
+			help_size(&data.i, line);
+			if (line[data.i] == '\0' && data.vu)
+				return (data.size);
+		}
+		if (line[data.i] == '\0')
+			return (0);
+		if (line[data.i] == '\'')
+			help_simple(&data.i, line);
+		if (line[data.i] == '\"')
+			help_double(&data.i, line);
+		if (line[data.i] == '|')
+			data.size++;
+		if (line[data.i])
+			ft_increment_cmdtab(&data);
+	}
+	return (data.size);
+}
+ */
+
+ int	size_cmd_tab(char *line)
 {
 	int	i;
 	int vu;

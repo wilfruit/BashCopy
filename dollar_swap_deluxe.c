@@ -33,15 +33,15 @@ static int	input_has_dollar(char *str)
 		return (-1);
 }
 
-static int arrlen(char  **super)
+static int	arrlen(char  **super)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while(super[i])
-        i++;
+	i = 0;
+	while(super[i])
+		i++;
 	i++;
-    return (i);
+	return (i);
 }
 
 static char	*return_dollar_check(char **translate, char *str)
@@ -68,7 +68,7 @@ char	*ft_hd_dollar_check(char *str, t_shell *pack)
 {
 	char	**stock;
 	char	**translate;
-	int			i;
+	int	i;
 
 	i = 0;
 	if (input_has_dollar(str) == -1)
@@ -79,7 +79,7 @@ char	*ft_hd_dollar_check(char *str, t_shell *pack)
 	{
 		if (dollar_count(str) > 0 && dollar_swap(pack, ft_strdup(stock[i])))
 			translate[i] = dollar_swap(pack, ft_strdup(stock[i]));
- 		else if (dollar_count(str) > 0 && !dollar_swap(pack, ft_strdup(stock[i])))
+		else if (dollar_count(str) > 0 && !dollar_swap(pack, ft_strdup(stock[i])))
 			translate[i] = ft_strdup("");
 		else
 			translate[i] = ft_strdup(stock[i]);
@@ -89,3 +89,4 @@ char	*ft_hd_dollar_check(char *str, t_shell *pack)
 	translate[i] = NULL;
 	return (return_dollar_check(translate, str));	
 }
+

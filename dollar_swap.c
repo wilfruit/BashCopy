@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:24:07 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/05 14:00:53 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/05 17:34:35 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,42 +14,31 @@
 
 static char	*get_macro(t_shell *shpack, char *str)
 {
-	t_envi	*copy;
-	char	*macro;
-	char	*ret;
-	int		i;
+	t_macro	data;
 
-	i = 0;
-	ret = NULL;
-	copy = shpack->our_env;
+	data.i = 0;
+	data.ret = NULL;
+	data.copy = shpack->our_env;
 	if (str[0] == '$')
-		macro = ft_strdup(str + 1);
+		data.macro = ft_strdup(str + 1);
 	else
-		macro = ft_strdup(str);
-	macro = ft_strjoinmod(macro, "=");
- 	i = ft_strlen(macro);
- 	while (copy)
+		data.macro = ft_strdup(str);
+	data.macro = ft_strjoinmod(data.macro, "=");
+	data.i = ft_strlen(data.macro);
+	while (data.copy)
 	{
-		if (ft_strncmp(copy->str, macro, i) == 0)
+		if (ft_strncmp(data.copy->str, data.macro, data.i) == 0)
 		{
-			ret = ft_strdup(copy->str + i);
-			free(macro);
+			data.ret = ft_strdup(data.copy->str + data.i);
+			free(data.macro);
 			free(str);
-			return (ret);
+			return (data.ret);
 		}
-		copy = copy->next;
+		data.copy = data.copy->next;
 	}
-	free(macro);
+	free(data.macro);
 	free(str);
 	return (NULL);
-}
-
-static char	*quit_dollar_deluxe(char *str, char *ret, char **split)
-{
-	free(str);
-	free(ret);
-	ft_free_chr(split);
-	return (ft_strdup("89669"));
 }
 
 char	*build_dollar_return(t_shell *shpack, char **split, char *str, int i)
@@ -74,7 +63,8 @@ char	*build_dollar_return(t_shell *shpack, char **split, char *str, int i)
 		else
 		{
 			if (get_macro(shpack, ft_strdup(split[i])))
-				ret = ft_strjoinmod(ret, get_macro(shpack, ft_strdup(split[i])));
+				ret = \
+				ft_strjoinmod(ret, get_macro(shpack, ft_strdup(split[i])));
 		}
 		i++;
 	}
@@ -104,9 +94,9 @@ char	*dollar_swap(t_shell *shpack, char *str)
 	else if (ft_strncmp(str, "$", ft_strlen(str)) == 0)
 		return (str);
 	else if (ft_strncmp(str, "$?", ft_strlen(str)) == 0)
-		return(ft_itoa(shpack->error_ret));
+		return (ft_itoa(shpack->error_ret));
 	else if (str[0] != '$')
-		return(dollar_deluxe(shpack, str));
+		return (dollar_deluxe(shpack, str));
 	else
-		return(get_macro(shpack, str));
+		return (get_macro(shpack, str));
 }

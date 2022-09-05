@@ -45,7 +45,8 @@ void	*last_help_len_token(int *i, int *j, int *k, t_pipe **prompt)
 		}
 		*j += 1;
 	}
-	if ((*prompt)[*i].cmd[*j] && (*prompt)[*i].cmd[*j] != ' ' && (*prompt)[*i].cmd[*j] != '\'' && (*prompt)[*i].cmd[*j] != '\"')
+	if ((*prompt)[*i].cmd[*j] && (*prompt)[*i].cmd[*j] != ' ' \
+	&& (*prompt)[*i].cmd[*j] != '\'' && (*prompt)[*i].cmd[*j] != '\"')
 	{
 		(*prompt)[*i].scmd[*k].len_value += 1;
 		*j += 1;
@@ -68,19 +69,6 @@ void	*found_len_token(t_manage_pipe utils, t_pipe **prompt)
 			!is_redirection((*prompt)[utils.i].cmd[utils.j]))
 				last_help_len_token(&utils.i, &utils.j, &utils.k, prompt);
 			utils.k++;
-		}
-		utils.i++;
-	}
-	utils.i = 0;
-	while (utils.i < utils.nb_cmd)
-	{
-		utils.j = 0;
-/* 		printf("command[%d]\n", utils.i);
-		printf("-------------------------------------------------\n"); */
-		while (utils.j < (*prompt)[utils.i].nb_token)
-		{
-		//	printf("size_token : %d\n", (*prompt)[utils.i].scmd[utils.j].len_value);
-			utils.j++;
 		}
 		utils.i++;
 	}

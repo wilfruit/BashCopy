@@ -39,9 +39,7 @@ char	*check_line(char **line)
 
 void	*determine_type(t_pipe *prompt)
 {
-	int	i;
-
-	i = -1;
+	int	i = -1;
 	while (++i < prompt->nb_token)
 	{
 		prompt->scmd[i].type = 0;
@@ -57,7 +55,7 @@ void	*determine_type(t_pipe *prompt)
 		{
 			prompt->scmd[i].type = TOKEN_FILE;
 			if (which_redirection(prompt->scmd[i - 1].value[0], \
-			prompt->scmd[i - 1].len_value) == TOKEN_INTPUT_HEREDOC_REDIRECTION)
+			prompt->scmd[i - 1].len_value) == 5)
 				prompt->scmd[i].type = TOKEN_LIMITER;
 		}	
 		else if (i > 0 && ((prompt->scmd[i - 1].type == TOKEN_FILE) || \

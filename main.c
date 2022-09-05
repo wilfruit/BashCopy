@@ -6,13 +6,13 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:59:10 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/05 14:30:59 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/05 17:09:03 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_shell.h"
 
-int				glob = 0;
+int				g_glob = 0;
 
 static void	create_minimum_data(t_shell *data, char **env)
 {
@@ -43,20 +43,20 @@ static void	shell_pack_init(t_shell *data, char **env)
 	data->error_ret = 0;
 	data->exit_switch = 0;
 	data->exit_ret = 0;
- 	if (env[0])
+	if (env[0])
 	{
 		download_env_one(data, env);
 		download_env_two(data, env);
- 	}
- 	else
+	}
+	else
 		create_minimum_data(data, env);
 }
 
 static int	sig_used(int error_ret)
 {
-	if (glob == 130)
+	if (g_glob == 130)
 	{
-		glob = 0;
+		g_glob = 0;
 		return (130);
 	}
 	else
@@ -75,12 +75,12 @@ static void	ft_bash(t_shell *shell_pack, char *line)
 
 int	main(int argc, char **argv, char **env)
 {
- 	char			*line;
+	char			*line;
 	char			*path;
 	t_shell			shell_pack;
 
 	shell_pack_init(&shell_pack, env);
- 	shell_pack.exit_switch = 0;
+	shell_pack.exit_switch = 0;
 	control(&shell_pack);
 	line = NULL;
 	while (shell_pack.exit_switch == 0)
@@ -89,7 +89,7 @@ int	main(int argc, char **argv, char **env)
 			line = readline("\e[1;32mmshell> \e[0m");
 		else
 			line = readline("\e[1;31mmshell> \e[0m");
- 		if (check_line(&line) == NULL)
+		if (check_line(&line) == NULL)
 			exit(0);
 		if (all_pipe_cmd(&shell_pack.mpipe, line) != NULL)
 			ft_bash(&shell_pack, line);

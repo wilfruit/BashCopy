@@ -12,6 +12,30 @@
 
 #include "mini_shell.h"
 
+void ft_init_cmdpipe(t_manage_pipe *mpipe)
+{
+	mpipe->i = 0;
+	mpipe->j = 0;
+	mpipe->size = 0;
+}
+
+void	ft_init_cmdtab(t_cmdtab *data)
+{
+	data->i = 0;
+	data->vu = 0;
+	data->size = 1;	
+}
+
+void	ft_initsetman(t_manage_pipe *mpipe, char *line)
+{
+	mpipe->i = 0;
+	mpipe->j = 0;
+	mpipe->k = 0;
+	mpipe->end = -1;
+	mpipe->size = 0;
+	mpipe->nb_cmd = size_cmd_tab(line);
+}
+
 void	mid_child(t_shell *data, t_exec_multi *pack, int n)
 {
 	mini_parse_multi(data, pack, n);

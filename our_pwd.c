@@ -12,6 +12,36 @@
 
 #include "mini_shell.h"
 
+char	*quit_dollar_deluxe(char *str, char *ret, char **split)
+{
+	free(str);
+	free(ret);
+	ft_free_chr(split);
+	return (ft_strdup("89669"));
+}
+
+void	ft_increment_cmdtab(t_cmdtab *data)
+{
+	data->i++;
+	data->vu++;
+}
+
+int	is_pathed(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+	{
+		if (str[i] == '/')
+			return (0);
+		i++;
+	}
+	return (-1);
+}
+
 int	my_pwd(char **args)
 {
 	char	*buf;
