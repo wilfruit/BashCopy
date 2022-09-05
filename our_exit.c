@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   our_exit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avaures <avaures@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 14:56:03 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/08/30 20:52:07 by avaures          ###   ########.fr       */
+/*   Updated: 2022/09/05 14:22:02 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,16 @@ static int	ft_isonlynum(char *str)
 	return (0);
 }
 
+static int	wrong_argument_exit(char *str, t_shell *data)
+{
+	ft_putstr_fd("minishell: exit: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
+	data->exit_switch = 1;
+	data->exit_ret = 255;
+	return (1);
+}
+
 int	my_exit(char **cmd, t_shell *data)
 {
 	ft_putstr_fd("exit\n", 2);
@@ -37,14 +47,7 @@ int	my_exit(char **cmd, t_shell *data)
 		return (1);
 	}
 	if (cmd[1] && (ft_isonlynum(cmd[1]) == 1))
-	{
-		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(cmd[1], 2);
-		ft_putstr_fd(": numeric argument required\n", 2);
-		data->exit_switch = 1;
-		data->exit_ret = 255;
-		return (1);
-	}
+		return (wrong_argument_exit(cmd[1], data));
 	if (!cmd[1])
 		data->exit_ret = 0;
 	else if (cmd[1] && (ft_isonlynum(cmd[1]) == 0))
