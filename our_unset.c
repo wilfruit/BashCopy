@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   our_unset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:51:00 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/08/31 16:51:06 by wgaspar          ###   ########.fr       */
+/*   Updated: 2022/09/05 13:12:31 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,64 +14,60 @@
 
 static void	find_and_unset_node_exp(t_shell *pack, char *arg)
 {
-	t_envi	*temp;
-	t_envi	*prev;
-	char	*vari;
+	t_unset	data;
 
-	temp = pack->exports;
-	vari = ft_strdup(arg);
-	if (temp && ft_strncmp(temp->str, vari, ft_strlen(temp->str)) == 0)
+	data.temp = pack->exports;
+	data.vari = ft_strdup(arg);
+	if (data.temp && ft_strncmp(data.temp->str, data.vari, ft_strlen(data.vari)) == 0)
 	{
-		pack->exports = temp->next;
-		ft_memdel(temp->str);
-		ft_memdel(temp);
-		free(vari);
+		pack->exports = data.temp->next;
+		ft_memdel(data.temp->str);
+		ft_memdel(data.temp);
+		free(data.vari);
 		return ;
 	}
-	while (temp && ft_strncmp(temp->str, vari, ft_strlen(vari)))
+	while (data.temp && ft_strncmp(data.temp->str, data.vari, ft_strlen(data.vari)))
 	{
-		prev = temp;
-		temp = temp->next;
+		data.prev = data.temp;
+		data.temp = data.temp->next;
 	}
-	if (temp == NULL)
+	if (data.temp == NULL)
 	{
-		free(vari);
+		free(data.vari);
 		return ;
 	}
-	prev->next = temp->next;
-	free(vari);
-	free(temp);
+	data.prev->next = data.temp->next;
+	free(data.vari);
+	free(data.temp);
 }
 
 static void	find_and_unset_node_env(t_shell *pack, char *arg)
 {
-	t_envi	*temp;
-	t_envi	*prev;
-	char	*vari;
+	t_unset	data;
 
-	temp = pack->our_env;
-	vari = ft_strjoin(arg, "=");
-	if (temp && ft_strncmp(temp->str, vari, ft_strlen(vari)) == 0)
+	data.temp = pack->our_env;
+	data.vari = ft_strjoin(arg, "=");
+	if (data.temp && ft_strncmp(data.temp->str, data.vari, ft_strlen(data.vari)) == 0)
 	{
-		pack->our_env = temp->next;
-		ft_memdel(temp->str);
-		ft_memdel(temp);
-		free(vari);
+		pack->our_env = data.temp->next;
+		ft_memdel(data.temp->str);
+		ft_memdel(data.temp);
+		free(data.vari);
 		return ;
 	}
-	while (temp && ft_strncmp(temp->str, vari, ft_strlen(vari)))
+	while (data.temp && ft_strncmp(data.temp->str, data.vari, ft_strlen(data.vari)))
 	{
-		prev = temp;
-		temp = temp->next;
+		data.prev = data.temp;
+		data.temp = data.temp->next;
 	}
-	if (temp == NULL)
+	if (data.temp == NULL)
 	{
-		free(vari);
+		free(data.vari);
 		return ;
 	}
-	prev->next = temp->next;
-	free(vari);
-	free(temp);
+	data.prev->next = data.temp->next;
+	free(data.vari);
+	free(data.temp);
 }
 
 int	is_valid_identifier(char *cmd)

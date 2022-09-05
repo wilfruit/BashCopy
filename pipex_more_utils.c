@@ -22,11 +22,8 @@ static void ft_free_pipes(t_shell *data, t_exec_multi *pack)
 void    free_exec_pack_multi(t_shell *data, t_exec_multi *pack)
 {
     ft_free_chr(pack->allpaths);
-  //  ft_free_chr(pack->cmdargs);
-    //free(pack->cmdstat);
     ft_free_pipes(data, pack);
     free(pack->c_pid);
-   // ft_free_chr(pack->cmdargs);
 }
 
 void	cannot_execute_pipex(t_exec_multi *data, char *cmd, t_shell *shell)

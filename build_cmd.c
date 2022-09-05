@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:22:47 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/02 12:09:26 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/05 12:21:57 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,24 +86,11 @@ int		search_in_charray(char **super, char needle)
 	return (n);
 }
 
-char	**build_command(t_shell *data, int cell_nb)
+void	fill_args(t_shell *data, int cell_nb, int i, char **args)
 {
-	char	**args;
-	int		i;
 	int		j;
 
-	i = 0;
 	j = 1;
-	args = (char **)malloc(sizeof(char *) * (count_args(data, cell_nb) + 1));
-	if (!args)
-		return (NULL);
-	while (data->token[cell_nb].scmd[i].type != TOKEN_CMD)
-		i++;
-	if (data->token[cell_nb].scmd[i].is_dollar == 0)
-		args[0] = ft_strdup(data->token[cell_nb].scmd[i].value);
-	else
-		args[0] = dollar_swap(data, ft_strdup(data->token[cell_nb].scmd[i].value));
-	i++;
 	while (i < data->token[cell_nb].nb_token && \
 data->token[cell_nb].scmd[i].type == TOKEN_ARG)
 	{
@@ -120,6 +107,25 @@ data->token[cell_nb].scmd[i].type == TOKEN_ARG)
 	args[i] = NULL;
 	if (args[0] == NULL && args[1] != NULL)
 		args++;
+}
+
+char	**build_command(t_shell *data, int cell_nb)
+{
+	char	**args;
+	int		i;
+
+	i = 0;
+	args = (char **)malloc(sizeof(char *) * (count_args(data, cell_nb) + 1));
+	if (!args)
+		return (NULL);
+	while (data->token[cell_nb].scmd[i].type != TOKEN_CMD)
+		i++;
+	if (data->token[cell_nb].scmd[i].is_dollar == 0)
+		args[0] = ft_strdup(data->token[cell_nb].scmd[i].value);
+	else
+		args[0] = dollar_swap(data, ft_strdup(data->token[cell_nb].scmd[i].value));
+	i++;
+	fill_args(data, cell_nb, i, args);
 	if (search_in_charray(args, ' '))
 		return (build_nested_command(data, cell_nb, args));
 	return (args);

@@ -35,24 +35,7 @@ static void	mid_process(t_shell *data, t_exec_multi *pack, int n)
 	if (pack->c_pid[n] < 0)
 		perror("Fork :");
 	if (pack->c_pid[n] == 0)
-	{
-		mini_parse_multi(data, pack, n);
-		close(pack->pipe_fd[n][0]);
-		if (!pack->nb_redirin && !pack->is_here_doc)
-		{
-			dup2(pack->pipe_fd[n - 1][0], STDIN_FILENO);
-			close(pack->pipe_fd[n - 1][0]);
-		}
-		if (get_last_redirin_m(data, pack, n) != 5)
-		{
-			dup2(pack->pipe_fd[n][1], STDOUT_FILENO);
-			close(pack->pipe_fd[n][1]);
-		}
-		if (pack->nb_redirin || pack->nb_redirout || pack->is_here_doc)
-			redir_dup_multi(data, pack, n);
-		else
-		ft_execve_multi(data, charize_env(data->our_env), pack);
-	}
+		mid_child(data, pack, n);
 	else
 	{
 		close(pack->pipe_fd[n - 1][0]);

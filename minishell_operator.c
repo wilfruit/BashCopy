@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:54:46 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/01 15:55:42 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/05 13:26:10 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	free_exec_pack(t_exec_single *pack)
 		ft_free_chr(pack->allpaths);
 	if (pack->cmdargs[0])
 		ft_free_chr(pack->cmdargs);
-	//free(pack->cmdstat);
 }
 
 char	**get_allpaths(t_shell *data)
@@ -67,11 +66,32 @@ void	init_single_exe(t_shell *data, t_exec_single *exec_pack)
 		treat_redir_in(data, exec_pack, 0);
 }
 
+static void	ft_normal_exe(t_exec_single *exec_pack, t_shell *data)
+{
+	pid_t	c1;
+	int		status;
+
+	c1 = fork();
+	if (c1 < 0)
+		perror("Fork : ");
+	if (c1 == 0 && (exec_pack->nb_redirin || exec_pack->nb_redirout || exec_pack->is_here_doc))
+		redir_dup_single(data, exec_pack);
+	if (c1 == 0 && !exec_pack->nb_redirin && !exec_pack->nb_redirout && !exec_pack->is_here_doc)
+		ft_execve_one(data, charize_env(data->our_env), exec_pack);
+	waitpid(c1, &status, 0);
+	if (exec_pack->cmdstat)
+		free(exec_pack->cmdstat);
+	ft_free_chr(exec_pack->cmdargs);
+	ft_free_chr(exec_pack->allpaths);
+	if (WIFEXITED(status))
+		data->error_ret = WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+		sig_exit(data, status, c1, exec_pack->cmdargs[0]);
+}
+
 void	execute_single_cmd(t_shell *data)
 {
 	t_exec_single	exec_pack;
-	pid_t           c1;
-	int             status;
 
 	init_single_exe(data, &exec_pack);
 	if (ft_is_built_in(exec_pack.cmdargs[0]) == 1 && exec_pack.nb_redirin <= 0 && \
@@ -81,24 +101,7 @@ void	execute_single_cmd(t_shell *data)
 	exec_pack.nb_redirout > 0))
 		redir_dup_single(data, &exec_pack);
 	else
-	{
-		c1 = fork();
-		if (c1 < 0)
-			perror("Fork : ");
-		if (c1 == 0 && (exec_pack.nb_redirin || exec_pack.nb_redirout || exec_pack.is_here_doc))
-			redir_dup_single(data, &exec_pack);
-		if (c1 == 0 && !exec_pack.nb_redirin && !exec_pack.nb_redirout && !exec_pack.is_here_doc)
-			ft_execve_one(data, charize_env(data->our_env), &exec_pack);
-		waitpid(c1, &status, 0);
-		if (exec_pack.cmdstat)
-			free(exec_pack.cmdstat);
-		ft_free_chr(exec_pack.cmdargs);
-		ft_free_chr(exec_pack.allpaths);
-		if (WIFEXITED(status))
-			data->error_ret = WEXITSTATUS(status);
-		if (WIFSIGNALED(status))
-			sig_exit(data, status, c1, exec_pack.cmdargs[0]);
-	}
+		ft_normal_exe(&exec_pack, data);
 }
 
 void	minishell_operator(t_shell *data)

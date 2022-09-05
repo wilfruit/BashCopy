@@ -8,12 +8,10 @@ void	*malloc_set_token(t_manage_pipe utils, t_pipe **prompt)
 		utils.j = 0;
 		while (utils.j < (*prompt)[utils.i].nb_token)
 		{
-		//	printf("size_token :%d\n", prompt[utils.i]->scmd[utils.j].len_value);
 			(*prompt)[utils.i].scmd[utils.j].value = \
 			ft_calloc(sizeof(char), ((*prompt) \
 			[utils.i].scmd[utils.j].len_value + 1));
 			utils.j++;
-		//	(*prompt)[utils.i].scmd[utils.j].value[((*prompt)[utils.i].scmd[utils.j].len_value + 1)] = '\0';
 		}
 	}
 }
@@ -102,8 +100,7 @@ void	*set_token(t_manage_pipe utils, t_pipe **prompt)
 			while (((*prompt)[utils.i].cmd[utils.j] && \
 			(*prompt)[utils.i].cmd[utils.j] != ' ') && \
 			(utils.k < (*prompt)[utils.i].nb_token) && \
-			!is_redirection((*prompt)[utils.i].cmd[utils.j]))// \
-			&& ((*prompt)[utils.i].cmd[utils.j] != '$'))
+			!is_redirection((*prompt)[utils.i].cmd[utils.j]))
 			{	
 				last_help_set_token(&utils.i, &utils.j, &utils.k, &v, prompt);
 				if (((*prompt)[utils.i].cmd[utils.j] != '\0') && \
@@ -120,16 +117,9 @@ void	*set_token(t_manage_pipe utils, t_pipe **prompt)
 	while (utils.i < utils.nb_cmd)
 	{
 		utils.k = 0;
-		/* printf("commande[%d]\n", utils.i);
-		printf("-------------------------------------------------\n"); */
+
 		while (utils.k < (*prompt)[utils.i].nb_token)
-		{
-		/* 	printf("token[%d] : %s\n",utils.k, (*prompt)[utils.i].scmd[utils.k].value);
-			printf("is_dollar : %d\n", (*prompt)[utils.i].scmd[utils.k].is_dollar); */
 			utils.k++;
-		}
-		/* printf("-------------------------------------------------\n");
-		printf("\n\n"); */
 		utils.i++;
 	} 
 }

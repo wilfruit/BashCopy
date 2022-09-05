@@ -6,22 +6,13 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:59:10 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/02 11:37:52 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/05 03:27:43 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_shell.h"
 
 int				glob = 0;
-
-void	print_linked_list(t_envi *our_env)
-{
-	while (our_env)
-	{
-		printf("%s\n", our_env->str);
-		our_env = our_env->next;
-	}
-}
 
 static void	create_minimum_data(t_shell *data, char **env)
 {
@@ -72,6 +63,16 @@ static int	sig_used(int error_ret)
 		return (error_ret);
 }
 
+static void	ft_bash(t_shell *shell_pack, char *line)
+{
+	shell_pack->error_ret = sig_used(shell_pack->error_ret);
+	set_struct(&line, shell_pack->mpipe, &shell_pack->token);
+	shell_pack->nb_cell = shell_pack->mpipe.nb_cmd;
+	if (shell_pack->mpipe.size != 0)
+		minishell_operator(shell_pack);
+	clean_manage(&shell_pack->mpipe, &shell_pack->token);
+}
+
 int	main(int argc, char **argv, char **env)
 {
  	char			*line;
@@ -91,14 +92,7 @@ int	main(int argc, char **argv, char **env)
  		if (check_line(&line) == NULL)
 			exit(0);
 		if (all_pipe_cmd(&shell_pack.mpipe, line) != NULL)
-		{
-			shell_pack.error_ret = sig_used(shell_pack.error_ret);
-			set_struct(&line, shell_pack.mpipe, &shell_pack.token);
-			shell_pack.nb_cell = shell_pack.mpipe.nb_cmd;
-	 		if (shell_pack.mpipe.size != 0)
-				minishell_operator(&shell_pack);
-			clean_manage(&shell_pack.mpipe, &shell_pack.token);
-		}
+			ft_bash(&shell_pack, line);
 		free(line);
 		shell_pack.error_ret = sig_used(shell_pack.error_ret);
 	}
@@ -107,15 +101,9 @@ int	main(int argc, char **argv, char **env)
 	return (shell_pack.exit_ret);
 }
 
-/* Leaks chelou avec charize env ??????? incomprehensible
-Initialized value ?
-ls | pwd           -> encore un probleme
+
+/*ls | pwd           -> encore un probleme
 quand je fais un pipe puis une commande normale (genre "hey")
 et invalid syntax */
 
-/* mshell> export A=" -la"
-mshell> ls$A      => ça crash*/
-
 // si jamais on utilise un control-d apres un control-c ca bloque
-
-// checker les invalidites pour "fjweijpowjopvwrj$D"

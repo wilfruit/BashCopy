@@ -65,6 +65,5 @@ void	*determine_type(t_pipe *prompt)
 			prompt->scmd[i].type = TOKEN_CMD;
 		else
 			prompt->scmd[i].type = TOKEN_ERROR;
-	//	printf("value token [%d] : %d\n",i, prompt->scmd[i].type);
 	}	
 }

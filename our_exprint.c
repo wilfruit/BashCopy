@@ -32,7 +32,7 @@ static char	**transform_env(t_envi *env)
 	if (!ret)
 		return NULL;
 	temp = env;
-	while (temp /* && temp->next != NULL */)
+	while (temp)
 	{
 		ret[i] = (char *)malloc(sizeof(char) * ft_strlen(temp->str));
 		if (!ret)
@@ -96,7 +96,4 @@ void	my_exprint(t_envi *env)
 	unsorted_env = transform_env(env);
 	alpha_sort(unsorted_env);
 	ft_print_env(unsorted_env);
-//	ft_print_env(unsorted_env);
-//	ft_free_chr(unsorted_env);
-//	ft_free_chr(sorted_env);
 }

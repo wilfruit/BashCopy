@@ -13,9 +13,10 @@ dollar_swap_deluxe.c \
 GNL.c utils_four.c \
 nested_command.c \
 is_redir_bis.c \
-strjoinmod.c
+strjoinmod.c \
+treat_redir_bis.c
 
-CC = gcc -g
+CC = gcc  -g -fsanitize=address
 
 HEADER = mini_shell.h
 

@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   our_cd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avaures <avaures@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 14:51:27 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/08/30 21:03:40 by avaures          ###   ########.fr       */
+/*   Updated: 2022/09/05 12:44:58 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_shell.h"
-
-// à gérer env -i
 
 static int	replace_oldpwd(t_envi *our_env)
 {

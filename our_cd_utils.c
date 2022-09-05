@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   our_cd_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avaures <avaures@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 14:55:03 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/08/30 21:02:55 by avaures          ###   ########.fr       */
+/*   Updated: 2022/09/05 03:15:31 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	set_newpwd(char *path, t_envi *our_env)
 	char	*new_pwd;
 	t_envi	*current;
 
-//	cwd = malloc(sizeof(char) * PATH_MAX);
+	cwd = malloc(sizeof(char) * PATH_MAX);
 	current = our_env;
 	if (getcwd(cwd, PATH_MAX) == NULL)
 		return ;

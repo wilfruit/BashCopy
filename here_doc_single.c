@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 15:08:17 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/01 14:57:39 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/05 03:10:11 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	child_doc(char *limiter, int *fd, t_shell *pack)
 	char	*str;
 
 	close(fd[0]);
-	limiter = ft_strjoin(limiter, "\n");
+	limiter = ft_strjoinmod(limiter, "\n");
 	while (1)
 	{
 		str = readline("hd> ");
@@ -66,7 +66,7 @@ void	fake_child_doc(char *limiter)
 	while (1)
 	{
 		str = readline("hd> ");
-		str = ft_strjoin(str, "\n");
+		str = ft_strjoinmod(str, "\n");
 		if (ft_strlen(str) == ft_strlen(limiter) && \
 ft_strncmp(str, limiter, ft_strlen(str)) == 0)
 		{

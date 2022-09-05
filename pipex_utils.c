@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:50:27 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/01 15:14:27 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/05 03:27:47 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ void	wait_all(t_shell *data, t_exec_multi *pack)
 	}
 	waitpid(pack->c_pid[i], &status, 0);
 	if (WIFEXITED(status))
-	{
-		//ft_clean_all_bonus(data);
 		data->error_ret = WEXITSTATUS(status);
-	}
 	else if (WIFSIGNALED(status))
 		sig_exit(data, status, pack->c_pid[i], "");
 	else

@@ -33,7 +33,7 @@ int	len_cmd_pipe(t_manage_pipe *mpipe, char *line)
 	return (0);
 }
 
-void	*	set_manage(t_manage_pipe *mpipe, char *line)
+void	*set_manage(t_manage_pipe *mpipe, char *line)
 {	
 	int	tmp;
 

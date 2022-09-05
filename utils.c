@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:29:49 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/08/31 16:29:50 by wgaspar          ###   ########.fr       */
+/*   Updated: 2022/09/05 13:41:32 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,27 @@ void	free_struct(t_manage_pipe utils, t_pipe **prompt)
 		(*prompt)[utils.i].cmd = NULL;
 	}
 	free((*prompt));
+}
+
+void	redir_dup_single_builtin(t_shell *data, t_exec_single *pack)
+{
+	int		savein;
+	int		saveout1;
+
+	savein = 0;
+	saveout1 = 0;
+	if (pack->nb_redirin > 0)
+	{
+		savein = dup(0);
+		close(0);
+		dup2(pack->redirin, 0);
+	}
+	if (pack->nb_redirout > 0)
+	{
+		saveout1 = dup(1);
+		close(1);
+		dup2(pack->redirout, 1);
+	}
+	ft_exec_built_in(data, pack->cmdargs);
+	clean_redir_single(pack, savein, saveout1);
 }

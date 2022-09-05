@@ -83,6 +83,13 @@ typedef struct s_exec_single
 	int		is_here_doc;
 }				t_exec_single;
 
+typedef struct s_unset
+{
+	t_envi	*temp;
+	t_envi	*prev;
+	char	*vari;
+}				t_unset;
+
 typedef struct s_exec_multi
 {
 	char	**allpaths;
@@ -223,6 +230,7 @@ void	add_node_to_exp(t_envi *list, char *str);
 int		is_valid_identifier_exp(char *cmd);
 int		is_in_exp_list(t_envi *list, char *str);
 char    **no_assign_export(char *str);
+void	mid_child(t_shell *data, t_exec_multi *pack, int n);
 int     ft_nt_att(t_envi *env, char *av);
 void	fake_child_doc(char *limiter);
 void 	fake_redoc_m(t_shell *data, t_exec_multi *pack, int weight, int n);
@@ -235,6 +243,8 @@ char	*ft_hd_dollar_check(char *str, t_shell *pack);
 int		ft_syntax_error(void);
 void	ft_free_env(t_envi *head);
 int		dollar_count(char *str);
+char	*dollar_deluxe(t_shell *shpack, char *str);
 char	*ft_strjoinmod(char *s1, char *s2);
+void	clean_redir_single(t_exec_single *p, int in, int out1);
 
 #endif
