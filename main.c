@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:59:10 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/05 03:27:43 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/05 14:30:59 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,3 +107,4 @@ quand je fais un pipe puis une commande normale (genre "hey")
 et invalid syntax */
 
 // si jamais on utilise un control-d apres un control-c ca bloque
+// après un control c ça marque la commande wtf
