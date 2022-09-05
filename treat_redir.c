@@ -49,14 +49,12 @@ int	ft_only_redin(t_exec_single *pack)
 	return (fd);
 }
 
-int	ft_only_redout(t_exec_single *pack)
+int	ft_only_redout(t_exec_single *pack, int *saveout1)
 {
-	int	fd;
-
-	fd = dup(1);
+	*saveout1 = dup(1);
 	close(1);
 	dup2(pack->redirout, 1);
-	return (fd);
+	return (0);
 }
 
 void	redir_dup_single(t_shell *data, t_exec_single *pack)
@@ -77,7 +75,8 @@ void	redir_dup_single(t_shell *data, t_exec_single *pack)
 	if (pack->nb_redirin > 0 && !(pack->is_here_doc > 0))
 		savein = ft_only_redin(pack);
 	if (pack->nb_redirout > 0)
-		saveout1 = ft_only_redout(pack);
+		ft_only_redout(pack, &saveout1);
+//		saveout1 = ft_only_redout(pack);
 	if (ft_is_built_in(pack->cmdargs[0]) == 1)
 		ft_exec_built_in(data, pack->cmdargs);
 	else

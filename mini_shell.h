@@ -162,13 +162,9 @@ void	*first_help_len_token(int *i, int *j, int *k, t_pipe **prompt);
 void	*last_help_len_token(int *i, int *j, int *k, t_pipe **prompt);
 void	*found_len_token(t_manage_pipe utils, t_pipe **prompt);
 void	*malloc_set_token(t_manage_pipe utils, t_pipe **prompt);
-/* void	*first_help_set_token(t_manage_pipe *data, int *v, t_pipe **prompt);
+void	*first_help_set_token(t_manage_pipe *data, int *v, t_pipe **prompt);
 void	*last_help_set_token(t_manage_pipe *data, int *v, t_pipe **prompt);
-void	*last_more_help_set_token(t_manage_pipe *data, int *v, t_pipe **prompt); */
-void	*first_help_set_token(int *i, int *j, int *k, int *v, t_pipe **prompt);
-void	*last_help_set_token(int *i, int *j, int *k, int *v, t_pipe **prompt);
-void	*last_more_help_set_token(int *i, int *j, \
-int *k, int *v, t_pipe **prompt);
+void	*last_more_help_set_token(t_manage_pipe *data, int *v, t_pipe **prompt);
 void	*set_token(t_manage_pipe utils, t_pipe **prompt);
 void	*make_tab_cmd(t_manage_pipe *mpipe, char *line);
 void	*set_manage(t_manage_pipe *mpipe, char *line);
@@ -176,7 +172,7 @@ int		len_cmd_pipe(t_manage_pipe *mpipe, char *line);
 int		help_size(int *i, char *line);
 int		size_cmd_tab(char *line);
 char	*set_path(char **infos);
-void	*determine_type(t_pipe *prompt);
+void	*determine_type(t_pipe *prompt, int i);
 void	*all_pipe_cmd(t_manage_pipe *mpipe, char *line);
 void	clean_manage(t_manage_pipe *mpipe, t_pipe **prompt);
 void    *help_len_cmd(int *r, t_manage_pipe *mpipe, char *line);

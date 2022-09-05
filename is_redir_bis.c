@@ -25,11 +25,12 @@ void	treat_redir_out(t_shell *data, t_exec_single *pack, int cell_nb)
 		i++;
 	while (j < pack->nb_redirout)
 	{
-		if (data->token[cell_nb].scmd[i].type == 4)
+		if (data->token[cell_nb].scmd[i].type == 2)
 			pack->redirout = open(data->token[cell_nb].scmd[i + 1].value, O_CREAT | O_RDWR | O_TRUNC, 0644);
 		if (data->token[cell_nb].scmd[i].type == 3)
 			pack->redirout = open(data->token[cell_nb].scmd[i + 1].value, O_CREAT | O_RDWR | O_APPEND, 0644);
-			i += 2;
+		printf("redirout i'm opening is %s\n", data->token[cell_nb].scmd[i + 1].value);	
+		i += 2;
 		j++;
 	}
 }

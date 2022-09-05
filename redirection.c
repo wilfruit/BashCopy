@@ -37,9 +37,8 @@ char	*check_line(char **line)
 	return (*line);
 }
 
-void	*determine_type(t_pipe *prompt)
+void	*determine_type(t_pipe *prompt, int i)
 {
-	int	i = -1;
 	while (++i < prompt->nb_token)
 	{
 		prompt->scmd[i].type = 0;
