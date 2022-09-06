@@ -62,6 +62,7 @@ typedef struct s_pipe
 	char	*cmd;
 	int		len_cmd;
 	int		nb_token;
+	int		first;
 }	t_pipe;
 
 typedef struct s_envi
@@ -285,5 +286,10 @@ void	ft_initsetman(t_manage_pipe *mpipe, char *line);
 char	*ft_exit_set_manage(t_manage_pipe *mpipe);
 int		ft_is_dollar_cmd(t_shell *data, int cell_nb);
 void    ft_incr(t_cmdtab *d);
+void    legi_incr(int *k, int *v);
+void    legi_incr2(int *v, int *j);
+void	check_dolls(t_pipe **prompt, t_manage_pipe *data);
+void    help_built_struct(int *len_cmd, int *first);
+
 
 #endif

@@ -43,10 +43,7 @@ void	*first_help_set_token(t_manage_pipe *data, int *v, t_pipe **prompt)
 			*v += 1;
 		}
 		if ((*prompt)[data->i].cmd[data->j] != ' ')
-		{
-			data->k += 1;
-			*v = 0;
-		}
+			legi_incr(&data->k, v);
 	}
 	if ((*prompt)[data->i].cmd[data->j] == '$')
 	{
@@ -69,8 +66,7 @@ void	*last_help_set_token(t_manage_pipe *data, int *v, t_pipe **prompt)
 			= (*prompt)[data->i].cmd[data->j];
 			if ((*prompt)[data->i].cmd[data->j] == '$')
 				(*prompt)[data->i].scmd[data->k].is_dollar = DOLLAR_NO;
-			*v += 1;
-			data->j += 1;
+			legi_incr2(v, &data->j);
 		}
 		data->j += 1;
 	}
@@ -81,10 +77,8 @@ void	*last_help_set_token(t_manage_pipe *data, int *v, t_pipe **prompt)
 		{
 			(*prompt)[data->i].scmd[data->k].value[*v] \
 			= (*prompt)[data->i].cmd[data->j];
-			if ((*prompt)[data->i].cmd[data->j] == '$')
-				(*prompt)[data->i].scmd[data->k].is_dollar = DOLLAR_MACRO;
-			*v += 1;
-			data->j += 1;
+			check_dolls(prompt, data);
+			legi_incr2(v, &data->j);
 		}
 		data->j += 1;
 	}	

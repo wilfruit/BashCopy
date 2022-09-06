@@ -45,7 +45,8 @@ void	*more_help_cmd_struct(int *nb_cmd, int *len_cmd, t_pipe **prompt)
 		(*prompt)[*nb_cmd].nb_token++;
 }
 
-void	*last_help_cmd_struct(int *nb_cmd, int *len_cmd, t_pipe **prompt, int first)
+void	*hcmd_struct(int *nb_cmd, int *len_cmd, \
+t_pipe **prompt, int first)
 {
 	if (*len_cmd > 0 && first == 1)
 		(*prompt)[*nb_cmd].nb_token++;
@@ -59,9 +60,7 @@ void	*last_help_cmd_struct(int *nb_cmd, int *len_cmd, t_pipe **prompt, int first
 
 void	*help_cmd_struct(int nb_cmd, int len_cmd, t_pipe **prompt)
 {
-	int	first;
-
-	first = 0;
+	(*prompt)->first = 0;
 	while ((*prompt)[nb_cmd].cmd[len_cmd])
 	{
 		if ((*prompt)[nb_cmd].cmd[len_cmd] == '\'')
@@ -82,15 +81,9 @@ void	*help_cmd_struct(int nb_cmd, int len_cmd, t_pipe **prompt)
 		== 1) || ((*prompt)[nb_cmd].cmd[len_cmd] == ' '))
 			more_help_cmd_struct(&nb_cmd, &len_cmd, prompt);
 		else if ((*prompt)[nb_cmd].cmd[len_cmd] == '$')
-		{
-			last_help_cmd_struct(&nb_cmd, &len_cmd, prompt, first);
-			first = 1;
-		}
+			hcmd_struct(&nb_cmd, &len_cmd, prompt, (*prompt)->first = 1);
 		else
-		{
-			len_cmd++;
-			first = 1;
-		}
+			help_built_struct(&len_cmd, &(*prompt)->first);
 	}
 }
 
@@ -119,6 +112,6 @@ void	*cmd_struct(t_manage_pipe utils, t_pipe **prompt)
 		utils.i++;
 	}
 	utils.i = 0;
- 	while (utils.i < utils.nb_cmd)
+	while (utils.i < utils.nb_cmd)
 		utils.i++;
 }

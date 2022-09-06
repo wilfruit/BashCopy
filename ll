@@ -1,0 +1,16 @@
+builtins
+cat
+execution
+init
+la
+libft
+ll
+main.c
+Makefile
+mini_shell
+mini_shell.dSYM
+mini_shell.h
+outfile
+parsing
+project_utils
+redirections
