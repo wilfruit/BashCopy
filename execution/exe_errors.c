@@ -56,4 +56,6 @@ void	sig_exit(t_shell *data, int status, pid_t c1, char *cmd)
 		ft_putstr_fd(cmd, 2);
 		ft_putstr_fd("\n", 2);
 	}
+	if (data->error_ret == 130)
+		g_glob = -130;
 }
