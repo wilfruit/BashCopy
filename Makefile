@@ -1,26 +1,35 @@
-SRC = start_pars.c special_characters.c main.c built_stuct.c redirection.c \
-utils.c utils_two.c legible_struct.c last_legible_struct.c utils_three.c \
-minishell_operator.c build_cmd.c env_list_to_str.c ft_exec.c \
-exe_errors.c utils_free.c our_env.c our_pwd.c our_echo.c \
-exe_builtin.c our_unset.c our_cd.c pipex_utils.c \
-pipex_more_utils.c pipex.c dollar_swap.c \
-our_exit.c is_redir.c treat_redir.c \
-is_redir_multi.c our_cd_utils.c \
-GNL_join.c here_doc_single.c \
-our_export.c our_exprint.c \
-here_doc_multi_utils.c \
-dollar_swap_deluxe.c \
-GNL.c utils_four.c \
-nested_command.c \
-is_redir_bis.c \
-strjoinmod.c \
-treat_redir_bis.c
+SRC = main.c \
+parsing/start_pars.c parsing/special_characters.c \
+parsing/built_stuct.c parsing/redirection.c \
+project_utils/utils.c project_utils/utils_two.c \
+parsing/legible_struct.c parsing/last_legible_struct.c \
+project_utils/utils_three.c \
+execution/minishell_operator.c init/build_cmd.c \
+init/env_list_to_str.c execution/ft_exec.c \
+execution/exe_errors.c project_utils/utils_free.c \
+builtins/our_env.c builtins/our_pwd.c builtins/our_echo.c \
+builtins/exe_builtin.c builtins/our_unset.c \
+builtins/our_cd.c redirections/pipex_utils.c \
+redirections/pipex_more_utils.c redirections/pipex.c \
+init/dollar_swap.c \
+builtins/our_exit.c redirections/is_redir.c \
+redirections/treat_redir.c \
+redirections/is_redir_multi.c builtins/our_cd_utils.c \
+redirections/GNL_join.c redirections/here_doc_single.c \
+builtins/our_export.c builtins/our_exprint.c \
+redirections/here_doc_multi_utils.c \
+init/dollar_swap_deluxe.c \
+redirections/GNL.c project_utils/utils_four.c \
+init/nested_command.c \
+redirections/is_redir_bis.c \
+project_utils/utils_five.c \
+redirections/treat_redir_bis.c
 
-CC = gcc  -g
+CC = gcc  -g -fsanitize=address
 
 HEADER = mini_shell.h
 
-OBJ = $(SRC:%.c=./.build/%.o)
+OBJ = $(SRC:%./.c=./.build/%.o)
 
 NAME = mini_shell
 

@@ -169,7 +169,7 @@ void	*set_token(t_manage_pipe utils, t_pipe **prompt);
 void	*make_tab_cmd(t_manage_pipe *mpipe, char *line);
 void	*set_manage(t_manage_pipe *mpipe, char *line);
 int		len_cmd_pipe(t_manage_pipe *mpipe, char *line);
-int		help_size(int *i, char *line);
+void		help_size(int *i, char *line);
 int		size_cmd_tab(char *line);
 char	*set_path(char **infos);
 void	*determine_type(t_pipe *prompt, int i);
@@ -276,5 +276,6 @@ void 	ft_init_cmdpipe(t_manage_pipe *mpipe);
 void	ft_increment_cmdtab(t_cmdtab *data);
 void	ft_initsetman(t_manage_pipe *mpipe, char *line);
 char	*ft_exit_set_manage(t_manage_pipe *mpipe);
+int	ft_is_dollar_cmd(t_shell *data, int cell_nb);
 
 #endif
