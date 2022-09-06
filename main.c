@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:59:10 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/05 17:09:03 by wgaspar          ###   ########.fr       */
+/*   Updated: 2022/09/06 17:18:29 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,6 @@ int	main(int argc, char **argv, char **env)
 	ft_free_env(shell_pack.exports);
 	return (shell_pack.exit_ret);
 }
-
-
 /*ls | pwd           -> encore un probleme
 quand je fais un pipe puis une commande normale (genre "hey")
 et invalid syntax */

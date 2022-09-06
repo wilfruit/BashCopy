@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   special_characters.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/06 17:22:42 by wgaspar           #+#    #+#             */
+/*   Updated: 2022/09/06 17:22:43 by wgaspar          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini_shell.h"
 
 int	len_cmd_pipe(t_manage_pipe *mpipe, char *line)
@@ -12,7 +24,7 @@ int	len_cmd_pipe(t_manage_pipe *mpipe, char *line)
 		}
 		else if (is_redirection(line[mpipe->i]) == 1)
 		{
-			if(len_redir(&mpipe->i, mpipe, line) == 1)
+			if (len_redir(&mpipe->i, mpipe, line) == 1)
 				return (1);
 		}
 		else if (line[mpipe->i] == '|')

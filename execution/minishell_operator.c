@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:54:46 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 15:20:43 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/06 16:55:13 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	execute_single_cmd(t_shell *data)
 	init_single_exe(data, &exec_pack);
 	if (ft_is_built_in(exec_pack.cmdargs[0]) == 1 && exec_pack.nb_redirin <= 0 \
 	&& exec_pack.nb_redirout <= 0)
-            ft_exec_built_in(data, exec_pack.cmdargs);
+		ft_exec_built_in(data, exec_pack.cmdargs);
 	else if (ft_is_built_in(exec_pack.cmdargs[0]) == 1 \
 	&& (exec_pack.nb_redirin > 0 || \
 	exec_pack.nb_redirout > 0))

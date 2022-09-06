@@ -1,4 +1,39 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_five.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/06 17:03:00 by wgaspar           #+#    #+#             */
+/*   Updated: 2022/09/06 17:03:01 by wgaspar          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini_shell.h"
+
+void	redir_dup_single_builtin(t_shell *data, t_exec_single *pack)
+{
+	int		savein;
+	int		saveout1;
+
+	savein = 0;
+	saveout1 = 0;
+	if (pack->nb_redirin > 0)
+	{
+		savein = dup(0);
+		close(0);
+		dup2(pack->redirin, 0);
+	}
+	if (pack->nb_redirout > 0)
+	{
+		saveout1 = dup(1);
+		close(1);
+		dup2(pack->redirout, 1);
+	}
+	ft_exec_built_in(data, pack->cmdargs);
+	clean_redir_single(pack, savein, saveout1);
+}
 
 void	mid_child(t_shell *data, t_exec_multi *pack, int n)
 {
@@ -21,14 +56,14 @@ void	mid_child(t_shell *data, t_exec_multi *pack, int n)
 }
 
 void	ft_initsetman(t_manage_pipe *mpipe, char *line)
- {
- 	mpipe->i = 0;
- 	mpipe->j = 0;
- 	mpipe->k = 0;
- 	mpipe->end = -1;
- 	mpipe->size = 0;
- 	mpipe->nb_cmd = size_cmd_tab(line);
- }
+{
+	mpipe->i = 0;
+	mpipe->j = 0;
+	mpipe->k = 0;
+	mpipe->end = -1;
+	mpipe->size = 0;
+	mpipe->nb_cmd = size_cmd_tab(line);
+}
 
 static char	*ft_joined(char *s1, char *s2, char *sjoined)
 {

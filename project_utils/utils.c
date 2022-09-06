@@ -55,26 +55,3 @@ void	free_struct(t_manage_pipe utils, t_pipe **prompt)
 	}
 	free((*prompt));
 }
-
-void	redir_dup_single_builtin(t_shell *data, t_exec_single *pack)
-{
-	int		savein;
-	int		saveout1;
-
-	savein = 0;
-	saveout1 = 0;
-	if (pack->nb_redirin > 0)
-	{
-		savein = dup(0);
-		close(0);
-		dup2(pack->redirin, 0);
-	}
-	if (pack->nb_redirout > 0)
-	{
-		saveout1 = dup(1);
-		close(1);
-		dup2(pack->redirout, 1);
-	}
-	ft_exec_built_in(data, pack->cmdargs);
-	clean_redir_single(pack, savein, saveout1);
-}

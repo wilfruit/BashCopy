@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dollar_swap_deluxe.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/06 16:58:36 by wgaspar           #+#    #+#             */
+/*   Updated: 2022/09/06 16:59:32 by wgaspar          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini_shell.h"
 
 int	dollar_count(char *str)
@@ -33,12 +45,12 @@ static int	input_has_dollar(char *str)
 		return (-1);
 }
 
-static int	arrlen(char  **super)
+static int	arrlen(char **super)
 {
 	int	i;
 
 	i = 0;
-	while(super[i])
+	while (super[i])
 		i++;
 	i++;
 	return (i);
@@ -68,7 +80,7 @@ char	*ft_hd_dollar_check(char *str, t_shell *pack)
 {
 	char	**stock;
 	char	**translate;
-	int	i;
+	int		i;
 
 	i = 0;
 	if (input_has_dollar(str) == -1)
@@ -79,7 +91,8 @@ char	*ft_hd_dollar_check(char *str, t_shell *pack)
 	{
 		if (dollar_count(str) > 0 && dollar_swap(pack, ft_strdup(stock[i])))
 			translate[i] = dollar_swap(pack, ft_strdup(stock[i]));
-		else if (dollar_count(str) > 0 && !dollar_swap(pack, ft_strdup(stock[i])))
+		else if (dollar_count(str) > 0 && \
+		!dollar_swap(pack, ft_strdup(stock[i])))
 			translate[i] = ft_strdup("");
 		else
 			translate[i] = ft_strdup(stock[i]);
@@ -87,6 +100,5 @@ char	*ft_hd_dollar_check(char *str, t_shell *pack)
 	}
 	ft_free_chr(stock);
 	translate[i] = NULL;
-	return (return_dollar_check(translate, str));	
+	return (return_dollar_check(translate, str));
 }
-

@@ -90,6 +90,12 @@ typedef struct s_unset
 	char	*vari;
 }				t_unset;
 
+typedef struct s_ext
+{
+	t_envi	*temp;
+	char	**av;
+}				t_ext;
+
 typedef struct s_nested
 {
 	char	**exp;

@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:24:07 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 01:39:40 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/06 16:57:54 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,9 @@ char	*build_dollar_return(t_shell *shpack, char **split, char *str, int i)
 			ret = ft_strjoinmod(ret, "89669");
 		else if (ft_strncmp(split[i], "?", ft_strlen(split[i])) == 0)
 			ret = ft_strjoinmod(ret, ft_itoa(shpack->error_ret));
-		else
-		{
-			if (get_macro(shpack, ft_strdup(split[i])))
-				ret = \
-				ft_strjoinmod(ret, get_macro(shpack, ft_strdup(split[i])));
-		}
+		else if (get_macro(shpack, ft_strdup(split[i])))
+			ret = \
+			ft_strjoinmod(ret, get_macro(shpack, ft_strdup(split[i])));
 		i++;
 	}
 	return (ret);

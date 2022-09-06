@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 16:17:54 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 01:50:13 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/06 17:08:44 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ void	treat_redir_out(t_shell *data, t_exec_single *pack, int cell_nb)
 	while (j < pack->nb_redirout)
 	{
 		if (data->token[cell_nb].scmd[i].type == 2)
-			pack->redirout = open(data->token[cell_nb].scmd[i + 1].value, O_CREAT | O_RDWR | O_TRUNC, 0644);
+			pack->redirout = \
+open(data->token[cell_nb].scmd[i + 1].value, O_CREAT | O_RDWR | O_TRUNC, 0644);
 		if (data->token[cell_nb].scmd[i].type == 3)
-			pack->redirout = open(data->token[cell_nb].scmd[i + 1].value, O_CREAT | O_RDWR | O_APPEND, 0644);
-		printf("redirout i'm opening is %s\n", data->token[cell_nb].scmd[i + 1].value);	
+			pack->redirout = \
+open(data->token[cell_nb].scmd[i + 1].value, O_CREAT | O_RDWR | O_APPEND, 0644);
 		i += 2;
 		j++;
 	}
@@ -48,7 +49,8 @@ void	treat_redir_in(t_shell *data, t_exec_single *pack, int cell_nb)
 	while (j < pack->nb_redirin)
 	{
 		if (data->token[cell_nb].scmd[i].type == 4)
-			pack->redirin = open(data->token[cell_nb].scmd[i + 1].value, O_RDONLY);
+			pack->redirin = \
+open(data->token[cell_nb].scmd[i + 1].value, O_RDONLY);
 		i += 2;
 		j++;
 	}

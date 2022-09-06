@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/06 17:11:56 by wgaspar           #+#    #+#             */
+/*   Updated: 2022/09/06 17:12:40 by wgaspar          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini_shell.h"
 
 static void	child_first(t_shell *data, t_exec_multi *pack)
@@ -22,7 +34,7 @@ static void	child_first(t_shell *data, t_exec_multi *pack)
 	}	
 	else
 	{
-		if (get_last_redirin_m(data, pack, 0) == TOKEN_INTPUT_HEREDOC_REDIRECTION)
+		if (get_last_redirin_m(data, pack, 0) == 5)
 			waitpid(pack->c_pid[0], NULL, 0);
 		close(pack->pipe_fd[0][1]);
 	}
@@ -40,7 +52,7 @@ static void	mid_process(t_shell *data, t_exec_multi *pack, int n)
 	{
 		close(pack->pipe_fd[n - 1][0]);
 		close(pack->pipe_fd[n][1]);
-		if (get_last_redirin_m(data, pack, n) == TOKEN_INTPUT_HEREDOC_REDIRECTION)
+		if (get_last_redirin_m(data, pack, n) == 5)
 			waitpid(pack->c_pid[n], NULL, 0);
 	}
 }
@@ -55,18 +67,18 @@ static void	last_child(t_shell *data, t_exec_multi *pack, int n)
 		mini_parse_multi(data, pack, n);
 		if (!pack->nb_redirin && !pack->is_here_doc)
 		{
- 			dup2(pack->pipe_fd[n - 1][0], STDIN_FILENO);
+			dup2(pack->pipe_fd[n - 1][0], STDIN_FILENO);
 			close(pack->pipe_fd[n - 1][0]);
 		}
 		if (pack->nb_redirin || pack->nb_redirout || pack->is_here_doc)
 			redir_dup_multi(data, pack, n);
 		else
-		ft_execve_multi(data, charize_env(data->our_env), pack);
+			ft_execve_multi(data, charize_env(data->our_env), pack);
 	}
 	else
 	{
 		close(pack->pipe_fd[n - 1][0]);
-		if (get_last_redirin_m(data, pack, n) == TOKEN_INTPUT_HEREDOC_REDIRECTION)
+		if (get_last_redirin_m(data, pack, n) == 5)
 			waitpid(pack->c_pid[n], NULL, 0);
 	}
 }
@@ -80,18 +92,18 @@ static void	init_multi_exe(t_shell *data, t_exec_multi *exec_pack)
 	}
 	else
 		exec_pack->allpaths = get_allpaths(data);
-    malloc_childs(data, exec_pack);
-    malloc_pipes(data, exec_pack);
+	malloc_childs(data, exec_pack);
+	malloc_pipes(data, exec_pack);
 	exec_pack->cmdargs = ft_calloc(PATH_MAX, sizeof(char *));
 }
 
 void	pipex(t_shell *data)
 {
-	int		i;
-	t_exec_multi   exec_pack;
+	int				i;
+	t_exec_multi	exec_pack;
 
 	i = 1;
-    init_multi_exe(data, &exec_pack);
+	init_multi_exe(data, &exec_pack);
 	child_first(data, &exec_pack);
 	while (i < data->nb_cell - 1)
 	{

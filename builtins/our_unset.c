@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:51:00 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 01:39:22 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/06 16:54:28 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,60 +14,60 @@
 
 static void	find_and_unset_node_exp(t_shell *pack, char *arg)
 {
-	t_unset	data;
+	t_unset	d;
 
-	data.temp = pack->exports;
-	data.vari = ft_strdup(arg);
-	if (data.temp && ft_strncmp(data.temp->str, data.vari, ft_strlen(data.vari)) == 0)
+	d.temp = pack->exports;
+	d.vari = ft_strdup(arg);
+	if (d.temp && ft_strncmp(d.temp->str, d.vari, ft_strlen(d.vari)) == 0)
 	{
-		pack->exports = data.temp->next;
-		ft_memdel(data.temp->str);
-		ft_memdel(data.temp);
-		free(data.vari);
+		pack->exports = d.temp->next;
+		ft_memdel(d.temp->str);
+		ft_memdel(d.temp);
+		free(d.vari);
 		return ;
 	}
-	while (data.temp && ft_strncmp(data.temp->str, data.vari, ft_strlen(data.vari)))
+	while (d.temp && ft_strncmp(d.temp->str, d.vari, ft_strlen(d.vari)))
 	{
-		data.prev = data.temp;
-		data.temp = data.temp->next;
+		d.prev = d.temp;
+		d.temp = d.temp->next;
 	}
-	if (data.temp == NULL)
+	if (d.temp == NULL)
 	{
-		free(data.vari);
+		free(d.vari);
 		return ;
 	}
-	data.prev->next = data.temp->next;
-	free(data.vari);
-	free(data.temp);
+	d.prev->next = d.temp->next;
+	free(d.vari);
+	free(d.temp);
 }
 
 static void	find_and_unset_node_env(t_shell *pack, char *arg)
 {
-	t_unset	data;
+	t_unset	d;
 
-	data.temp = pack->our_env;
-	data.vari = ft_strjoin(arg, "=");
-	if (data.temp && ft_strncmp(data.temp->str, data.vari, ft_strlen(data.vari)) == 0)
+	d.temp = pack->our_env;
+	d.vari = ft_strjoin(arg, "=");
+	if (d.temp && ft_strncmp(d.temp->str, d.vari, ft_strlen(d.vari)) == 0)
 	{
-		pack->our_env = data.temp->next;
-		ft_memdel(data.temp->str);
-		ft_memdel(data.temp);
-		free(data.vari);
+		pack->our_env = d.temp->next;
+		ft_memdel(d.temp->str);
+		ft_memdel(d.temp);
+		free(d.vari);
 		return ;
 	}
-	while (data.temp && ft_strncmp(data.temp->str, data.vari, ft_strlen(data.vari)))
+	while (d.temp && ft_strncmp(d.temp->str, d.vari, ft_strlen(d.vari)))
 	{
-		data.prev = data.temp;
-		data.temp = data.temp->next;
+		d.prev = d.temp;
+		d.temp = d.temp->next;
 	}
-	if (data.temp == NULL)
+	if (d.temp == NULL)
 	{
-		free(data.vari);
+		free(d.vari);
 		return ;
 	}
-	data.prev->next = data.temp->next;
-	free(data.vari);
-	free(data.temp);
+	d.prev->next = d.temp->next;
+	free(d.vari);
+	free(d.temp);
 }
 
 int	is_valid_identifier(char *cmd)
@@ -100,7 +100,7 @@ int	my_unset(char **cmd, t_shell *pack)
 		return (0);
 	if (cmd && cmd[1])
 	{
-		while(cmd[i])
+		while (cmd[i])
 		{
 			if (is_valid_identifier(cmd[i]) == 0)
 			{

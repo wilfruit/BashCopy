@@ -1,12 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   our_exprint.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/06 16:47:02 by wgaspar           #+#    #+#             */
+/*   Updated: 2022/09/06 16:54:12 by wgaspar          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini_shell.h"
 
 static int	ft_lstlen(t_envi *env)
 {
-	int	size;
+	int		size;
 	t_envi	*temp;
 
 	temp = env;
-
 	size = 0;
 	if (temp)
 		size++;
@@ -25,12 +36,12 @@ static char	**transform_env(t_envi *env)
 {
 	char	**ret;
 	t_envi	*temp;
-	int	i;
+	int		i;
 
 	i = 0;
 	ret = (char **)malloc(sizeof(char *) * (ft_lstlen(env) + 1));
 	if (!ret)
-		return NULL;
+		return (NULL);
 	temp = env;
 	while (temp)
 	{
@@ -46,26 +57,26 @@ static char	**transform_env(t_envi *env)
 	return (ret);
 }
 
-static void alpha_sort(char **env)
+static void	alpha_sort(char **env)
 {
-	char *temp;
-	int i;
-	int	j;
+	char	*temp;
+	int		i;
+	int		j;
 
 	i = 0;
 	temp = NULL;
 	while (ft_strncmp(env[i], "\0", ft_strlen(env[i])) != 0)
 	{
 		j = 0;
-    	while(ft_strncmp(env[j], "\0", ft_strlen(env[j])))
+		while (ft_strncmp(env[j], "\0", ft_strlen(env[j])))
 		{
-      		if(ft_strncmp(env[j], env[j+1], ft_strlen(env[j])) > 0 \
+			if (ft_strncmp(env[j], env[j + 1], ft_strlen(env[j])) > 0 \
 			&& ft_strncmp(env[j + 1], "\0", ft_strlen(env[j + 1])))
-	  		{
+			{
 				temp = ft_strdup(env[j]);
 				env[j] = ft_strdup(env[j + 1]);
 				env[j + 1] = ft_strdup(temp);
-    		}
+			}
 			j++;
 		}
 		i++;

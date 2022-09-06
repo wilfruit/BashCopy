@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:27:21 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 01:51:05 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/06 17:03:16 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_init_cmdtab(t_cmdtab *data)
 {
 	data->i = 0;
 	data->vu = 0;
-	data->size = 1;	
+	data->size = 1;
 }
 
 void	add_node_to_env(t_envi *list, char *str)

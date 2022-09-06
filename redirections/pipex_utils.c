@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:50:27 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 01:49:48 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/06 17:15:01 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	malloc_pipes(t_shell *data, t_exec_multi *pack)
 	}	
 }
 
-void    mini_parse_multi(t_shell *data, t_exec_multi *exec_pack, int nb)
+void	mini_parse_multi(t_shell *data, t_exec_multi *exec_pack, int nb)
 {
 	if (data->our_env->next == NULL)
 	{
@@ -74,9 +74,9 @@ void    mini_parse_multi(t_shell *data, t_exec_multi *exec_pack, int nb)
 		treat_redir_in_multi(data, exec_pack, nb);
 	if (exec_pack->nb_redirout)
 		treat_redir_out_multi(data, exec_pack, nb);
-    exec_pack->cmdargs = build_command(data, nb);
-    exec_pack->cmdstat = ft_strdup(exec_pack->cmdargs[0]);
-    exec_pack->cmdstat = ft_strjoin("/", exec_pack->cmdstat);
+	exec_pack->cmdargs = build_command(data, nb);
+	exec_pack->cmdstat = ft_strdup(exec_pack->cmdargs[0]);
+	exec_pack->cmdstat = ft_strjoin("/", exec_pack->cmdstat);
 }
 
 void	ft_execve_multi(t_shell *shpack, char **env, t_exec_multi *data)
@@ -84,7 +84,6 @@ void	ft_execve_multi(t_shell *shpack, char **env, t_exec_multi *data)
 	int	i;
 
 	i = -1;
-
 	if (!shpack)
 		return ;
 	if (ft_is_built_in(data->cmdargs[0]) == 1)

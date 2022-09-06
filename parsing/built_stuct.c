@@ -5,7 +5,7 @@ int	set_struct(char **line, t_manage_pipe utils, t_pipe **prompt)
 {
 	int	i;
 	int	j;
-	
+
 	i = -1;
 	*prompt = ft_calloc(sizeof(t_pipe), utils.nb_cmd);
 	if (!prompt)

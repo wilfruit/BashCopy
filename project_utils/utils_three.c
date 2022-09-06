@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_three.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/06 17:06:42 by wgaspar           #+#    #+#             */
+/*   Updated: 2022/09/06 17:06:43 by wgaspar          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini_shell.h"
 
 int	is_valid_identifier_exp(char *cmd)
@@ -40,7 +52,7 @@ int	len_redir(int *r, t_manage_pipe *mpipe, char *line)
 		mpipe->size += 1;
 		*r += 1;
 	}	
-		return (0);
+	return (0);
 }
 
 static int	ft_increment(t_manage_pipe *mpipe)
@@ -52,25 +64,25 @@ static int	ft_increment(t_manage_pipe *mpipe)
 void	*len_d_quote(int *r, t_manage_pipe *mpipe, char *line)
 {
 	if (line[*r] == '\"')
-    {
-        *r += 1;
-	    mpipe->size += 1;
-	    while (line[*r] && line[*r] != '\"')
-	    	*r += ft_increment(mpipe);
-	    if (line[*r] != '\"')
-	    	return (write(1, "invalid syntax\n", 15), NULL);
-	    mpipe->size += 1;
-	    *r += 1;
-    }
-    else
-    {
-        *r += 1;
-	    mpipe->size += 1;
-	    while (line[*r] && line[*r] != '\'')
-	    	*r += ft_increment(mpipe);
-	    if (line[*r] != '\'')
-	    	return (write(1, "invalid syntax\n", 15), NULL);
-	    mpipe->size += 1;
-	    *r += 1;
-    }
+	{
+		*r += 1;
+		mpipe->size += 1;
+		while (line[*r] && line[*r] != '\"')
+			*r += ft_increment(mpipe);
+		if (line[*r] != '\"')
+			return (write(1, "invalid syntax\n", 15), NULL);
+		mpipe->size += 1;
+		*r += 1;
+	}
+	else
+	{
+		*r += 1;
+		mpipe->size += 1;
+		while (line[*r] && line[*r] != '\'')
+			*r += ft_increment(mpipe);
+		if (line[*r] != '\'')
+			return (write(1, "invalid syntax\n", 15), NULL);
+		mpipe->size += 1;
+		*r += 1;
+	}
 }

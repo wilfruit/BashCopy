@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:30:36 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 01:49:24 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/06 17:15:37 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void	redir_dup_single(t_shell *data, t_exec_single *pack)
 		savein = ft_only_redin(pack);
 	if (pack->nb_redirout > 0)
 		ft_only_redout(pack, &saveout1);
-//		saveout1 = ft_only_redout(pack);
 	if (ft_is_built_in(pack->cmdargs[0]) == 1)
 		ft_exec_built_in(data, pack->cmdargs);
 	else

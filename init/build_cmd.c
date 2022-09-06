@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:22:47 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 15:14:37 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/06 16:56:31 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	count_args(t_shell *data, int cell_nb)
 	i = 0;
 	while (i < data->token[cell_nb].nb_token)
 	{
-		if (data->token[cell_nb].scmd[i].type == TOKEN_ARG && ft_strlen(data->token[cell_nb].scmd[i].value) > 0)
+		if (data->token[cell_nb].scmd[i].type == TOKEN_ARG \
+		&& ft_strlen(data->token[cell_nb].scmd[i].value) > 0)
 			count++;
 		i++;
 	}
@@ -75,8 +76,9 @@ void	fill_args(t_shell *data, int cell_nb, int i, char **args)
 	int		j;
 
 	j = 1;
-	while (i < count_args(data, cell_nb) && i < data->token[cell_nb].nb_token && \
-data->token[cell_nb].scmd[i].type == TOKEN_ARG)
+	while (i < count_args(data, cell_nb) \
+	&& i < data->token[cell_nb].nb_token && \
+	data->token[cell_nb].scmd[i].type == TOKEN_ARG)
 	{
 		if (data->token[cell_nb].scmd[i].type == TOKEN_ARG)
 		{
@@ -112,7 +114,7 @@ char	**build_command(t_shell *data, int cell_nb)
 		ft_strdup(data->token[cell_nb].scmd[i].value));
 	i++;
 	fill_args(data, cell_nb, i, args);
-	if (search_in_charray(args, ' ') && ft_is_dollar_cmd(data, cell_nb)/* && data->token[cell_nb].scmd[].is_dollar == 0 */)
+	if (search_in_charray(args, ' ') && ft_is_dollar_cmd(data, cell_nb))
 		return (build_nested_command(data, cell_nb, args));
 	return (args);
 }

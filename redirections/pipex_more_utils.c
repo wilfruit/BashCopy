@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex_more_utils.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/06 17:17:47 by wgaspar           #+#    #+#             */
+/*   Updated: 2022/09/06 17:18:03 by wgaspar          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini_shell.h"
 
 void	wrap_execve_multi(t_exec_multi *data, char *cmd, char **args, char **env, t_shell *shell)
@@ -6,24 +18,24 @@ void	wrap_execve_multi(t_exec_multi *data, char *cmd, char **args, char **env, t
 	cannot_execute_pipex(data, cmd, shell);
 }
 
-static void ft_free_pipes(t_shell *data, t_exec_multi *pack)
+static void	ft_free_pipes(t_shell *data, t_exec_multi *pack)
 {
-    int     i;
+	int	i;
 
-    i = 0;
-    while (i < data->nb_cell - 1)
-    {
-        free(pack->pipe_fd[i]);
-        i++;
-    }
-    free(pack->pipe_fd);
+	i = 0;
+	while (i < data->nb_cell - 1)
+	{
+		free(pack->pipe_fd[i]);
+		i++;
+	}
+	free(pack->pipe_fd);
 }
 
-void    free_exec_pack_multi(t_shell *data, t_exec_multi *pack)
+void	free_exec_pack_multi(t_shell *data, t_exec_multi *pack)
 {
-    ft_free_chr(pack->allpaths);
-    ft_free_pipes(data, pack);
-    free(pack->c_pid);
+	ft_free_chr(pack->allpaths);
+	ft_free_pipes(data, pack);
+	free(pack->c_pid);
 }
 
 void	cannot_execute_pipex(t_exec_multi *data, char *cmd, t_shell *shell)

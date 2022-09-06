@@ -6,13 +6,13 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 17:14:53 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 15:14:20 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/06 17:30:04 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini_shell.h"
 
-int		count_built_args(char **args)
+int	count_built_args(char **args)
 {
 	int	i;
 
@@ -56,6 +56,33 @@ int	count_worder(char *str)
 	return (count);
 }
 
+static void	feed_nest_command(t_nested *nest, char **args)
+{
+	while (nest->i < (count_built_args(args) \
+	+ count_worder(args[0]) && args[nest->i]))
+	{
+		if (nest->i == 0 && ft_strchr(args[nest->i], ' ') \
+		&& !ft_strchr(args[nest->i], 34))
+		{
+			nest->split = ft_split(args[nest->i], ' ');
+			nest->j = 0;
+			while (nest->split[nest->j])
+			{
+				nest->exp[nest->k] = ft_strdup(nest->split[nest->j]);
+				nest->k++;
+				nest->j++;
+			}
+		}
+		else
+		{
+			nest->exp[nest->k] = ft_strdup(args[nest->i]);
+			nest->k++;
+		}
+		nest->i++;
+	}
+	nest->exp[nest->k] = NULL;
+}
+
 char	**build_nested_command(t_shell *data, int cell_nb, char **args)
 {
 	t_nested	nest;
@@ -63,31 +90,11 @@ char	**build_nested_command(t_shell *data, int cell_nb, char **args)
 	nest.j = 0;
 	nest.i = 0;
 	nest.k = 0;
-	nest.exp = (char **)malloc(sizeof(char *) * (count_built_args(args) + count_worder(args[0]) + 1));
+	nest.exp = (char **)malloc(sizeof(char *) \
+	* (count_built_args(args) + count_worder(args[0]) + 1));
 	if (!nest.exp)
 		return (NULL);
-  	while (nest.i < (count_built_args(args) + count_worder(args[0]) && args[nest.i]))
-	{
-		if (nest.i == 0 && ft_strchr(args[nest.i], ' ') && !ft_strchr(args[nest.i], 34))
-		{
-			nest.split = ft_split(args[nest.i], ' ');
-			nest.j = 0;
-			while (nest.split[nest.j])
-			{
-				nest.exp[nest.k] = ft_strdup(nest.split[nest.j]);
-				nest.k++;
-				nest.j++;
-			}
-		}
-		else
-		{
-			nest.exp[nest.k] = ft_strdup(args[nest.i]);
-			nest.k++;
-		}
-		nest.i++;
-  	}
-	nest.exp[nest.k] = NULL;
-	//ft_free_chr(nest.split);
+	feed_nest_command(&nest, args);
 	ft_free_chr(args);
 	return (nest.exp);
 }

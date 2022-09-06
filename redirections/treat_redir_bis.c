@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   treat_redir_bis.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/06 17:16:17 by wgaspar           #+#    #+#             */
+/*   Updated: 2022/09/06 17:16:18 by wgaspar          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini_shell.h"
 
 static void	clean_redir_multi(t_exec_multi *p, int in, int out1)
@@ -8,11 +20,11 @@ static void	clean_redir_multi(t_exec_multi *p, int in, int out1)
 		dup2(out1, 1);
 }
 
-int ft_redirin_and_heredoc_m(t_shell *data, t_exec_multi *pack, int cell_nb)
+int	ft_redirin_and_heredoc_m(t_shell *data, t_exec_multi *pack, int cell_nb)
 {
-    int fd;
+	int	fd;
 
-    fd = dup(0);
+	fd = dup(0);
 	if (get_last_redirin_m(data, pack, cell_nb) == TOKEN_INTPUT_REDIRECTION)
 	{
 		fake_redoc_m(data, pack, 0, cell_nb);
@@ -24,7 +36,7 @@ int ft_redirin_and_heredoc_m(t_shell *data, t_exec_multi *pack, int cell_nb)
 		fake_redoc_m(data, pack, 1, cell_nb);
 		treat_redir_heredoc_m(data, pack, cell_nb);
 	}
-    return (fd);
+	return (fd);
 }
 
 int	ft_only_redin_m(t_exec_multi *pack)

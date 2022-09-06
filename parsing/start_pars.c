@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   start_pars.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/06 17:22:09 by wgaspar           #+#    #+#             */
+/*   Updated: 2022/09/06 17:23:32 by wgaspar          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini_shell.h"
 
 char	*set_path(char **str)
@@ -34,36 +46,34 @@ int	help_double(int *i, char *line)
 	return (0);
 }
 
- int	size_cmd_tab(char *line)
+int	size_cmd_tab(char *line)
 {
-	int	i;
-	int vu;
-	int	size;
+	t_cmdtab	d;
 
-	i = 0;
-	vu = 0;
-	size = 1;
-	while (line[i])
+	d.i = 0;
+	d.vu = 0;
+	d.size = 1;
+	while (line[d.i])
 	{
-		if (line[i] == ' ')
+		if (line[d.i] == ' ')
 		{
-			help_size(&i, line);
-			if (line[i] == '\0' && vu)
-				return (size);
+			help_size(&d.i, line);
+			if (line[d.i] == '\0' && d.vu)
+				return (d.size);
 		}
-		if (line[i] == '\0')
+		if (line[d.i] == '\0')
 			return (0);
-		if (line[i] == '\'')
-			help_simple(&i, line);
-		if (line[i] == '\"')
-			help_double(&i, line);
-		if (line[i] == '|')
-			size++;
-		if (line[i])
+		if (line[d.i] == '\'')
+			help_simple(&d.i, line);
+		if (line[d.i] == '\"')
+			help_double(&d.i, line);
+		if (line[d.i] == '|')
+			d.size++;
+		if (line[d.i])
 		{
-			i++;
-			vu++;
+			d.i++;
+			d.vu++;
 		}
 	}
-	return (size);
+	return (d.size);
 }

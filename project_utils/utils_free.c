@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_free.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/06 17:04:20 by wgaspar           #+#    #+#             */
+/*   Updated: 2022/09/06 17:04:21 by wgaspar          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini_shell.h"
 
-void ft_init_cmdpipe(t_manage_pipe *mpipe)
+void	ft_init_cmdpipe(t_manage_pipe *mpipe)
 {
 	mpipe->i = 0;
 	mpipe->j = 0;
@@ -41,17 +53,17 @@ void	*ft_memdel(void *ptr)
 
 void	ft_free_env(t_envi *head)
 {
-   t_envi   *current;
-   t_envi   *next;
+	t_envi	*current;
+	t_envi	*next;
 
-   current = head;
-   next = NULL;
-   while (current)
-   {
-      next = current->next;
-      free(current->str);
-      free(current);
-      current = next;
-   }
-   head = NULL;
+	current = head;
+	next = NULL;
+	while (current)
+	{
+		next = current->next;
+		free(current->str);
+		free(current);
+		current = next;
+	}
+	head = NULL;
 }
