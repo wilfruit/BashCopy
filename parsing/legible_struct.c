@@ -102,32 +102,29 @@ void	*last_more_help_set_token(t_manage_pipe *data, int *v, t_pipe **prompt)
 
 void	*set_token(t_manage_pipe utils, t_pipe **prompt)
 {
-	int	v;
-
 	malloc_set_token(utils, prompt);
-	utils.i = 0;
-	while (utils.i < utils.nb_cmd)
+	utils.i = -1;
+	while (++utils.i < utils.nb_cmd)
 	{
 		utils.j = 0;
 		utils.k = 0;
 		while ((*prompt)[utils.i].cmd[utils.j])
 		{
-			first_help_set_token(&utils, &v, prompt);
+			first_help_set_token(&utils, &utils.v, prompt);
 			while (((*prompt)[utils.i].cmd[utils.j] && \
 			(*prompt)[utils.i].cmd[utils.j] != ' ') && \
 			(utils.k < (*prompt)[utils.i].nb_token) && \
 			!is_redirection((*prompt)[utils.i].cmd[utils.j]))
 			{	
-				last_help_set_token(&utils, &v, prompt);
+				last_help_set_token(&utils, &utils.v, prompt);
 				if (((*prompt)[utils.i].cmd[utils.j] != '\0') && \
 				(*prompt)[utils.i].cmd[utils.j] != ' ' \
 				&& ((*prompt)[utils.i].cmd[utils.j] != '\'') \
 				&& ((*prompt)[utils.i].cmd[utils.j] != '"'))
-					last_more_help_set_token(&utils, &v, prompt);
+					last_more_help_set_token(&utils, &utils.v, prompt);
 			}
 			utils.k++;
 		}
 		determine_type(&(*prompt)[utils.i], -1);
-		utils.i++;
 	}
 }

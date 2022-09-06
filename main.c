@@ -98,6 +98,7 @@ int	main(int argc, char **argv, char **env)
 	}
 	ft_free_env(shell_pack.our_env);
 	ft_free_env(shell_pack.exports);
+	rl_clear_history();
 	return (shell_pack.exit_ret);
 }
 /*ls | pwd           -> encore un probleme

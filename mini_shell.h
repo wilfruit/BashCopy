@@ -39,6 +39,7 @@ typedef struct s_manage_pipe
 	int		i;
 	int		j;
 	int		k;
+	int		v;
 	int		size;
 	int		end;
 	int		nb_cmd;
