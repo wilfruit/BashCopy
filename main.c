@@ -52,9 +52,13 @@ static void	shell_pack_init(t_shell *data, char **env)
 		create_minimum_data(data, env);
 }
 
-static int	sig_used(int error_ret)
+static int	sig_used(int error_ret, int i)
 {
-	if (g_glob == 130 || g_glob == -130)
+	if ((g_glob == 130 || g_glob == -130) && i == 0)
+	{
+		return (130);
+	}
+	else if ((g_glob == 130 || g_glob == -130) && i == 1)
 	{
 		g_glob = 0;
 		return (130);
@@ -65,7 +69,7 @@ static int	sig_used(int error_ret)
 
 static void	ft_bash(t_shell *shell_pack, char *line)
 {
-	shell_pack->error_ret = sig_used(shell_pack->error_ret);
+	shell_pack->error_ret = sig_used(shell_pack->error_ret, 0);
 	set_struct(&line, shell_pack->mpipe, &shell_pack->token);
 	shell_pack->nb_cell = shell_pack->mpipe.nb_cmd;
 	if (shell_pack->mpipe.size != 0)
@@ -150,7 +154,7 @@ int	main(int argc, char **argv, char **env)
 		if (all_pipe_cmd(&shell_pack.mpipe, line) != NULL)
 			ft_bash(&shell_pack, line);
 		free(line);
-		shell_pack.error_ret = sig_used(shell_pack.error_ret);
+		shell_pack.error_ret = sig_used(shell_pack.error_ret, 1);
 	}
 	ft_free_env(shell_pack.our_env);
 	ft_free_env(shell_pack.exports);
