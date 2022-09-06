@@ -91,7 +91,7 @@ int	main(int argc, char **argv, char **env)
 			line = readline("\e[1;31mmshell> \e[0m");
 		if (check_line(&line) == NULL)
 			exit(0);
-		if (all_pipe_cmd(&shell_pack.mpipe, line) != NULL)
+		if (g_glob == 0 && all_pipe_cmd(&shell_pack.mpipe, line) != NULL)
 			ft_bash(&shell_pack, line);
 		free(line);
 		shell_pack.error_ret = sig_used(shell_pack.error_ret);

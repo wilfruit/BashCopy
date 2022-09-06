@@ -23,9 +23,10 @@ redirections/GNL.c project_utils/utils_four.c \
 init/nested_command.c \
 redirections/is_redir_bis.c \
 project_utils/utils_five.c \
-redirections/treat_redir_bis.c
+redirections/treat_redir_bis.c \
+project_utils/utils_six.c \
 
-CC = gcc  -g -fsanitize=address
+CC = gcc  -g
 
 HEADER = mini_shell.h
 
@@ -40,7 +41,6 @@ LIBC = ar -rc
 PRINTF = cd ./libft && make
 
 CFLAGS = -Wall -Wextra -Werror 
-CFLAGS =
 
 # COLORS
 NONE			= \033[0m

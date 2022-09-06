@@ -81,6 +81,7 @@ char	*dollar_deluxe(t_shell *shpack, char *str)
 		return (quit_dollar_deluxe(str, ret, split));
 	ret = build_dollar_return(shpack, split, str, i);
 	ft_free_chr(split);
+	free (str);
 	return (ret);
 }
 
@@ -91,7 +92,10 @@ char	*dollar_swap(t_shell *shpack, char *str)
 	else if (ft_strncmp(str, "$", ft_strlen(str)) == 0)
 		return (str);
 	else if (ft_strncmp(str, "$?", ft_strlen(str)) == 0)
+	{
+		//free (str);
 		return (ft_itoa(shpack->error_ret));
+	}
 	else if (str[0] != '$')
 		return (dollar_deluxe(shpack, str));
 	else

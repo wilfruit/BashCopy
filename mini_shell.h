@@ -156,10 +156,10 @@ typedef struct s_shell
 void	forced_prompt(int sig);
 void	forced_continue(int sig);
 char	*check_line(char **line);
-int		control(t_shell *data);
+int			control(t_shell *data);
 void	free_struct(t_manage_pipe utils, t_pipe **prompt);
 void	free_token(t_manage_pipe utils, t_pipe **prompt);
-int		is_redirection(char c);
+int			is_redirection(char c);
 int		set_struct(char **line, t_manage_pipe utils, t_pipe **prompt);
 void	*more_help_cmd_struct(int *nb_cmd, int *len_cmd, t_pipe **prompt);
 void	*help_cmd_struct(int nb_cmd, int len_cmd, t_pipe **prompt);
@@ -282,6 +282,7 @@ void 	ft_init_cmdpipe(t_manage_pipe *mpipe);
 void	ft_increment_cmdtab(t_cmdtab *data);
 void	ft_initsetman(t_manage_pipe *mpipe, char *line);
 char	*ft_exit_set_manage(t_manage_pipe *mpipe);
-int	ft_is_dollar_cmd(t_shell *data, int cell_nb);
+int		ft_is_dollar_cmd(t_shell *data, int cell_nb);
+void    ft_incr(t_cmdtab *d);
 
 #endif

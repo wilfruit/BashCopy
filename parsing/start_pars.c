@@ -70,10 +70,7 @@ int	size_cmd_tab(char *line)
 		if (line[d.i] == '|')
 			d.size++;
 		if (line[d.i])
-		{
-			d.i++;
-			d.vu++;
-		}
+			ft_incr(&d);
 	}
 	return (d.size);
 }
