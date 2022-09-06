@@ -290,6 +290,7 @@ void    legi_incr(int *k, int *v);
 void    legi_incr2(int *v, int *j);
 void	check_dolls(t_pipe **prompt, t_manage_pipe *data);
 void    help_built_struct(int *len_cmd, int *first);
+void	help_help(int *i, int *j, int *k, t_pipe **prompt);
 
 
 #endif

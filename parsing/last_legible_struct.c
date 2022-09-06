@@ -49,10 +49,7 @@ void	*last_help_len_token(int *i, int *j, int *k, t_pipe **prompt)
 	}
 	if ((*prompt)[*i].cmd[*j] && (*prompt)[*i].cmd[*j] != ' ' \
 	&& (*prompt)[*i].cmd[*j] != '\'' && (*prompt)[*i].cmd[*j] != '\"')
-	{
-		(*prompt)[*i].scmd[*k].len_value += 1;
-		*j += 1;
-	}
+		help_help(i, j, k, prompt);
 }
 
 void	*found_len_token(t_manage_pipe utils, t_pipe **prompt)
