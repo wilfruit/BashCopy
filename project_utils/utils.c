@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:29:49 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 01:50:45 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/07 01:36:16 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ void	forced_prompt(int sig)
 	rl_replace_line("", 0);
 	if (g_glob != 130 && g_glob != -130)
 		g_glob = 130;
+
+/* 		rl_on_new_line();
+        rl_replace_line("", 0);
+        rl_redisplay(); */
 }
 
 void	forced_continue(int sig)

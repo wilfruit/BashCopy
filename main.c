@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:59:10 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 17:18:29 by wgaspar          ###   ########.fr       */
+/*   Updated: 2022/09/07 03:50:20 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ int	main(int argc, char **argv, char **env)
 		if (all_pipe_cmd(&shell_pack.mpipe, line) != NULL)
 			ft_bash(&shell_pack, line);
 		free(line);
-		shell_pack.error_ret = sig_used(shell_pack.error_ret, 1);
+		shell_pack.error_ret = sig_used(shell_pack.error_ret, 0);
 	}
 	ft_free_env(shell_pack.our_env);
 	ft_free_env(shell_pack.exports);
@@ -186,3 +186,5 @@ minishell: permission denied: /usr/local/sbin/
 mshell> echo $?
 126
  */
+
+//recheck rediring simple et message d'erreur

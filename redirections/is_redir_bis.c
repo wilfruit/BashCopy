@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 16:17:54 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 17:08:44 by wgaspar          ###   ########.fr       */
+/*   Updated: 2022/09/07 11:46:36 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,53 @@ void	treat_redir_in(t_shell *data, t_exec_single *pack, int cell_nb)
 	while (j < pack->nb_redirin)
 	{
 		if (data->token[cell_nb].scmd[i].type == 4)
+		{
+			if (access(data->token[cell_nb].scmd[i].value, R_OK) != 0 && \
+			access(data->token[cell_nb].scmd[i].value, F_OK) == 0)
+			{
+				ft_putstr_fd("minishell :", 2);
+				ft_putstr_fd(data->token[cell_nb].scmd[i].value, 2);
+				ft_putendl_fd("Permission denied", 2);
+				data->error_ret = 1;
+				ft_free_chr(pack->cmdargs);
+				ft_free_chr(pack->allpaths);
+				exit (1);
+			}
+			if (access(data->token[cell_nb].scmd[i].value, F_OK) != 0)
+			{
+				ft_putstr_fd("minishell :", 2);
+				ft_putstr_fd(data->token[cell_nb].scmd[i].value, 2);
+				ft_putendl_fd("No such file or directory", 2);
+				data->error_ret = 1;
+				ft_free_chr(pack->cmdargs);
+				ft_free_chr(pack->allpaths);
+				exit (1);
+			}
 			pack->redirin = \
 open(data->token[cell_nb].scmd[i + 1].value, O_RDONLY);
+		}
 		i += 2;
 		j++;
 	}
 }
+
+/* bash-3.2$ < wr ls
+bash: wr: No such file or directory
+bash-3.2$ mdir wrrr
+bash: mdir: command not found
+bash-3.2$ mkdir vrrr
+bash-3.2$ < wr < wrrr ls
+bash: wr: No such file or directory
+bash-3.2$ < wrr ls
+bash: wrr: Permission denied
+bash-3.2$ echo $?
+1
+bash-3.2$ < wrr ls
+bash: wrr: Permission denied
+bash-3.2$ < wr < wrrr ls
+bash: wr: No such file or directory
+bash-3.2$ echo $?
+1  pour le multi aussi*/
 
 int	has_redir(t_shell *data, int cell_nb)
 {

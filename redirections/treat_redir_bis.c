@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   treat_redir_bis.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 17:16:17 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 17:16:18 by wgaspar          ###   ########.fr       */
+/*   Updated: 2022/09/07 11:59:29 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	redir_dup_multi(t_shell *data, t_exec_multi *pack, int cell_nb)
 
 	savein = 0;
 	saveout1 = 0;
+	printf("for cell %i, hd is %i and in is ‰i\n", cell_nb, pack->is_here_doc, pack->nb_redirin);
 	if (pack->is_here_doc > 0 && pack->nb_redirin > 0)
 		savein = ft_redirin_and_heredoc_m(data, pack, cell_nb);
 	if (pack->nb_redirin > 0 && !(pack->is_here_doc > 0))

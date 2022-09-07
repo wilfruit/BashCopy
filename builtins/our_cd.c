@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 14:51:27 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 01:38:50 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/07 03:41:32 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,9 @@ int	my_cd(char **cmd, t_envi *our_env)
 		return (go_back_to_oldpwd(cmd, our_env));
 	if ((cmd && !cmd[1]) \
 	|| (cmd && ft_strncmp(cmd[1], "~", ft_strlen(cmd[1])) == 0) \
-	|| (cmd && ft_strncmp(cmd[1], "--", ft_strlen(cmd[1])) == 0))
+	|| (cmd && ft_strncmp(cmd[1], "--", ft_strlen(cmd[1])) == 0) \
+	|| (cmd && cmd[0] && cmd[1]))
+
 		return (go_home(cmd, our_env));
 	else
 	{
