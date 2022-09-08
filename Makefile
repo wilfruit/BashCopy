@@ -25,7 +25,8 @@ redirections/is_redir_bis.c \
 project_utils/utils_five.c \
 redirections/treat_redir_bis.c \
 project_utils/utils_six.c \
-project_utils/utils.seven.c
+project_utils/utils_seven.c \
+project_utils/utils_eight.c
 
 CC = gcc  -g
 

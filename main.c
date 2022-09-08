@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:59:10 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/07 03:50:20 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:04:15 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,65 +69,15 @@ static int	sig_used(int error_ret, int i)
 
 static void	ft_bash(t_shell *shell_pack, char *line)
 {
-	shell_pack->error_ret = sig_used(shell_pack->error_ret, 0);
+	shell_pack->error_ret = sig_used(shell_pack->error_ret, 1);
+	//celui-là sert à récupérer un ctrl-c executé dans le parsing
+	//si y'a un sigused à 130 il le récupère et remet g_glob à 0 sinon pas d'exécution possible
 	set_struct(&line, shell_pack->mpipe, &shell_pack->token);
 	shell_pack->nb_cell = shell_pack->mpipe.nb_cmd;
 	if (shell_pack->mpipe.size != 0)
 		minishell_operator(shell_pack);
 	clean_manage(&shell_pack->mpipe, &shell_pack->token);
 }
-
-/* int	main(int argc, char **argv, char **env)
-{
-	char			*line;
-	char			*path;
-	t_shell			shell_pack;
-	int				u;
-
-	u = 0;
-	shell_pack_init(&shell_pack, env);
-	shell_pack.exit_switch = 0;
-	control(&shell_pack);
-	line = NULL;
-	while (shell_pack.exit_switch == 0)
-	{
-		if (shell_pack.error_ret == 0)
-		{
-			u = 130;
-			while (u == 130)
-			{
-				line = readline("\e[1;32mmshell> \e[0m");
-				u = g_glob;
-				if (g_glob == 130)
-				{
-					shell_pack.error_ret = sig_used(shell_pack.error_ret);
-					free(line);
-					line = NULL;
-				}
-			}
-		}
-		else
-		{
-			line = readline("\e[1;31mmshell> \e[0m");
-
-		}
-		printf("LINE WAS READ\n");
-		if (check_line(&line) == NULL)
-			exit(0);
-		if (all_pipe_cmd(&shell_pack.mpipe, line) != NULL)
-		{
-			ft_bash(&shell_pack, line);
-			free(line);
-		}
-		else
-			shell_pack.error_ret = sig_used(shell_pack.error_ret);
-	}
-	ft_free_env(shell_pack.our_env);
-	ft_free_env(shell_pack.exports);
-	rl_clear_history();
-	return (shell_pack.exit_ret);
-} */
-
 
 int	main(int argc, char **argv, char **env)
 {
@@ -141,13 +91,11 @@ int	main(int argc, char **argv, char **env)
 	line = NULL;
 	while (shell_pack.exit_switch == 0)
 	{
-		if (shell_pack.error_ret == 0 && g_glob != -130)
+		if (shell_pack.error_ret == 0)
 			line = readline("\e[1;32mmshell> \e[0m");
-		else if (shell_pack.error_ret == 0 && g_glob == -130)
-			line = readline("");
-		else if (shell_pack.error_ret != 0 && g_glob != -130)
+		else if (shell_pack.error_ret != 0  && g_glob != -130)
 			line = readline("\e[1;31mmshell> \e[0m");
-		else if (shell_pack.error_ret != 0 && g_glob == -130)
+ 		else if (shell_pack.error_ret != 0 && g_glob == -130)
 			line = readline("");
 		if (check_line(&line) == NULL)
 			exit(0);
@@ -161,30 +109,7 @@ int	main(int argc, char **argv, char **env)
 	return (shell_pack.exit_ret);
 }
 
+
 /*ls | pwd           -> encore un probleme
 quand je fais un pipe puis une commande normale (genre "hey")
 et invalid syntax */
-
-// si jamais on utilise un control-d apres un control-c ca bloque
-// après un control c ça marque la commande wtf
-
-
-/* mshell> ""
-minishell: permission denied: /usr/local/sbin/
-mshell> echo $?
- */
-
-/*  mshell> ^C
-mshell> ls
-mshell> ls -la
-total 556
-drwxr-xr-x 12 wgaspar 2021_paris   4096 Sep  6 20:05 .
- */
-
-/*  mshell> ''
-minishell: permission denied: /usr/local/sbin/
-mshell> echo $?
-126
- */
-
-//recheck rediring simple et message d'erreur

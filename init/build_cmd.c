@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:22:47 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 16:56:31 by wgaspar          ###   ########.fr       */
+/*   Updated: 2022/09/08 04:24:49 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	fill_args(t_shell *data, int cell_nb, int i, char **args)
 		}
 		i++;
 	}
-	args[i] = NULL;
+	args[j] = NULL;
 	if (args[0] == NULL && args[1] != NULL)
 		args++;
 }
@@ -102,12 +102,15 @@ char	**build_command(t_shell *data, int cell_nb)
 	int		i;
 
 	i = 0;
+
 	args = (char **)malloc(sizeof(char *) * (count_args(data, cell_nb) + 1));
 	if (!args)
 		return (NULL);
 	while (data->token[cell_nb].scmd[i].type != TOKEN_CMD)
 		i++;
-	if (data->token[cell_nb].scmd[i].is_dollar == 0)
+	if (ft_strlen(data->token[cell_nb].scmd[i].value) == 0)
+		args[0] = ft_strdup(" ");
+	else if (data->token[cell_nb].scmd[i].is_dollar == 0)
 		args[0] = ft_strdup(data->token[cell_nb].scmd[i].value);
 	else
 		args[0] = dollar_swap(data, \

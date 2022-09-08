@@ -205,7 +205,7 @@ void	cmd_not_found(t_exec_single *data, char *argv, char **env);
 void	cannot_execute(t_exec_single *data, char *cmd, char **env);
 char    **charize_env(t_envi *env);
 char	**get_allpaths(t_shell *data);
-void	init_single_exe(t_shell *data, t_exec_single *exec_pack);
+int		init_single_exe(t_shell *data, t_exec_single *exec_pack);
 void	wrap_execve(t_exec_single *data, char *cmd, char **args, char **env);
 void	ft_execve_one(t_shell *shpack, char **env, t_exec_single *data);
 void	ft_free_chr(char **super);
@@ -228,7 +228,8 @@ void	wrap_execve_multi(t_exec_multi *data, char *cmd, char **args, char **env, t
 void	wait_all(t_shell *data, t_exec_multi *pack);
 void	malloc_childs(t_shell *data, t_exec_multi *pack);
 void	malloc_pipes(t_shell *data, t_exec_multi *pack);
-void    mini_parse_multi(t_shell *data, t_exec_multi *exec_pack, int nb);
+int		mini_parse_multi(t_shell *data, t_exec_multi *exec_pack, int nb);
+int 	wrong_redir_multi(t_exec_multi *exec_pack, t_shell *data, int nb);
 void	ft_execve_multi(t_shell *shpack, char **env, t_exec_multi *data);
 void    free_exec_pack_multi(t_shell *data, t_exec_multi *pack);
 void	cannot_execute_pipex(t_exec_multi *data, char *cmd, t_shell *shell);
@@ -240,14 +241,14 @@ int 	count_redir_in_simple(t_shell *data, t_exec_single *pack, int cell_nb);
 int 	count_redir_out_simple(t_shell *data, t_exec_single *pack, int cell_nb);
 int 	count_redir_heredoc_simple(t_shell *data, t_exec_single *pack);
 void	treat_redir_heredoc(t_shell *d, t_exec_single *p);
-void	treat_redir_in(t_shell *data, t_exec_single *pack, int cell_nb);
-void 	treat_redir_out(t_shell *data, t_exec_single *pack, int cell_nb);
+int		treat_redir_in(t_shell *data, t_exec_single *pack, int cell_nb);
+int 	treat_redir_out(t_shell *data, t_exec_single *pack, int cell_nb);
 void	here_doc_single(t_exec_single *data, char *lim, t_shell *pack);
 void	redir_dup_single(t_shell *data, t_exec_single *pack);
 void	redir_dup_multi(t_shell *data, t_exec_multi *pack, int cell_nb);
 void	redir_dup_single_builtin(t_shell *data, t_exec_single *pack);
-void	treat_redir_in_multi(t_shell *data, t_exec_multi *pack, int cell_nb);
-void 	treat_redir_out_multi(t_shell *data, t_exec_multi *pack, int cell_nb);
+int	treat_redir_in_multi(t_shell *data, t_exec_multi *pack, int cell_nb);
+int 	treat_redir_out_multi(t_shell *data, t_exec_multi *pack, int cell_nb);
 int		count_redir_in_multi(t_shell *data, t_exec_multi *pack, int cell_nb);
 int 	count_redir_out_multi(t_shell *data, t_exec_multi *pack, int cell_nb);
 void	child_doc(char *limiter, int *fd, t_shell *pack);
@@ -291,6 +292,9 @@ void    legi_incr2(int *v, int *j);
 void	check_dolls(t_pipe **prompt, t_manage_pipe *data);
 void    help_built_struct(int *len_cmd, int *first);
 void	help_help(int *i, int *j, int *k, t_pipe **prompt);
-
+int 	wrong_redir(t_exec_single *exec_pack, t_shell *data);
+int		infile_not_real_m(t_exec_multi *pack, int cell_nb, t_shell *data, int i);
+int		infile_not_allowed_m(t_exec_multi *pack, int cell_nb, t_shell *data, int i);
+int		outfile_not_allowed_m(t_exec_multi *pack, int cell_nb, t_shell *data, int i);
 
 #endif

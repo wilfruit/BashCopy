@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:31:37 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/07 03:27:00 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/08 01:03:04 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,5 @@ void	sig_exit(t_shell *data, int status, pid_t c1, char *cmd)
 		ft_putstr_fd("\n", 2);
 	}
 	if (data->error_ret == 130)
-	{
-		printf("oui\n");
 		g_glob = -130;
-	}
 }

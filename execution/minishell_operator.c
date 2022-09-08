@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:54:46 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 16:55:13 by wgaspar          ###   ########.fr       */
+/*   Updated: 2022/09/08 04:48:27 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,14 @@ char	**get_allpaths(t_shell *data)
 	return (NULL);
 }
 
-void	init_single_exe(t_shell *data, t_exec_single *exec_pack)
+int	init_single_exe(t_shell *data, t_exec_single *exec_pack)
 {
+	exec_pack->inlast = get_last_redirin(data, exec_pack);
+	exec_pack->nb_redirin = count_redir_in_simple(data, exec_pack, 0);
+	exec_pack->nb_redirout = count_redir_out_simple(data, exec_pack, 0);
+	exec_pack->is_here_doc = count_redir_heredoc_simple(data, exec_pack);
+	if (wrong_redir(exec_pack, data))
+		return (1);
 	exec_pack->cmdargs = build_command(data, 0);
 	if (data->our_env->next == NULL \
 	&& ft_is_built_in(exec_pack->cmdargs[0]) != 1)
@@ -49,14 +55,7 @@ void	init_single_exe(t_shell *data, t_exec_single *exec_pack)
 		exec_pack->cmdstat = exec_pack->cmdargs[0];
 		exec_pack->cmdstat = ft_strjoin("/", exec_pack->cmdstat);
 	}
-	exec_pack->inlast = get_last_redirin(data, exec_pack);
-	exec_pack->nb_redirin = count_redir_in_simple(data, exec_pack, 0);
-	exec_pack->nb_redirout = count_redir_out_simple(data, exec_pack, 0);
-	exec_pack->is_here_doc = count_redir_heredoc_simple(data, exec_pack);
-	if (exec_pack->nb_redirout)
-		treat_redir_out(data, exec_pack, 0);
-	if (exec_pack->nb_redirin)
-		treat_redir_in(data, exec_pack, 0);
+	return (0);
 }
 
 static void	ft_normal_exe(t_exec_single *exec_pack, t_shell *data)
@@ -88,7 +87,8 @@ void	execute_single_cmd(t_shell *data)
 {
 	t_exec_single	exec_pack;
 
-	init_single_exe(data, &exec_pack);
+	if (init_single_exe(data, &exec_pack) == 1)
+		return ;
 	if (ft_is_built_in(exec_pack.cmdargs[0]) == 1 && exec_pack.nb_redirin <= 0 \
 	&& exec_pack.nb_redirout <= 0)
 		ft_exec_built_in(data, exec_pack.cmdargs);

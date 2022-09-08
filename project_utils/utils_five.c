@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_five.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 17:03:00 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 17:03:01 by wgaspar          ###   ########.fr       */
+/*   Updated: 2022/09/08 13:58:27 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,9 @@ void	redir_dup_single_builtin(t_shell *data, t_exec_single *pack)
 
 void	mid_child(t_shell *data, t_exec_multi *pack, int n)
 {
-	mini_parse_multi(data, pack, n);
 	close(pack->pipe_fd[n][0]);
+	if (mini_parse_multi(data, pack, n) == 1)
+		exit (1);
 	if (!pack->nb_redirin && !pack->is_here_doc)
 	{
 		dup2(pack->pipe_fd[n - 1][0], STDIN_FILENO);

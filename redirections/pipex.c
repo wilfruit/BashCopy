@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 17:11:56 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 17:12:40 by wgaspar          ###   ########.fr       */
+/*   Updated: 2022/09/08 14:02:12 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ static void	child_first(t_shell *data, t_exec_multi *pack)
 		perror("Fork :");
 	if (pack->c_pid[0] == 0)
 	{
-		mini_parse_multi(data, pack, 0);
 		close(pack->pipe_fd[0][0]);
+		if (mini_parse_multi(data, pack, 0) == 1)
+			exit (1);
 		if (get_last_redirin_m(data, pack, 0) != 5)
 		{
 			dup2(pack->pipe_fd[0][1], STDOUT_FILENO);
@@ -64,7 +65,8 @@ static void	last_child(t_shell *data, t_exec_multi *pack, int n)
 		perror("Fork :");
 	if (pack->c_pid[n] == 0)
 	{
-		mini_parse_multi(data, pack, n);
+		if (mini_parse_multi(data, pack, n))
+			exit(1);
 		if (!pack->nb_redirin && !pack->is_here_doc)
 		{
 			dup2(pack->pipe_fd[n - 1][0], STDIN_FILENO);
@@ -113,3 +115,6 @@ void	pipex(t_shell *data)
 	last_child(data, &exec_pack, i);
 	wait_all(data, &exec_pack);
 }
+
+
+//mshell> ls | ls > ols | ls > output | pwd
