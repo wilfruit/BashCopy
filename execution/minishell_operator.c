@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_operator.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avaures <avaures@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:54:46 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/08 04:48:27 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/08 20:27:01 by avaures          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,22 @@ char	**get_allpaths(t_shell *data)
 	return (NULL);
 }
 
+/* int	no_command_found(t_shell *data, int cell_nb)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->token[cell_nb].nb_token && data->token[cell_nb].scmd[i].type != TOKEN_CMD)
+		i++;
+	if (data->token[cell_nb].scmd[i] && data->token[cell_nb].scmd[i].type == TOKEN_CMD)
+		return (0);
+	return (1);
+} */
+
 int	init_single_exe(t_shell *data, t_exec_single *exec_pack)
 {
+	/* if (no_command_found(data, 0) == 1)
+		return (1); */
 	exec_pack->inlast = get_last_redirin(data, exec_pack);
 	exec_pack->nb_redirin = count_redir_in_simple(data, exec_pack, 0);
 	exec_pack->nb_redirout = count_redir_out_simple(data, exec_pack, 0);
@@ -76,9 +90,9 @@ static void	ft_normal_exe(t_exec_single *exec_pack, t_shell *data)
 	if (exec_pack->cmdstat)
 		free(exec_pack->cmdstat);
 	ft_free_chr(exec_pack->allpaths);
-	if (WIFEXITED(status))
+ 	if (WIFEXITED(status))
 		data->error_ret = WEXITSTATUS(status);
-	if (WIFSIGNALED(status))
+ 	if (WIFSIGNALED(status))
 		sig_exit(data, status, c1, exec_pack->cmdargs[0]);
 	ft_free_chr(exec_pack->cmdargs);
 }

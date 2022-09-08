@@ -32,7 +32,7 @@
 # define DOLLAR_NO 0
 # define DOLLAR_MACRO 1
 
-extern int	g_glob;
+extern volatile sig_atomic_t	g_glob;
 
 typedef struct s_manage_pipe
 {
@@ -240,7 +240,7 @@ int		has_redir(t_shell *data, int cell_nb);
 int 	count_redir_in_simple(t_shell *data, t_exec_single *pack, int cell_nb);
 int 	count_redir_out_simple(t_shell *data, t_exec_single *pack, int cell_nb);
 int 	count_redir_heredoc_simple(t_shell *data, t_exec_single *pack);
-void	treat_redir_heredoc(t_shell *d, t_exec_single *p);
+int		treat_redir_heredoc(t_shell *d, t_exec_single *p);
 int		treat_redir_in(t_shell *data, t_exec_single *pack, int cell_nb);
 int 	treat_redir_out(t_shell *data, t_exec_single *pack, int cell_nb);
 void	here_doc_single(t_exec_single *data, char *lim, t_shell *pack);
@@ -296,5 +296,6 @@ int 	wrong_redir(t_exec_single *exec_pack, t_shell *data);
 int		infile_not_real_m(t_exec_multi *pack, int cell_nb, t_shell *data, int i);
 int		infile_not_allowed_m(t_exec_multi *pack, int cell_nb, t_shell *data, int i);
 int		outfile_not_allowed_m(t_exec_multi *pack, int cell_nb, t_shell *data, int i);
+void	init_sig(void);
 
 #endif

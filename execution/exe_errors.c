@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_errors.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avaures <avaures@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:31:37 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/08 01:03:04 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/08 18:20:46 by avaures          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ void	cmd_not_found(t_exec_single *data, char *argv, char **env)
 
 void	sig_exit(t_shell *data, int status, pid_t c1, char *cmd)
 {
-	int	exit_value;
-
 	data->error_ret = 0;
 	data->error_ret = WTERMSIG(status);
 	if (data->error_ret != 131)

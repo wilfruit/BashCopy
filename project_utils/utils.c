@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avaures <avaures@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:29:49 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/08 16:05:58 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/08 20:35:25 by avaures          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,13 @@
 void	forced_prompt(int sig)
 {
 	rl_replace_line("", 0);
-	ft_putstr_fd("\n", 1);
-	ft_putstr_fd("\e[1;31mmshell> \e[0m", 1);
-	if (g_glob != 130 && g_glob != -130)
+	if (g_glob != 30 && g_glob != -130)
+	{
+		init_sig();
+		ft_putstr_fd("\n", 1);
+		ft_putstr_fd("\e[1;31mmshell> \e[0m", 1);
+	}
+	if (g_glob != 130 && g_glob != -130 && g_glob != 30)
 		g_glob = 130;
 }
 

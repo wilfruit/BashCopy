@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_redir.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avaures <avaures@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 15:13:31 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 01:49:58 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/08 17:56:49 by avaures          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	count_redir_in_simple(t_shell *data, t_exec_single *pack, int cell_nb)
 	return (count);
 }
 
-void	treat_redir_heredoc(t_shell *d, t_exec_single *p)
+int	treat_redir_heredoc(t_shell *d, t_exec_single *p)
 {
 	int	i;
 	int	j;

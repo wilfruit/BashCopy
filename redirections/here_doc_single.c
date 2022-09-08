@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_single.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avaures <avaures@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 15:08:17 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 01:50:23 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/08 20:16:36 by avaures          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,15 @@ void	child_doc(char *limiter, int *fd, t_shell *pack)
 
 	close(fd[0]);
 	limiter = ft_strjoinmod(limiter, "\n");
+	g_glob = 30;
 	while (1)
 	{
 		str = readline("hd> ");
 		if (ft_strncmp(limiter, str, ft_strlen(str)) != 0)
 			str = ft_hd_dollar_check(str, pack);
 		str = ft_strjoinmod(str, "\n");
-		if (ft_strlen(str) == ft_strlen(limiter) && \
-ft_strncmp(str, limiter, ft_strlen(str)) == 0)
+		if ((ft_strlen(str) == ft_strlen(limiter) && \
+ft_strncmp(str, limiter, ft_strlen(str)) == 0))
 		{
 			free(str);
 			free(limiter);
@@ -36,25 +37,43 @@ ft_strncmp(str, limiter, ft_strlen(str)) == 0)
 	}
 }
 
+void	sig_zizi(int sig)
+{
+	(void)sig;
+	g_glob = 30;
+	//printf("g glob modifided\n");
+	exit(130);
+}
+
 void	here_doc_single(t_exec_single *data, char *lim, t_shell *pack)
 {
 	pid_t	child;
 	int		fd[2];
+	int		status;
 
 	pipe(fd);
+	signal(SIGINT, SIG_IGN);
 	child = fork();
 	if (child < 0)
 		return ;
 	if (child == 0)
 	{
+		signal(SIGINT, sig_zizi);
 		child_doc(lim, fd, pack);
+		// si erreur de sortie 1, tout shut down direct
 		exit(EXIT_SUCCESS);
 	}
 	else
 	{
 		close(fd[1]);
 		dup2(fd[0], 0);
-		waitpid(child, NULL, 0);
+		waitpid(child, &status, 0);
+		if (status == 33280)
+		{
+		//	ft_putstr_fd("\n", 1);
+			g_glob = 30;
+			sig_exit(pack, status, child, "messge");	
+		}
 	}
 }
 

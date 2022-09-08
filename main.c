@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avaures <avaures@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:59:10 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/08 14:04:15 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/08 20:32:14 by avaures          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_shell.h"
 
-int				g_glob = 0;
+volatile sig_atomic_t	g_glob = 0;
 
 static void	create_minimum_data(t_shell *data, char **env)
 {
@@ -87,16 +87,19 @@ int	main(int argc, char **argv, char **env)
 
 	shell_pack_init(&shell_pack, env);
 	shell_pack.exit_switch = 0;
-	control(&shell_pack);
 	line = NULL;
+	control(&shell_pack);
 	while (shell_pack.exit_switch == 0)
 	{
 		if (shell_pack.error_ret == 0)
 			line = readline("\e[1;32mmshell> \e[0m");
-		else if (shell_pack.error_ret != 0  && g_glob != -130)
-			line = readline("\e[1;31mmshell> \e[0m");
- 		else if (shell_pack.error_ret != 0 && g_glob == -130)
+		else if (shell_pack.error_ret != 0 && (g_glob == -130 || g_glob == 30 || g_glob == 130))
+		{
 			line = readline("");
+			ft_putstr_fd("\n", 1);
+		}
+		else if (shell_pack.error_ret != 0  && g_glob != -130 && g_glob != 30)
+			line = readline("\e[1;31mmshell> \e[0m");
 		if (check_line(&line) == NULL)
 			exit(0);
 		if (all_pipe_cmd(&shell_pack.mpipe, line) != NULL)
@@ -113,3 +116,8 @@ int	main(int argc, char **argv, char **env)
 /*ls | pwd           -> encore un probleme
 quand je fais un pipe puis une commande normale (genre "hey")
 et invalid syntax */
+
+// echo > 1 > 2 lol > 3 lel
+// << cat ctrl-c
+
+//check in init_single et init_multi s'il y a un token commande, sinon sortir a mettre apres analyses des redirections

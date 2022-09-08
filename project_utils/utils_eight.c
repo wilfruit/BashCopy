@@ -26,3 +26,13 @@ int	outfile_not_allowed_m(t_exec_multi *pack, int cell_nb, t_shell *data, int i)
 	data->error_ret = 1;
 	return (1);
 }
+
+void	init_sig(void)
+{
+	int	i;
+
+	i = -150000;
+	while (i < 3000000)
+		i++;
+	return ;
+}
