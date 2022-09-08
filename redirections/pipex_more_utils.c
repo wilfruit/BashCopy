@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_more_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 17:17:47 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 17:18:03 by wgaspar          ###   ########.fr       */
+/*   Updated: 2022/09/08 16:07:59 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini_shell.h"
 
-void	wrap_execve_multi(t_exec_multi *data, char *cmd, char **args, char **env, t_shell *shell)
+void	wrap_execve_multi(t_exec_multi *data, char **args, char **env, t_shell *shell)
 {
-	execve(cmd, args, env);
-	cannot_execute_pipex(data, cmd, shell);
+	execve(data->cmddyn, args, env);
+	cannot_execute_pipex(data, data->cmddyn, shell);
 }
 
 static void	ft_free_pipes(t_shell *data, t_exec_multi *pack)

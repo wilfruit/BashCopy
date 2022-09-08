@@ -224,7 +224,7 @@ int		my_exit(char **cmd, t_shell *data);
 char	*quit_dollar_deluxe(char *str, char *ret, char **split);
 char    *dollar_swap(t_shell *shpack, char *str);
 void	pipex(t_shell *data);
-void	wrap_execve_multi(t_exec_multi *data, char *cmd, char **args, char **env, t_shell *shell);
+void	wrap_execve_multi(t_exec_multi *data, char **args, char **env, t_shell *shell);
 void	wait_all(t_shell *data, t_exec_multi *pack);
 void	malloc_childs(t_shell *data, t_exec_multi *pack);
 void	malloc_pipes(t_shell *data, t_exec_multi *pack);

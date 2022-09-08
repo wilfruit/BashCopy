@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:50:27 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/08 14:00:59 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/08 16:08:07 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	ft_execve_multi(t_shell *shpack, char **env, t_exec_multi *data)
 		ft_strncmp(data->cmddyn, "./", ft_strlen(data->cmddyn)) == 0)
 			cmd_not_found_pipex(data, data->cmdargs[0], shpack);
 		if (access(data->cmddyn, F_OK) == 0 && access(data->cmddyn, X_OK) == 0)
-			wrap_execve_multi(data, data->cmddyn, data->cmdargs, env, shpack);
+			wrap_execve_multi(data, data->cmdargs, env, shpack);
 		if (is_pathed(data->cmdargs[0]) == 0 && access(data->cmddyn, X_OK) != 0)
 			cannot_execute_pipex(data, data->cmdargs[0], shpack);
 		free(data->cmddyn);

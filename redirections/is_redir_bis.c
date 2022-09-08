@@ -6,13 +6,13 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 16:17:54 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/08 04:50:27 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/08 16:06:33 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini_shell.h"
 
-static int	outfile_not_allowed(t_exec_single *pack, int cell_nb, t_shell *data, int i)
+static int	outfile_not_a(t_exec_single *pack, int cell_nb, t_shell *data, int i)
 {
 	ft_putstr_fd("minishell :", 2);
 	ft_putstr_fd(data->token[cell_nb].scmd[i + 1].value, 2);
@@ -35,7 +35,7 @@ int	treat_redir_out(t_shell *data, t_exec_single *pack, int cell_nb)
 	while (j < pack->nb_redirout)
 	{
 		if (access(data->token[cell_nb].scmd[i + 1].value, W_OK) != 0)
-			return (outfile_not_allowed(pack, cell_nb, data, i));
+			return (outfile_not_a(pack, cell_nb, data, i));
 		if (data->token[cell_nb].scmd[i].type == 2)
 			pack->redirout = \
 open(data->token[cell_nb].scmd[i + 1].value, O_CREAT | O_RDWR | O_TRUNC, 0644);

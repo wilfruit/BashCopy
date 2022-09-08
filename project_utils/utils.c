@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:29:49 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/08 00:59:14 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/08 16:05:58 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,6 @@ void	forced_prompt(int sig)
 	ft_putstr_fd("\e[1;31mmshell> \e[0m", 1);
 	if (g_glob != 130 && g_glob != -130)
 		g_glob = 130;
-
-/* 		rl_on_new_line();
-        rl_replace_line("", 0);
-        rl_redisplay(); */
 }
 
 void	forced_continue(int sig)
