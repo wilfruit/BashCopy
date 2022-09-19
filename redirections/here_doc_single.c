@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_single.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avaures <avaures@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 15:08:17 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/08 20:16:36 by avaures          ###   ########.fr       */
+/*   Updated: 2022/09/17 15:55:51 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ void	child_doc(char *limiter, int *fd, t_shell *pack)
 		str = readline("hd> ");
 		if (ft_strncmp(limiter, str, ft_strlen(str)) != 0)
 			str = ft_hd_dollar_check(str, pack);
+		if (str == NULL)
+		{
+			pack->error_ret = 0;
+			free(limiter);
+			exit(0);
+		}
 		str = ft_strjoinmod(str, "\n");
 		if ((ft_strlen(str) == ft_strlen(limiter) && \
 ft_strncmp(str, limiter, ft_strlen(str)) == 0))
@@ -37,15 +43,20 @@ ft_strncmp(str, limiter, ft_strlen(str)) == 0))
 	}
 }
 
-void	sig_zizi(int sig)
+void	sig_zigma(int sig)
 {
 	(void)sig;
 	g_glob = 30;
-	//printf("g glob modifided\n");
 	exit(130);
 }
 
-void	here_doc_single(t_exec_single *data, char *lim, t_shell *pack)
+void	sig_omega(int sig)
+{
+	//(void)sig;
+	exit(0);
+}
+
+int	here_doc_single(t_exec_single *data, char *lim, t_shell *pack)
 {
 	pid_t	child;
 	int		fd[2];
@@ -53,14 +64,14 @@ void	here_doc_single(t_exec_single *data, char *lim, t_shell *pack)
 
 	pipe(fd);
 	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	child = fork();
 	if (child < 0)
-		return ;
+		return (0);
 	if (child == 0)
 	{
-		signal(SIGINT, sig_zizi);
+		signal(SIGINT, sig_zigma);
 		child_doc(lim, fd, pack);
-		// si erreur de sortie 1, tout shut down direct
 		exit(EXIT_SUCCESS);
 	}
 	else
@@ -70,10 +81,12 @@ void	here_doc_single(t_exec_single *data, char *lim, t_shell *pack)
 		waitpid(child, &status, 0);
 		if (status == 33280)
 		{
-		//	ft_putstr_fd("\n", 1);
 			g_glob = 30;
-			sig_exit(pack, status, child, "messge");	
+			sig_exit(pack, status, child, "messge");
+			pack->error_ret = 1;
+			return (1);
 		}
+		return (0);
 	}
 }
 
@@ -85,6 +98,11 @@ void	fake_child_doc(char *limiter)
 	while (1)
 	{
 		str = readline("hd> ");
+		if (str == NULL)
+		{
+			free(limiter);
+			exit(0);
+		}
 		str = ft_strjoinmod(str, "\n");
 		if (ft_strlen(str) == ft_strlen(limiter) && \
 ft_strncmp(str, limiter, ft_strlen(str)) == 0)
@@ -101,11 +119,14 @@ void	fake_here_doc(t_exec_single *data, char *lim)
 {
 	pid_t	child;
 
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	child = fork();
 	if (child < 0)
 		return ;
 	if (child == 0)
 	{
+		signal(SIGINT, sig_zigma);
 		fake_child_doc(lim);
 		exit(EXIT_SUCCESS);
 	}

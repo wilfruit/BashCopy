@@ -243,7 +243,7 @@ int 	count_redir_heredoc_simple(t_shell *data, t_exec_single *pack);
 int		treat_redir_heredoc(t_shell *d, t_exec_single *p);
 int		treat_redir_in(t_shell *data, t_exec_single *pack, int cell_nb);
 int 	treat_redir_out(t_shell *data, t_exec_single *pack, int cell_nb);
-void	here_doc_single(t_exec_single *data, char *lim, t_shell *pack);
+int	here_doc_single(t_exec_single *data, char *lim, t_shell *pack);
 void	redir_dup_single(t_shell *data, t_exec_single *pack);
 void	redir_dup_multi(t_shell *data, t_exec_multi *pack, int cell_nb);
 void	redir_dup_single_builtin(t_shell *data, t_exec_single *pack);
@@ -268,7 +268,7 @@ int     ft_nt_att(t_envi *env, char *av);
 void	fake_child_doc(char *limiter);
 void 	fake_redoc_m(t_shell *data, t_exec_multi *pack, int weight, int n);
 void	fake_here_doc_m(t_exec_multi *data, char *lim);
-void	here_doc_single_m(t_exec_multi *data, char *lim, int nb, t_shell *pack);
+int		here_doc_single_m(t_exec_multi *data, char *lim, int nb, t_shell *pack);
 int 	get_last_redirin_m(t_shell *data, t_exec_multi *pack, int cell_nb);
 void 	treat_redir_heredoc_m(t_shell *d, t_exec_multi *p, int nb);
 int		count_redir_heredoc_multi(t_shell *data, t_exec_multi *pack, int cell_nb);
@@ -297,5 +297,7 @@ int		infile_not_real_m(t_exec_multi *pack, int cell_nb, t_shell *data, int i);
 int		infile_not_allowed_m(t_exec_multi *pack, int cell_nb, t_shell *data, int i);
 int		outfile_not_allowed_m(t_exec_multi *pack, int cell_nb, t_shell *data, int i);
 void	init_sig(void);
+int		no_command_found(t_shell *data, int cell_nb);
+void	sig_zigma(int sig);
 
 #endif

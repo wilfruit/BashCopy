@@ -6,30 +6,44 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:33:07 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 01:50:29 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/18 20:20:08 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini_shell.h"
 
-void	here_doc_single_m(t_exec_multi *data, char *lim, int nb, t_shell *pack)
+int	here_doc_single_m(t_exec_multi *data, char *lim, int nb, t_shell *pack)
 {
 	pid_t	child;
 	int		fd[2];
+	int		status;
 
 	pipe(fd);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	child = fork();
 	if (child < 0)
-		return ;
+		return (0);
 	if (child == 0)
+	{
+		signal(SIGINT, sig_zigma);
 		child_doc(lim, fd, pack);
+	}
 	else
 	{
 		close(fd[1]);
-		if (nb != pack->nb_cell)
+		if (nb != pack->nb_cell - 1)
 			dup2(data->pipe_fd[nb][1], STDOUT_FILENO);
 		dup2(fd[0], 0);
-		waitpid(child, NULL, 0);
+		waitpid(child, &status, 0);
+		if (status == 33280)
+		{
+			g_glob = 30;
+			sig_exit(pack, status, child, "messge");
+			pack->error_ret = 1;
+			return (1);
+		}
+		return (0);
 	}
 }
 
@@ -37,11 +51,14 @@ void	fake_here_doc_m(t_exec_multi *data, char *lim)
 {
 	pid_t	child;
 
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	child = fork();
 	if (child < 0)
 		return ;
 	if (child == 0)
 	{
+		signal(SIGINT, sig_zigma);
 		fake_child_doc(lim);
 		exit(EXIT_SUCCESS);
 	}
@@ -69,11 +86,7 @@ void	fake_redoc_m(t_shell *data, t_exec_multi *pack, int weight, int n)
 			fake_here_doc_m(pack, ft_strdup(data->token[n].scmd[i + 1].value));
 		else if (data->token[n].scmd[i].type == 5 && \
 		!((i + 1) < data->token[n].nb_token))
-		{
-			data->error_ret = 258;
-			ft_putstr_fd("minishell: syntax error ", 2);
-			ft_putstr_fd("near unexpected token `newline'\n", 2);
-		}
+			data->error_ret = ft_syntax_error();
 		i += 2;
 		j++;
 	}

@@ -39,7 +39,9 @@ void	wait_all(t_shell *data, t_exec_multi *pack)
 	waitpid(pack->c_pid[i], &status, 0);
 	if (WIFEXITED(status))
 		data->error_ret = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
+	if (data->error_ret == 2)
+		data->error_ret = 258;
+	if (WIFSIGNALED(status))
 		sig_exit(data, status, pack->c_pid[i], "");
 	else
 		free_exec_pack_multi(data, pack);

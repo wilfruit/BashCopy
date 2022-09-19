@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avaures <avaures@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:59:10 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/08 20:32:14 by avaures          ###   ########.fr       */
+/*   Updated: 2022/09/17 14:39:48 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,11 @@ static int	sig_used(int error_ret, int i)
 		g_glob = 0;
 		return (130);
 	}
+	else if (g_glob == 30)
+	{
+		g_glob = 0;
+		return (1);
+	}
 	else
 		return (error_ret);
 }
@@ -70,8 +75,6 @@ static int	sig_used(int error_ret, int i)
 static void	ft_bash(t_shell *shell_pack, char *line)
 {
 	shell_pack->error_ret = sig_used(shell_pack->error_ret, 1);
-	//celui-là sert à récupérer un ctrl-c executé dans le parsing
-	//si y'a un sigused à 130 il le récupère et remet g_glob à 0 sinon pas d'exécution possible
 	set_struct(&line, shell_pack->mpipe, &shell_pack->token);
 	shell_pack->nb_cell = shell_pack->mpipe.nb_cmd;
 	if (shell_pack->mpipe.size != 0)
@@ -88,16 +91,13 @@ int	main(int argc, char **argv, char **env)
 	shell_pack_init(&shell_pack, env);
 	shell_pack.exit_switch = 0;
 	line = NULL;
-	control(&shell_pack);
 	while (shell_pack.exit_switch == 0)
 	{
+		control(&shell_pack);
 		if (shell_pack.error_ret == 0)
 			line = readline("\e[1;32mmshell> \e[0m");
 		else if (shell_pack.error_ret != 0 && (g_glob == -130 || g_glob == 30 || g_glob == 130))
-		{
 			line = readline("");
-			ft_putstr_fd("\n", 1);
-		}
 		else if (shell_pack.error_ret != 0  && g_glob != -130 && g_glob != 30)
 			line = readline("\e[1;31mmshell> \e[0m");
 		if (check_line(&line) == NULL)
@@ -112,6 +112,15 @@ int	main(int argc, char **argv, char **env)
 	return (shell_pack.exit_ret);
 }
 
+/* mshell> << lim echo */
+// Il faut donc couper le ft_bash quand on réalise qu'on a un mauvais here_doc
+// Ou un mauvais in ou out
+//
+// Et appliquer ces différences au multi
+// couper aussi les processus quand y'a des mauvaises redirs et tester
+// 
+// 
+//
 
 /*ls | pwd           -> encore un probleme
 quand je fais un pipe puis une commande normale (genre "hey")

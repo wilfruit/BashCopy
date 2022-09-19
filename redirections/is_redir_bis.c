@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 16:17:54 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/08 16:06:33 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/19 02:19:13 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static int	outfile_not_a(t_exec_single *pack, int cell_nb, t_shell *data, int i)
 {
-	ft_putstr_fd("minishell :", 2);
+	ft_putstr_fd("minishell : ", 2);
 	ft_putstr_fd(data->token[cell_nb].scmd[i + 1].value, 2);
-	ft_putendl_fd(" Permission denied", 2);
+	ft_putendl_fd(" : Permission denied", 2);
 	data->error_ret = 1;
 	return (1);
 }
@@ -34,14 +34,17 @@ int	treat_redir_out(t_shell *data, t_exec_single *pack, int cell_nb)
 		i++;
 	while (j < pack->nb_redirout)
 	{
-		if (access(data->token[cell_nb].scmd[i + 1].value, W_OK) != 0)
-			return (outfile_not_a(pack, cell_nb, data, i));
-		if (data->token[cell_nb].scmd[i].type == 2)
+		if (data->token[cell_nb].scmd[i].type == 2 \
+		&& (i + 1) < data->token[cell_nb].nb_token)
 			pack->redirout = \
 open(data->token[cell_nb].scmd[i + 1].value, O_CREAT | O_RDWR | O_TRUNC, 0644);
-		if (data->token[cell_nb].scmd[i].type == 3)
+		if (data->token[cell_nb].scmd[i].type == 3 && (i + 1) < data->token[cell_nb].nb_token)
 			pack->redirout = \
 open(data->token[cell_nb].scmd[i + 1].value, O_CREAT | O_RDWR | O_APPEND, 0644);
+		if (pack->redirout == -1)
+			return (outfile_not_a(pack, cell_nb, data, i));
+		if ((data->token[cell_nb].scmd[i].type == 2 || data->token[cell_nb].scmd[i].type == 3) && !((i + 1) < data->token[cell_nb].nb_token))
+			data->error_ret = ft_syntax_error();
 		i += 2;
 		j++;
 	}
@@ -50,7 +53,7 @@ open(data->token[cell_nb].scmd[i + 1].value, O_CREAT | O_RDWR | O_APPEND, 0644);
 
 static int	infile_not_allowed(t_exec_single *pack, int cell_nb, t_shell *data, int i)
 {
-	ft_putstr_fd("minishell :", 2);
+	ft_putstr_fd("minishell : ", 2);
 	ft_putstr_fd(data->token[cell_nb].scmd[i + 1].value, 2);
 	ft_putendl_fd(" Permission denied", 2);
 	data->error_ret = 1;
@@ -59,13 +62,13 @@ static int	infile_not_allowed(t_exec_single *pack, int cell_nb, t_shell *data, i
 
 static int	infile_not_real(t_exec_single *pack, int cell_nb, t_shell *data, int i)
 {
-	ft_putstr_fd("minishell :", 2);
+	ft_putstr_fd("minishell : ", 2);
 	ft_putstr_fd(data->token[cell_nb].scmd[i + 1].value, 2);
 	ft_putendl_fd(" No such file or directory", 2);
 	data->error_ret = 1;
 	return (1);
 }
-
+// Tester avant d'effacer ce message
 
 
 int	treat_redir_in(t_shell *data, t_exec_single *pack, int cell_nb)
@@ -80,7 +83,8 @@ int	treat_redir_in(t_shell *data, t_exec_single *pack, int cell_nb)
 		i++;
 	while (j < pack->nb_redirin)
 	{
-		if (data->token[cell_nb].scmd[i].type == 4)
+		if (data->token[cell_nb].scmd[i].type == 4 \
+		&& ((i + 1) < data->token[cell_nb].nb_token))
 		{
 			if (access(data->token[cell_nb].scmd[i + 1].value, R_OK) != 0 && \
 			access(data->token[cell_nb].scmd[i +1].value, F_OK) == 0)
@@ -90,6 +94,9 @@ int	treat_redir_in(t_shell *data, t_exec_single *pack, int cell_nb)
 			pack->redirin = \
 open(data->token[cell_nb].scmd[i + 1].value, O_RDONLY);
 		}
+		if (data->token[cell_nb].scmd[i].type == 4 \
+		&& !((i + 1) < data->token[cell_nb].nb_token))
+			data->error_ret = ft_syntax_error();
 		i += 2;
 		j++;
 	}

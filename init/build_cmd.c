@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:22:47 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/08 04:24:49 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/09 00:55:22 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ char	**build_command(t_shell *data, int cell_nb)
 	args = (char **)malloc(sizeof(char *) * (count_args(data, cell_nb) + 1));
 	if (!args)
 		return (NULL);
-	while (data->token[cell_nb].scmd[i].type != TOKEN_CMD)
+	while (i < data->token[cell_nb].nb_token \
+	&& data->token[cell_nb].scmd[i].type != TOKEN_CMD)
 		i++;
 	if (ft_strlen(data->token[cell_nb].scmd[i].value) == 0)
 		args[0] = ft_strdup(" ");

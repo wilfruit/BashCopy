@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_operator.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avaures <avaures@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:54:46 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/08 20:27:01 by avaures          ###   ########.fr       */
+/*   Updated: 2022/09/18 20:02:21 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,38 +33,38 @@ char	**get_allpaths(t_shell *data)
 	return (NULL);
 }
 
-/* int	no_command_found(t_shell *data, int cell_nb)
+int	no_command_found(t_shell *data, int cell_nb)
 {
 	int	i;
 
 	i = 0;
 	while (i < data->token[cell_nb].nb_token && data->token[cell_nb].scmd[i].type != TOKEN_CMD)
 		i++;
-	if (data->token[cell_nb].scmd[i] && data->token[cell_nb].scmd[i].type == TOKEN_CMD)
+	if (i < data->token[cell_nb].nb_token && data->token[cell_nb].scmd[i].type == TOKEN_CMD)
 		return (0);
 	return (1);
-} */
+}
 
 int	init_single_exe(t_shell *data, t_exec_single *exec_pack)
 {
-	/* if (no_command_found(data, 0) == 1)
-		return (1); */
 	exec_pack->inlast = get_last_redirin(data, exec_pack);
 	exec_pack->nb_redirin = count_redir_in_simple(data, exec_pack, 0);
 	exec_pack->nb_redirout = count_redir_out_simple(data, exec_pack, 0);
 	exec_pack->is_here_doc = count_redir_heredoc_simple(data, exec_pack);
 	if (wrong_redir(exec_pack, data))
 		return (1);
-	exec_pack->cmdargs = build_command(data, 0);
-	if (data->our_env->next == NULL \
+	if (!no_command_found(data, 0))
+		exec_pack->cmdargs = build_command(data, 0);
+	if (data->our_env->next == NULL && !no_command_found(data, 0)\
 	&& ft_is_built_in(exec_pack->cmdargs[0]) != 1)
 	{
 		exec_pack->allpaths = (char **)malloc(sizeof(char *));
 		exec_pack->allpaths[0] = NULL;
 	}
-	else if (data->our_env->next && ft_is_built_in(exec_pack->cmdargs[0]) != 1)
+	else if (data->our_env->next && !no_command_found(data, 0) &&\
+	ft_is_built_in(exec_pack->cmdargs[0]) != 1)
 		exec_pack->allpaths = get_allpaths(data);
-	if (ft_is_built_in(exec_pack->cmdargs[0]) != 1)
+	if (!no_command_found(data, 0) && ft_is_built_in(exec_pack->cmdargs[0]) != 1)
 	{
 		exec_pack->cmdstat = exec_pack->cmdargs[0];
 		exec_pack->cmdstat = ft_strjoin("/", exec_pack->cmdstat);
@@ -87,14 +87,16 @@ static void	ft_normal_exe(t_exec_single *exec_pack, t_shell *data)
 	&& !exec_pack->nb_redirout && !exec_pack->is_here_doc)
 		ft_execve_one(data, charize_env(data->our_env), exec_pack);
 	waitpid(c1, &status, 0);
-	if (exec_pack->cmdstat)
+ 	if (no_command_found(data, 0))
 		free(exec_pack->cmdstat);
-	ft_free_chr(exec_pack->allpaths);
+	if (no_command_found(data, 0))
+		ft_free_chr(exec_pack->allpaths);
  	if (WIFEXITED(status))
 		data->error_ret = WEXITSTATUS(status);
  	if (WIFSIGNALED(status))
 		sig_exit(data, status, c1, exec_pack->cmdargs[0]);
-	ft_free_chr(exec_pack->cmdargs);
+	if (!no_command_found(data, 0))
+		ft_free_chr(exec_pack->cmdargs);
 }
 
 void	execute_single_cmd(t_shell *data)
@@ -103,14 +105,20 @@ void	execute_single_cmd(t_shell *data)
 
 	if (init_single_exe(data, &exec_pack) == 1)
 		return ;
-	if (ft_is_built_in(exec_pack.cmdargs[0]) == 1 && exec_pack.nb_redirin <= 0 \
-	&& exec_pack.nb_redirout <= 0)
+	if (!no_command_found(data, 0) \
+	&& ft_is_built_in(exec_pack.cmdargs[0]) == 1 \
+	&& exec_pack.nb_redirin <= 0 \
+	&& exec_pack.nb_redirout <= 0 && !exec_pack.is_here_doc)
 		ft_exec_built_in(data, exec_pack.cmdargs);
-	else if (ft_is_built_in(exec_pack.cmdargs[0]) == 1 \
+	else if (((no_command_found(data, 0) && exec_pack.is_here_doc) \
+	|| (!no_command_found(data, 0))) \
 	&& (exec_pack.nb_redirin > 0 || \
-	exec_pack.nb_redirout > 0))
+	exec_pack.nb_redirout > 0 || exec_pack.is_here_doc))
 		redir_dup_single(data, &exec_pack);
-	else
+	else if (((no_command_found(data, 0) && exec_pack.is_here_doc) \
+	|| (!no_command_found(data, 0))) \
+	&& (!exec_pack.nb_redirin && \
+	!exec_pack.nb_redirout && !exec_pack.is_here_doc))
 		ft_normal_exe(&exec_pack, data);
 }
 
@@ -121,8 +129,6 @@ void	minishell_operator(t_shell *data)
 	if (data->nb_cell < 1)
 		return ;
 	if (data->nb_cell > 1)
-	{
 		pipex(data);
-	}
 	return ;
 }

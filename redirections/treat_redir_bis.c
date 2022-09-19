@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 17:16:17 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/08 13:07:33 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/12 18:05:08 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,15 @@ void	redir_dup_multi(t_shell *data, t_exec_multi *pack, int cell_nb)
 		fake_redoc_m(data, pack, 1, cell_nb);
 		treat_redir_heredoc_m(data, pack, cell_nb);
 	}
+///////
+
+	if (no_command_found(data, cell_nb) == 1)
+	{
+		clean_redir_multi(pack, savein, saveout1);
+		exit (0);
+	}
+
+///////
 	if (ft_is_built_in(pack->cmdargs[0]) == 1)
 		ft_exec_built_in(data, pack->cmdargs);
 	else

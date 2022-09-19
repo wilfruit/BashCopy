@@ -28,13 +28,13 @@ project_utils/utils_six.c \
 project_utils/utils_seven.c \
 project_utils/utils_eight.c
 
-CC = gcc  -g
+CC = gcc  -g -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include -fsanitize=address
 
 HEADER = mini_shell.h
 
 OBJ = $(SRC:%./.c=./.build/%.o)
 
-NAME = mini_shell
+NAME = minishell
 
 RM = rm -rf
 

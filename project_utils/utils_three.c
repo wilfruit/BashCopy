@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_three.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 17:06:42 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 17:06:43 by wgaspar          ###   ########.fr       */
+/*   Updated: 2022/09/09 00:39:28 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	*len_d_quote(int *r, t_manage_pipe *mpipe, char *line)
 		while (line[*r] && line[*r] != '\"')
 			*r += ft_increment(mpipe);
 		if (line[*r] != '\"')
-			return (write(1, "invalid syntax\n", 15), NULL);
+			return (write(1, "\n", 15), NULL);
 		mpipe->size += 1;
 		*r += 1;
 	}

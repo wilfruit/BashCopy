@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:50:27 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/08 16:08:07 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/18 20:25:50 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,15 @@ int	mini_parse_multi(t_shell *data, t_exec_multi *exec_pack, int nb)
 	}
 	else
 		exec_pack->allpaths = get_allpaths(data);
-	if (exec_pack->cmdargs && exec_pack->cmdargs[0])
-		free (exec_pack->cmdargs);
-	exec_pack->cmdargs = build_command(data, nb);
-	exec_pack->cmdstat = ft_strdup(exec_pack->cmdargs[0]);
-	exec_pack->cmdstat = ft_strjoin("/", exec_pack->cmdstat);
+/* 	if (exec_pack->cmdargs && exec_pack->cmdargs[0])
+		free (exec_pack->cmdargs); */
+	if (!no_command_found(data, nb))
+		exec_pack->cmdargs = build_command(data, nb);
+	if (!no_command_found(data, nb) && ft_is_built_in(exec_pack->cmdargs[0]) != 1)
+	{
+		exec_pack->cmdstat = ft_strdup(exec_pack->cmdargs[0]);
+		exec_pack->cmdstat = ft_strjoin("/", exec_pack->cmdstat);
+	}
 	return (0);
 }
 

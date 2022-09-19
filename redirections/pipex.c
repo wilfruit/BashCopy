@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 17:11:56 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/08 14:02:12 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/19 03:15:21 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,15 @@ static void	last_child(t_shell *data, t_exec_multi *pack, int n)
 			dup2(pack->pipe_fd[n - 1][0], STDIN_FILENO);
 			close(pack->pipe_fd[n - 1][0]);
 		}
-		if (pack->nb_redirin || pack->nb_redirout || pack->is_here_doc)
+		if ((pack->nb_redirin || pack->nb_redirout || pack->is_here_doc) \
+		&& (!no_command_found(data, n) || (no_command_found(data, n) && pack->is_here_doc)))
 			redir_dup_multi(data, pack, n);
-		else
+		else if (((no_command_found(data, n) && pack->is_here_doc > 0) \
+		|| (!no_command_found(data, n))) \
+		&& (!pack->nb_redirin && \
+		!pack->nb_redirout && !pack->is_here_doc))
 			ft_execve_multi(data, charize_env(data->our_env), pack);
+		exit(258);
 	}
 	else
 	{
@@ -115,6 +120,3 @@ void	pipex(t_shell *data)
 	last_child(data, &exec_pack, i);
 	wait_all(data, &exec_pack);
 }
-
-
-//mshell> ls | ls > ols | ls > output | pwd

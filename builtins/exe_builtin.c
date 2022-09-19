@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:29:24 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 01:38:42 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/18 20:05:14 by wilfried         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int	ft_is_built_in(char *cmd)
 	ft_fill_builtin_tab(built_tab);
 	while (built_tab[i] != NULL && cmd)
 	{
-		if (ft_strncmp(cmd, built_tab[i], ft_strlen(built_tab[i])) == 0)
+		if (ft_strlen(cmd) == ft_strlen(built_tab[i]) \
+		&& ft_strncmp(cmd, built_tab[i], ft_strlen(cmd)) == 0)
 		{
 			ft_free_chr(built_tab);
 			return (1);
@@ -63,8 +64,8 @@ void	ft_exec_built_in(t_shell *data, char **cmd)
 		data->error_ret = my_env(data->our_env, cmd);
 	if (!strncmp(cmd[0], "exit", ft_strlen("exit")))
 		data->error_ret = my_exit(cmd, data);
-	if (cmd)
-		ft_free_chr(cmd);
-	if (data->nb_cell > 1)
+/* 	if (cmd)
+		ft_free_chr(cmd); */
+ 	if (data->nb_cell > 1)
 		exit (data->error_ret);
 }
