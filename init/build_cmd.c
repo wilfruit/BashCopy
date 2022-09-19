@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:22:47 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/09 00:55:22 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/19 14:44:52 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ char	**build_command(t_shell *data, int cell_nb)
 	int		i;
 
 	i = 0;
-
 	args = (char **)malloc(sizeof(char *) * (count_args(data, cell_nb) + 1));
 	if (!args)
 		return (NULL);

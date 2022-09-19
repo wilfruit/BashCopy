@@ -12,30 +12,46 @@
 
 #include "../mini_shell.h"
 
+int	no_command_found(t_shell *data, int cell_nb)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->token[cell_nb].nb_token \
+	&& data->token[cell_nb].scmd[i].type != TOKEN_CMD)
+		i++;
+	if (i < data->token[cell_nb].nb_token \
+	&& data->token[cell_nb].scmd[i].type == TOKEN_CMD)
+		return (0);
+	return (1);
+}
+
 int	ft_syntax_error(void)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
-	return (258);
+	return (2);
 }
 
-void	cannot_execute(t_exec_single *data, char *cmd, char **env)
+void	cannot_execute(t_exec_single *data, char *cmd, char **env, t_shell *shpack)
 {
 	ft_putstr_fd("minishell: permission denied: ", 2);
 	ft_putstr_fd(cmd, 2);
 	ft_putstr_fd("\n", 2);
 	if (env != NULL)
 		ft_free_chr(env);
+	maxi_free(shpack);
 	free_exec_pack(data);
 	exit(126);
 }
 
-void	cmd_not_found(t_exec_single *data, char *argv, char **env)
+void	cmd_not_found(t_exec_single *data, char *argv, char **env, t_shell *shpack)
 {	
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(argv, 2);
 	ft_putstr_fd(": command not found\n", 2);
 	if (env != NULL)
 		ft_free_chr(env);
+	maxi_free(shpack);
 	free_exec_pack(data);
 	exit(127);
 }

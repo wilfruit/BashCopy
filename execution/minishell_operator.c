@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:54:46 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/18 20:02:21 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/19 14:44:18 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,6 @@ char	**get_allpaths(t_shell *data)
 	return (NULL);
 }
 
-int	no_command_found(t_shell *data, int cell_nb)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->token[cell_nb].nb_token && data->token[cell_nb].scmd[i].type != TOKEN_CMD)
-		i++;
-	if (i < data->token[cell_nb].nb_token && data->token[cell_nb].scmd[i].type == TOKEN_CMD)
-		return (0);
-	return (1);
-}
-
 int	init_single_exe(t_shell *data, t_exec_single *exec_pack)
 {
 	exec_pack->inlast = get_last_redirin(data, exec_pack);
@@ -55,19 +43,20 @@ int	init_single_exe(t_shell *data, t_exec_single *exec_pack)
 		return (1);
 	if (!no_command_found(data, 0))
 		exec_pack->cmdargs = build_command(data, 0);
-	if (data->our_env->next == NULL && !no_command_found(data, 0)\
+	if (data->our_env->next == NULL && !no_command_found(data, 0) \
 	&& ft_is_built_in(exec_pack->cmdargs[0]) != 1)
 	{
 		exec_pack->allpaths = (char **)malloc(sizeof(char *));
 		exec_pack->allpaths[0] = NULL;
 	}
-	else if (data->our_env->next && !no_command_found(data, 0) &&\
-	ft_is_built_in(exec_pack->cmdargs[0]) != 1)
+	else if (data->our_env->next && !no_command_found(data, 0) \
+	&& ft_is_built_in(exec_pack->cmdargs[0]) != 1)
 		exec_pack->allpaths = get_allpaths(data);
-	if (!no_command_found(data, 0) && ft_is_built_in(exec_pack->cmdargs[0]) != 1)
+	if (!no_command_found(data, 0) && ft_strlen(exec_pack->cmdargs[0]) > 0\
+	&& ft_is_built_in(exec_pack->cmdargs[0]) != 1)
 	{
 		exec_pack->cmdstat = exec_pack->cmdargs[0];
-		exec_pack->cmdstat = ft_strjoin("/", exec_pack->cmdstat);
+		exec_pack->cmdstat = ft_strjoinmod(ft_strdup("/"), exec_pack->cmdstat);
 	}
 	return (0);
 }
@@ -87,16 +76,16 @@ static void	ft_normal_exe(t_exec_single *exec_pack, t_shell *data)
 	&& !exec_pack->nb_redirout && !exec_pack->is_here_doc)
 		ft_execve_one(data, charize_env(data->our_env), exec_pack);
 	waitpid(c1, &status, 0);
- 	if (no_command_found(data, 0))
+	if (no_command_found(data, 0))
 		free(exec_pack->cmdstat);
 	if (no_command_found(data, 0))
 		ft_free_chr(exec_pack->allpaths);
- 	if (WIFEXITED(status))
+	if (WIFEXITED(status))
 		data->error_ret = WEXITSTATUS(status);
- 	if (WIFSIGNALED(status))
+	if (WIFSIGNALED(status))
 		sig_exit(data, status, c1, exec_pack->cmdargs[0]);
 	if (!no_command_found(data, 0))
-		ft_free_chr(exec_pack->cmdargs);
+		free_exec_pack(exec_pack);
 }
 
 void	execute_single_cmd(t_shell *data)

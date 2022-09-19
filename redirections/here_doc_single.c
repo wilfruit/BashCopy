@@ -12,6 +12,14 @@
 
 #include "../mini_shell.h"
 
+static void	child_doc_eof(char *limiter, t_shell *pack)
+{
+	pack->error_ret = 0;
+	maxi_free(pack);
+	write(2, "\n", 1);
+	exit(0);
+}
+
 void	child_doc(char *limiter, int *fd, t_shell *pack)
 {
 	char	*str;
@@ -25,17 +33,13 @@ void	child_doc(char *limiter, int *fd, t_shell *pack)
 		if (ft_strncmp(limiter, str, ft_strlen(str)) != 0)
 			str = ft_hd_dollar_check(str, pack);
 		if (str == NULL)
-		{
-			pack->error_ret = 0;
-			free(limiter);
-			exit(0);
-		}
+			child_doc_eof(limiter, pack);
 		str = ft_strjoinmod(str, "\n");
 		if ((ft_strlen(str) == ft_strlen(limiter) && \
 ft_strncmp(str, limiter, ft_strlen(str)) == 0))
 		{
 			free(str);
-			free(limiter);
+			maxi_free(pack);
 			exit(EXIT_SUCCESS);
 		}
 		write(fd[1], str, ft_strlen(str));
@@ -43,17 +47,12 @@ ft_strncmp(str, limiter, ft_strlen(str)) == 0))
 	}
 }
 
-void	sig_zigma(int sig)
+static int	hd_s_parent(int status, pid_t child, t_shell *pack)
 {
-	(void)sig;
 	g_glob = 30;
-	exit(130);
-}
-
-void	sig_omega(int sig)
-{
-	//(void)sig;
-	exit(0);
+	sig_exit(pack, status, child, "messge");
+	pack->error_ret = 1;
+	return (1);
 }
 
 int	here_doc_single(t_exec_single *data, char *lim, t_shell *pack)
@@ -72,6 +71,7 @@ int	here_doc_single(t_exec_single *data, char *lim, t_shell *pack)
 	{
 		signal(SIGINT, sig_zigma);
 		child_doc(lim, fd, pack);
+		maxi_free(pack);
 		exit(EXIT_SUCCESS);
 	}
 	else
@@ -81,10 +81,7 @@ int	here_doc_single(t_exec_single *data, char *lim, t_shell *pack)
 		waitpid(child, &status, 0);
 		if (status == 33280)
 		{
-			g_glob = 30;
-			sig_exit(pack, status, child, "messge");
-			pack->error_ret = 1;
-			return (1);
+			return (hd_s_parent(status, child, pack));
 		}
 		return (0);
 	}
@@ -112,50 +109,5 @@ ft_strncmp(str, limiter, ft_strlen(str)) == 0)
 			exit(EXIT_SUCCESS);
 		}
 		free(str);
-	}
-}
-
-void	fake_here_doc(t_exec_single *data, char *lim)
-{
-	pid_t	child;
-
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	child = fork();
-	if (child < 0)
-		return ;
-	if (child == 0)
-	{
-		signal(SIGINT, sig_zigma);
-		fake_child_doc(lim);
-		exit(EXIT_SUCCESS);
-	}
-	else
-	{
-		waitpid(child, NULL, 0);
-	}
-}
-
-void	fake_redoc(t_shell *data, t_exec_single *pack, int weight)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (data->token[0].scmd[i].type != 5 \
-	&& i < data->token[0].nb_token)
-		i++;
-	while (j < pack->is_here_doc - weight)
-	{
-		if (data->token[0].scmd[i].type == TOKEN_INTPUT_HEREDOC_REDIRECTION \
-		&& (i + 1) < data->token[0].nb_token && \
-		data->token[0].scmd[i + 1].type == TOKEN_LIMITER)
-			fake_here_doc(pack, ft_strdup(data->token[0].scmd[i + 1].value));
-		else if (data->token[0].scmd[i].type == 5 \
-		&& !((i + 1) < data->token[0].nb_token))
-			data->error_ret = ft_syntax_error();
-		i += 2;
-		j++;
 	}
 }

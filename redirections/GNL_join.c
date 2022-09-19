@@ -12,6 +12,13 @@
 
 #include "../mini_shell.h"
 
+void	maxi_free(t_shell *data)
+{
+	clean_manage(&data->mpipe, &data->token);	
+	ft_free_env(data->our_env);
+	ft_free_env(data->exports);
+}
+
 static char	*ft_joined(char *s1, char *s2, char *sjoined)
 {
 	int	i;

@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:29:24 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/18 20:05:14 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/19 14:40:40 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ void	ft_exec_built_in(t_shell *data, char **cmd)
 		data->error_ret = my_env(data->our_env, cmd);
 	if (!strncmp(cmd[0], "exit", ft_strlen("exit")))
 		data->error_ret = my_exit(cmd, data);
-/* 	if (cmd)
-		ft_free_chr(cmd); */
- 	if (data->nb_cell > 1)
+	if (data->nb_cell > 1)
 		exit (data->error_ret);
+	ft_free_chr(cmd);
 }

@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:24:07 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/06 16:57:54 by wgaspar          ###   ########.fr       */
+/*   Updated: 2022/09/19 14:45:06 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,17 @@ static char	*get_macro(t_shell *shpack, char *str)
 	return (NULL);
 }
 
+/* void	 */
+
 char	*build_dollar_return(t_shell *shpack, char **split, char *str, int i)
 {
 	char	*ret;
 	int		n;
+	char	*itoa;
 
 	n = 0;
 	ret = NULL;
+	itoa = NULL;
 	if (str[0] != '$')
 	{
 		ret = ft_strjoinmod(ret, split[0]);
@@ -59,7 +63,11 @@ char	*build_dollar_return(t_shell *shpack, char **split, char *str, int i)
 		if (split[i] == NULL)
 			ret = ft_strjoinmod(ret, "89669");
 		else if (ft_strncmp(split[i], "?", ft_strlen(split[i])) == 0)
-			ret = ft_strjoinmod(ret, ft_itoa(shpack->error_ret));
+		{
+			itoa = ft_itoa(shpack->error_ret);
+			ret = ft_strjoinmod(ret, itoa);
+			free (itoa);
+		}
 		else if (get_macro(shpack, ft_strdup(split[i])))
 			ret = \
 			ft_strjoinmod(ret, get_macro(shpack, ft_strdup(split[i])));
@@ -93,7 +101,7 @@ char	*dollar_swap(t_shell *shpack, char *str)
 		return (str);
 	else if (ft_strncmp(str, "$?", ft_strlen(str)) == 0)
 	{
-		//free (str);
+		free(str);
 		return (ft_itoa(shpack->error_ret));
 	}
 	else if (str[0] != '$')

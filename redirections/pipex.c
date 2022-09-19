@@ -58,36 +58,33 @@ static void	mid_process(t_shell *data, t_exec_multi *pack, int n)
 	}
 }
 
-static void	last_child(t_shell *data, t_exec_multi *pack, int n)
+static void	last_child(t_shell *d, t_exec_multi *p, int n)
 {
-	pack->c_pid[n] = fork();
-	if (pack->c_pid[n] < 0)
+	p->c_pid[n] = fork();
+	if (p->c_pid[n] < 0)
 		perror("Fork :");
-	if (pack->c_pid[n] == 0)
+	if (p->c_pid[n] == 0)
 	{
-		if (mini_parse_multi(data, pack, n))
+		if (mini_parse_multi(d, p, n) && d->error_ret != 2)
 			exit(1);
-		if (!pack->nb_redirin && !pack->is_here_doc)
+		if (!p->nb_redirin && !p->is_here_doc)
 		{
-			dup2(pack->pipe_fd[n - 1][0], STDIN_FILENO);
-			close(pack->pipe_fd[n - 1][0]);
+			dup2(p->pipe_fd[n - 1][0], STDIN_FILENO);
+			close(p->pipe_fd[n - 1][0]);
 		}
-		if ((pack->nb_redirin || pack->nb_redirout || pack->is_here_doc) \
-		&& (!no_command_found(data, n) || (no_command_found(data, n) && pack->is_here_doc)))
-			redir_dup_multi(data, pack, n);
-		else if (((no_command_found(data, n) && pack->is_here_doc > 0) \
-		|| (!no_command_found(data, n))) \
-		&& (!pack->nb_redirin && \
-		!pack->nb_redirout && !pack->is_here_doc))
-			ft_execve_multi(data, charize_env(data->our_env), pack);
-		exit(258);
+		if ((p->nb_redirin || p->nb_redirout || p->is_here_doc) \
+		&& (!no_command_found(d, n) \
+		|| (no_command_found(d, n) && p->is_here_doc)))
+			redir_dup_multi(d, p, n);
+		else if (((no_command_found(d, n) && p->is_here_doc > 0) \
+		|| (!no_command_found(d, n))) \
+		&& (!p->nb_redirin && \
+		!p->nb_redirout && !p->is_here_doc))
+			ft_execve_multi(d, charize_env(d->our_env), p);
+		exit(2);
 	}
 	else
-	{
-		close(pack->pipe_fd[n - 1][0]);
-		if (get_last_redirin_m(data, pack, n) == 5)
-			waitpid(pack->c_pid[n], NULL, 0);
-	}
+		last_parent(d, p, n);
 }
 
 static void	init_multi_exe(t_shell *data, t_exec_multi *exec_pack)

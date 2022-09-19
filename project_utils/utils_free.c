@@ -21,10 +21,10 @@ void	ft_init_cmdpipe(t_manage_pipe *mpipe)
 
 void	free_exec_pack(t_exec_single *pack)
 {
-	if (pack->allpaths[0])
-		ft_free_chr(pack->allpaths);
-	if (pack->cmdargs[0])
-		ft_free_chr(pack->cmdargs);
+	ft_free_chr(pack->allpaths);
+	ft_free_chr(pack->cmdargs);
+	if (pack->cmdstat)
+		free(pack->cmdstat);
 }
 
 void	ft_free_chr(char **super)
@@ -65,5 +65,4 @@ void	ft_free_env(t_envi *head)
 		free(current);
 		current = next;
 	}
-	head = NULL;
 }

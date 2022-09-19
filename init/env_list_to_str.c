@@ -12,6 +12,27 @@
 
 #include "../mini_shell.h"
 
+void	fake_here_doc(t_exec_single *data, char *lim)
+{
+	pid_t	child;
+
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	child = fork();
+	if (child < 0)
+		return ;
+	if (child == 0)
+	{
+		signal(SIGINT, sig_zigma);
+		fake_child_doc(lim);
+		exit(EXIT_SUCCESS);
+	}
+	else
+	{
+		waitpid(child, NULL, 0);
+	}
+}
+
 static int	count_nodes(t_envi	*env)
 {
 	t_envi	*counter;

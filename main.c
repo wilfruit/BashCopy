@@ -96,9 +96,10 @@ int	main(int argc, char **argv, char **env)
 		control(&shell_pack);
 		if (shell_pack.error_ret == 0)
 			line = readline("\e[1;32mmshell> \e[0m");
-		else if (shell_pack.error_ret != 0 && (g_glob == -130 || g_glob == 30 || g_glob == 130))
+		else if (shell_pack.error_ret != 0 \
+		&& (g_glob == -130 || g_glob == 30 || g_glob == 130))
 			line = readline("");
-		else if (shell_pack.error_ret != 0  && g_glob != -130 && g_glob != 30)
+		else if (shell_pack.error_ret != 0 && g_glob != -130 && g_glob != 30)
 			line = readline("\e[1;31mmshell> \e[0m");
 		if (check_line(&line) == NULL)
 			exit(0);
@@ -107,26 +108,5 @@ int	main(int argc, char **argv, char **env)
 		free(line);
 		shell_pack.error_ret = sig_used(shell_pack.error_ret, 0);
 	}
-	ft_free_env(shell_pack.our_env);
-	ft_free_env(shell_pack.exports);
-	return (shell_pack.exit_ret);
+	return (stop_minishell(&shell_pack));
 }
-
-/* mshell> << lim echo */
-// Il faut donc couper le ft_bash quand on réalise qu'on a un mauvais here_doc
-// Ou un mauvais in ou out
-//
-// Et appliquer ces différences au multi
-// couper aussi les processus quand y'a des mauvaises redirs et tester
-// 
-// 
-//
-
-/*ls | pwd           -> encore un probleme
-quand je fais un pipe puis une commande normale (genre "hey")
-et invalid syntax */
-
-// echo > 1 > 2 lol > 3 lel
-// << cat ctrl-c
-
-//check in init_single et init_multi s'il y a un token commande, sinon sortir a mettre apres analyses des redirections

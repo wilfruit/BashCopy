@@ -12,10 +12,10 @@
 
 #include "../mini_shell.h"
 
-void	wrap_execve_multi(t_exec_multi *data, char **args, char **env, t_shell *shell)
+void	wrap_execve_multi(t_exec_multi *d, char **ag, char **env, t_shell *sh)
 {
-	execve(data->cmddyn, args, env);
-	cannot_execute_pipex(data, data->cmddyn, shell);
+	execve(d->cmddyn, ag, env);
+	cannot_execute_pipex(d, d->cmddyn, sh);
 }
 
 static void	ft_free_pipes(t_shell *data, t_exec_multi *pack)

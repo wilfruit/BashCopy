@@ -81,33 +81,27 @@ int	count_redir_in_simple(t_shell *data, t_exec_single *pack, int cell_nb)
 
 int	treat_redir_heredoc(t_shell *d, t_exec_single *p)
 {
-	int	i;
-	int	j;
-	int	ret;
+	t_hdc	nup;
 
-	ret = 0;
-	i = 0;
-	j = 0;
-	while (d->token[0].scmd[i].type != 5 \
-	&& i < d->token[0].nb_token)
-		i++;
-	while (j < p->is_here_doc)
+	init_treat_redir_heredoc(d, &nup, 0);
+	while (nup.j < p->is_here_doc)
 	{
-		if (d->token[0].scmd[i].type == 5 \
-		&& (i + 1) < d->token[0].nb_token && \
-		d->token[0].scmd[i + 1].type == 7 && \
-		j == p->is_here_doc - 1)
-			ret = here_doc_single(p, ft_strdup(d->token[0].scmd[i + 1].value), d);
-		else if (d->token[0].scmd[i].type == 5 \
-		&& !((i + 1) < d->token[0].nb_token))
+		if (d->token[0].scmd[nup.i].type == 5 \
+		&& (nup.i + 1) < d->token[0].nb_token && \
+		d->token[0].scmd[nup.i + 1].type == 7 && \
+		nup.j == p->is_here_doc - 1)
+			nup.ret = \
+		here_doc_single(p, d->token[0].scmd[nup.i + 1].value, d);
+		else if (d->token[0].scmd[nup.i].type == 5 \
+		&& !((nup.i + 1) < d->token[0].nb_token))
 			d->error_ret = ft_syntax_error();
-		if (ret == 1)
+		if (nup.ret == 1)
 			return (1);
-		i++;
-		while (i < d->token[0].nb_token && \
-		d->token[0].scmd[i].type != 5)
-			i++;
-		j++;
+		nup.i++;
+		while (nup.i < d->token[0].nb_token && \
+		d->token[0].scmd[nup.i].type != 5)
+			nup.i++;
+		nup.j++;
 	}
 	return (0);
 }

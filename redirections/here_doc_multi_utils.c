@@ -12,6 +12,14 @@
 
 #include "../mini_shell.h"
 
+static int	hd_m_parent(int status, pid_t child, t_shell *pack)
+{
+	g_glob = 30;
+	sig_exit(pack, status, child, "messge");
+	pack->error_ret = 1;
+	return (1);
+}
+
 int	here_doc_single_m(t_exec_multi *data, char *lim, int nb, t_shell *pack)
 {
 	pid_t	child;
@@ -22,8 +30,6 @@ int	here_doc_single_m(t_exec_multi *data, char *lim, int nb, t_shell *pack)
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	child = fork();
-	if (child < 0)
-		return (0);
 	if (child == 0)
 	{
 		signal(SIGINT, sig_zigma);
@@ -37,34 +43,8 @@ int	here_doc_single_m(t_exec_multi *data, char *lim, int nb, t_shell *pack)
 		dup2(fd[0], 0);
 		waitpid(child, &status, 0);
 		if (status == 33280)
-		{
-			g_glob = 30;
-			sig_exit(pack, status, child, "messge");
-			pack->error_ret = 1;
-			return (1);
-		}
+			return (hd_m_parent(status, child, pack));
 		return (0);
-	}
-}
-
-void	fake_here_doc_m(t_exec_multi *data, char *lim)
-{
-	pid_t	child;
-
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	child = fork();
-	if (child < 0)
-		return ;
-	if (child == 0)
-	{
-		signal(SIGINT, sig_zigma);
-		fake_child_doc(lim);
-		exit(EXIT_SUCCESS);
-	}
-	else
-	{
-		waitpid(child, NULL, 0);
 	}
 }
 
@@ -110,29 +90,28 @@ int	get_last_redirin_m(t_shell *data, t_exec_multi *pack, int cell_nb)
 	return (ret);
 }
 
-void	treat_redir_heredoc_m(t_shell *d, t_exec_multi *p, int nb)
+int	treat_redir_heredoc_m(t_shell *d, t_exec_multi *p, int nb)
 {
-	int	i;
-	int	j;
+	t_hdc	nup;
 
-	i = 0;
-	j = 0;
-	while (d->token[nb].scmd[i].type != 5 && i < d->token[nb].nb_token)
-		i++;
-	while (j < p->is_here_doc)
+	init_treat_redir_heredoc(d, &nup, nb);
+	while (nup.j < p->is_here_doc)
 	{
-		if (d->token[nb].scmd[i].type == 5 \
-		&& (i + 1) < d->token[nb].nb_token && \
-		d->token[nb].scmd[i + 1].type == 7 && j == p->is_here_doc - 1)
-			here_doc_single_m(p, \
-		ft_strdup(d->token[nb].scmd[i + 1].value), nb, d);
-		else if (d->token[nb].scmd[i].type == 5 \
-		&& !((i + 1) < d->token[nb].nb_token))
+		if (d->token[nb].scmd[nup.i].type == 5 \
+		&& (nup.i + 1) < d->token[nb].nb_token && \
+		d->token[nb].scmd[nup.i + 1].type == 7 && nup.j == p->is_here_doc - 1)
+			nup.ret = here_doc_single_m(p, \
+		ft_strdup(d->token[nb].scmd[nup.i + 1].value), nb, d);
+		else if (d->token[nb].scmd[nup.i].type == 5 \
+		&& !((nup.i + 1) < d->token[nb].nb_token))
 			d->error_ret = ft_syntax_error();
-		i++;
-		while (i < d->token[nb].nb_token \
-		&& d->token[nb].scmd[i].type != 5)
-			i++;
-		j++;
+		if (nup.ret == 1)
+			return (1);
+		nup.i++;
+		while (nup.i < d->token[nb].nb_token \
+		&& d->token[nb].scmd[nup.i].type != 5)
+			nup.i++;
+		nup.j++;
 	}
+	return (0);
 }

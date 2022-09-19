@@ -76,6 +76,7 @@ static void	alpha_sort(char **env)
 				temp = ft_strdup(env[j]);
 				env[j] = ft_strdup(env[j + 1]);
 				env[j + 1] = ft_strdup(temp);
+				free(temp);
 			}
 			j++;
 		}

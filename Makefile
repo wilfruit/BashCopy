@@ -26,9 +26,12 @@ project_utils/utils_five.c \
 redirections/treat_redir_bis.c \
 project_utils/utils_six.c \
 project_utils/utils_seven.c \
-project_utils/utils_eight.c
+project_utils/utils_eight.c \
+project_utils/utils_ten.c \
+redirections/redir_dup_s.c \
+redirections/redir_dup_m.c
 
-CC = gcc  -g -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include -fsanitize=address
+CC = gcc  -g -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include
 
 HEADER = mini_shell.h
 
