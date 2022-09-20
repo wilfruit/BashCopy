@@ -37,6 +37,7 @@ static void	find_and_unset_node_exp(t_shell *pack, char *arg)
 		return ;
 	}
 	d.prev->next = d.temp->next;
+	free(d.temp->str);
 	free(d.vari);
 	free(d.temp);
 }
@@ -66,6 +67,7 @@ static void	find_and_unset_node_env(t_shell *pack, char *arg)
 		return ;
 	}
 	d.prev->next = d.temp->next;
+	free(d.temp->str);
 	free(d.vari);
 	free(d.temp);
 }

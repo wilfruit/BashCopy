@@ -65,19 +65,19 @@ static int	go_home(char **cmd, t_envi *our_env)
 {
 	char	*home_path;
 
-	home_path = (char *)malloc(sizeof(char) * PATH_MAX);
-	if (!home_path)
-		return (1);
+	home_path = NULL;
 	home_path = get_path(1, our_env);
 	if (!home_path)
 		return (1);
 	if (ft_strncmp(home_path, "not_set", ft_strlen("not_set") == 0))
 	{
+		free(home_path);
 		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 		return (1);
 	}
 	replace_oldpwd(our_env);
 	chdir(home_path);
+	free(home_path);
 	return (0);
 }
 
@@ -87,20 +87,20 @@ static int	go_back_to_oldpwd(char **cmd, t_envi *our_env)
 	char	*old_pwd;
 
 	pwd = (char *)malloc(sizeof(char) * PATH_MAX);
-	if (!pwd)
-		return (1);
-	old_pwd = (char *)malloc(sizeof(char) * PATH_MAX);
-	if (!old_pwd)
-		return (1);
+	old_pwd = NULL;
 	getcwd(pwd, sizeof(pwd));
 	old_pwd = get_path(2, our_env);
 	if (ft_strncmp(old_pwd, "not_set", ft_strlen("not_set") == 0))
 	{
 		ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
+		free(pwd);
+		free(old_pwd);
 		return (1);
 	}
 	replace_oldpwd(our_env);
 	chdir(old_pwd);
+	free(pwd);
+	free(old_pwd);
 	return (0);
 }
 
@@ -111,12 +111,11 @@ int	my_cd(char **cmd, t_envi *our_env)
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
 		return (1);
 	}
-	if (cmd && ft_strncmp(cmd[1], "-", ft_strlen(cmd[1])) == 0)
+	if ((cmd && cmd[1]) && ft_strncmp(cmd[1], "-", ft_strlen(cmd[1])) == 0)
 		return (go_back_to_oldpwd(cmd, our_env));
-	if ((cmd && !cmd[1]) \
+	if ((cmd && cmd[0] && !cmd[1]) \
 	|| (cmd && ft_strncmp(cmd[1], "~", ft_strlen(cmd[1])) == 0) \
-	|| (cmd && ft_strncmp(cmd[1], "--", ft_strlen(cmd[1])) == 0) \
-	|| (cmd && cmd[0] && !cmd[1]))
+	|| (cmd && ft_strncmp(cmd[1], "--", ft_strlen(cmd[1])) == 0))
 		return (go_home(cmd, our_env));
 	else
 	{

@@ -26,7 +26,7 @@ static void	add_or_update_env(t_envi *env, t_envi *exp, char *arg)
 	char	**av;
 
 	av = ft_split(arg, '=');
-	av[0] = ft_strjoin(av[0], "=");
+	av[0] = ft_strjoinmod(av[0], "=");
 	temp = env;
 	if (!is_in_such_list(env, av[0]))
 	{

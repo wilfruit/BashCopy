@@ -45,9 +45,9 @@ static char	**transform_env(t_envi *env)
 	temp = env;
 	while (temp)
 	{
-		ret[i] = (char *)malloc(sizeof(char) * ft_strlen(temp->str));
+		/* ret[i] = (char *)malloc(sizeof(char) * ft_strlen(temp->str));
 		if (!ret)
-			perror("malloc : ");
+			perror("malloc : "); */
 		ret[i] = ft_strdup(temp->str);
 		temp = temp->next;
 		i++;
@@ -74,7 +74,9 @@ static void	alpha_sort(char **env)
 			&& ft_strncmp(env[j + 1], "\0", ft_strlen(env[j + 1])))
 			{
 				temp = ft_strdup(env[j]);
+				free(env[j]);
 				env[j] = ft_strdup(env[j + 1]);
+				free(env[j + 1]);
 				env[j + 1] = ft_strdup(temp);
 				free(temp);
 			}
@@ -93,18 +95,17 @@ static void	ft_print_env(char **env)
 	{
 		ft_putstr_fd("declare -x ", 1);
 		ft_putendl_fd(env[i], 1);
+		free(env[i]);
 		i++;
 	}
+	free(env);
 }
 
 void	my_exprint(t_envi *env)
 {
 	char	**unsorted_env;
-	char	**sorted_env;
 
-	unsorted_env = (char **)malloc(sizeof(char *) * ft_lstlen(env) + 1);
-	if (!unsorted_env)
-		perror ("Malloc :");
+	unsorted_env = NULL;
 	unsorted_env = transform_env(env);
 	alpha_sort(unsorted_env);
 	ft_print_env(unsorted_env);
