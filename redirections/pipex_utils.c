@@ -42,22 +42,15 @@ int	mini_parse_multi(t_shell *data, t_exec_multi *exec_pack, int nb)
 	exec_pack->nb_redirout = count_redir_out_multi(data, exec_pack, nb);
 	exec_pack->is_here_doc = count_redir_heredoc_multi(data, exec_pack, nb);
 	if (wrong_redir_multi(exec_pack, data, nb))
-		return (1);
-	if (data->our_env->next == NULL)
 	{
-		exec_pack->allpaths = (char **)malloc(sizeof(char *));
-		exec_pack->allpaths[0] = NULL;
+		printf("command %i went away\n", nb);
+		return (1);
 	}
-	else
-		exec_pack->allpaths = get_allpaths(data);
 	if (!no_command_found(data, nb))
 		exec_pack->cmdargs = build_command(data, nb);
 	if (!no_command_found(data, nb) \
 	&& ft_is_built_in(exec_pack->cmdargs[0]) != 1)
-	{
-		exec_pack->cmdstat = ft_strdup(exec_pack->cmdargs[0]);
-		exec_pack->cmdstat = ft_strjoin("/", exec_pack->cmdstat);
-	}
+		exec_pack->cmdstat = ft_strjoin("/", exec_pack->cmdargs[0]);
 	return (0);
 }
 
@@ -80,12 +73,14 @@ void	ft_execve_multi(t_shell *shpack, char **env, t_exec_multi *data)
 		&& access(data->cmddyn, F_OK) != 0) \
 		|| ft_strncmp(data->cmddyn, "/", ft_strlen(data->cmddyn)) == 0 || \
 		ft_strncmp(data->cmddyn, "./", ft_strlen(data->cmddyn)) == 0)
-			cmd_not_found_pipex(data, data->cmdargs[0], shpack);
+			cmd_not_found_pipex(data, data->cmdargs[0], shpack, env);
 		if (access(data->cmddyn, F_OK) == 0 && access(data->cmddyn, X_OK) == 0)
 			wrap_execve_multi(data, data->cmdargs, env, shpack);
 		if (is_pathed(data->cmdargs[0]) == 0 && access(data->cmddyn, X_OK) != 0)
-			cannot_execute_pipex(data, data->cmdargs[0], shpack);
+			cannot_execute_pipex(data, data->cmdargs[0], shpack, env);
 		free(data->cmddyn);
 	}
-	cmd_not_found_pipex(data, data->cmdargs[0], shpack);
+	cmd_not_found_pipex(data, data->cmdargs[0], shpack, env);
 }
+
+// il faut que cmdnotfound et cannotexec recuperent aussi env pour le free svp

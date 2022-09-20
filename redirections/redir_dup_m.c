@@ -35,6 +35,8 @@ void	dup_case_only_hd_m(t_shell *d, t_redup *red, t_exec_multi *p, int n)
 	if (treat_redir_heredoc_m(d, p, n) == 1)
 	{
 		d->error_ret = 1;
+		if (!no_command_found(d, n))
+			spec_free_m(d, p);
 		clean_redir_multi(p, red->savein, red->saveout1);
 		exit(d->error_ret);
 	}

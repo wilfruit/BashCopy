@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:31:37 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/15 13:46:55 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/20 15:31:08 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,33 @@ int	no_command_found(t_shell *data, int cell_nb)
 
 int	ft_syntax_error(void)
 {
-	ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
+	ft_putstr_fd("mshell: syntax error near unexpected token `newline'\n", 2);
 	return (2);
 }
 
-void	cannot_execute(t_exec_single *data, char *cmd, char **env, t_shell *shpack)
+void	cannot_execute(t_exec_single *data, char *cmd, char **env, t_shell *p)
 {
 	ft_putstr_fd("minishell: permission denied: ", 2);
 	ft_putstr_fd(cmd, 2);
 	ft_putstr_fd("\n", 2);
 	if (env != NULL)
 		ft_free_chr(env);
-	maxi_free(shpack);
-	free_exec_pack(data);
+	if (!no_command_found(p, 0))
+		spec_free(p, data);
+	maxi_free(p);
 	exit(126);
 }
 
-void	cmd_not_found(t_exec_single *data, char *argv, char **env, t_shell *shpack)
+void	cmd_not_found(t_exec_single *data, char *av, char **env, t_shell *pack)
 {	
 	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(argv, 2);
+	ft_putstr_fd(av, 2);
 	ft_putstr_fd(": command not found\n", 2);
 	if (env != NULL)
 		ft_free_chr(env);
-	maxi_free(shpack);
-	free_exec_pack(data);
+	if (!no_command_found(pack, 0))
+		spec_free(pack, data);
+	maxi_free(pack);
 	exit(127);
 }
 

@@ -112,6 +112,13 @@ typedef struct s_redup
 	int		status;
 }				t_redup;
 
+typedef struct s_dolret
+{
+	char	*ret;
+	int		n;
+	char	*itoa;
+}				t_dolret;
+
 typedef struct s_ext
 {
 	t_envi	*temp;
@@ -229,8 +236,8 @@ char	**build_nested_command(t_shell *data, int cell_nb, char **args);
 void	minishell_operator(t_shell *data);
 void	execute_single_cmd(t_shell *data);
 int		is_pathed(char *str);
-void	cmd_not_found(t_exec_single *data, char *argv, char **env, t_shell *shpack);
-void	cannot_execute(t_exec_single *data, char *cmd, char **env, t_shell *shpack);
+void	cmd_not_found(t_exec_single *data, char *av, char **env, t_shell *pack);
+void	cannot_execute(t_exec_single *data, char *cmd, char **env, t_shell *p);
 char	**charize_env(t_envi *env);
 char	**get_allpaths(t_shell *data);
 int		init_single_exe(t_shell *data, t_exec_single *exec_pack);
@@ -261,8 +268,8 @@ int		mini_parse_multi(t_shell *data, t_exec_multi *exec_pack, int nb);
 int		wrong_redir_multi(t_exec_multi *exec_pack, t_shell *data, int nb);
 void	ft_execve_multi(t_shell *shpack, char **env, t_exec_multi *data);
 void	free_exec_pack_multi(t_shell *data, t_exec_multi *pack);
-void	cannot_execute_pipex(t_exec_multi *data, char *cmd, t_shell *shell);
-void	cmd_not_found_pipex(t_exec_multi *data, char *argv, t_shell *shell);
+void	cannot_execute_pipex(t_exec_multi *data, char *cmd, t_shell *shell, char **env);
+void	cmd_not_found_pipex(t_exec_multi *data, char *argv, t_shell *shell, char **env);
 int		my_unset(char **cmd, t_shell *pack);
 void	sig_exit(t_shell *data, int status, pid_t c1, char *cmd);
 int		has_redir(t_shell *data, int cell_nb);
@@ -340,5 +347,7 @@ int		ft_only_redin_m(t_exec_multi *pack);
 void	clean_redir_multi(t_exec_multi *p, int in, int out1);
 void	init_redir_dup_single(t_redup *red);
 void	maxi_free(t_shell *data);
+void	spec_free(t_shell *data, t_exec_single *pack);
+void	spec_free_m(t_shell *data, t_exec_multi *pack);
 
 #endif

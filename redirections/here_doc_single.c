@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 15:08:17 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/17 15:55:51 by wilfried         ###   ########.fr       */
+/*   Updated: 2022/09/20 15:32:23 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,38 +55,6 @@ static int	hd_s_parent(int status, pid_t child, t_shell *pack)
 	return (1);
 }
 
-int	here_doc_single(t_exec_single *data, char *lim, t_shell *pack)
-{
-	pid_t	child;
-	int		fd[2];
-	int		status;
-
-	pipe(fd);
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	child = fork();
-	if (child < 0)
-		return (0);
-	if (child == 0)
-	{
-		signal(SIGINT, sig_zigma);
-		child_doc(lim, fd, pack);
-		maxi_free(pack);
-		exit(EXIT_SUCCESS);
-	}
-	else
-	{
-		close(fd[1]);
-		dup2(fd[0], 0);
-		waitpid(child, &status, 0);
-		if (status == 33280)
-		{
-			return (hd_s_parent(status, child, pack));
-		}
-		return (0);
-	}
-}
-
 void	fake_child_doc(char *limiter)
 {
 	char	*str;
@@ -109,5 +77,35 @@ ft_strncmp(str, limiter, ft_strlen(str)) == 0)
 			exit(EXIT_SUCCESS);
 		}
 		free(str);
+	}
+}
+
+int	here_doc_single(t_exec_single *data, char *lim, t_shell *pack)
+{
+	pid_t	child;
+	int		fd[2];
+	int		status;
+
+	pipe(fd);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	child = fork();
+	if (child == 0)
+	{
+		signal(SIGINT, sig_zigma);
+		if (!no_command_found(pack, 0))
+			spec_free(pack, data);
+		child_doc(ft_strdup(lim), fd, pack);
+		maxi_free(pack);
+		exit(EXIT_SUCCESS);
+	}
+	else
+	{
+		close(fd[1]);
+		dup2(fd[0], 0);
+		waitpid(child, &status, 0);
+		if (status == 33280)
+			return (hd_s_parent(status, child, pack));
+		return (0);
 	}
 }

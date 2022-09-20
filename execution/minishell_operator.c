@@ -6,7 +6,7 @@
 /*   By: wilfried <wilfried@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:54:46 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/19 14:44:18 by wgaspar          ###   ########.fr       */
+/*   Updated: 2022/09/20 15:30:18 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	init_single_exe(t_shell *data, t_exec_single *exec_pack)
 	else if (data->our_env->next && !no_command_found(data, 0) \
 	&& ft_is_built_in(exec_pack->cmdargs[0]) != 1)
 		exec_pack->allpaths = get_allpaths(data);
-	if (!no_command_found(data, 0) && ft_strlen(exec_pack->cmdargs[0]) > 0\
+	if (!no_command_found(data, 0) && ft_strlen(exec_pack->cmdargs[0]) > 0 \
 	&& ft_is_built_in(exec_pack->cmdargs[0]) != 1)
 	{
 		exec_pack->cmdstat = exec_pack->cmdargs[0];

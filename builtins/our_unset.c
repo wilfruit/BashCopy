@@ -12,6 +12,13 @@
 
 #include "../mini_shell.h"
 
+static void	free_t_unset(t_unset *d)
+{
+	free(d->temp->str);
+	free(d->vari);
+	free(d->temp);
+}
+
 static void	find_and_unset_node_exp(t_shell *pack, char *arg)
 {
 	t_unset	d;
@@ -37,9 +44,7 @@ static void	find_and_unset_node_exp(t_shell *pack, char *arg)
 		return ;
 	}
 	d.prev->next = d.temp->next;
-	free(d.temp->str);
-	free(d.vari);
-	free(d.temp);
+	free_t_unset(&d);
 }
 
 static void	find_and_unset_node_env(t_shell *pack, char *arg)
@@ -67,9 +72,7 @@ static void	find_and_unset_node_env(t_shell *pack, char *arg)
 		return ;
 	}
 	d.prev->next = d.temp->next;
-	free(d.temp->str);
-	free(d.vari);
-	free(d.temp);
+	free_t_unset(&d);
 }
 
 int	is_valid_identifier(char *cmd)

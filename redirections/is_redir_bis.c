@@ -25,6 +25,7 @@ int	treat_redir_out(t_shell *d, t_exec_single *pack, int n)
 {
 	t_hdc	nup;
 
+	pack->redirout = 1;
 	init_treat_redir_out_multi(d, &nup, n);
 	while (nup.j < pack->nb_redirout)
 	{
@@ -70,6 +71,7 @@ int	treat_redir_in(t_shell *data, t_exec_single *pack, int n)
 {
 	t_hdc	nup;
 
+	pack->redirin = 0;
 	init_treat_redir_in_multi(data, &nup, n);
 	while (nup.j < pack->nb_redirin)
 	{

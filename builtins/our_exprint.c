@@ -45,9 +45,6 @@ static char	**transform_env(t_envi *env)
 	temp = env;
 	while (temp)
 	{
-		/* ret[i] = (char *)malloc(sizeof(char) * ft_strlen(temp->str));
-		if (!ret)
-			perror("malloc : "); */
 		ret[i] = ft_strdup(temp->str);
 		temp = temp->next;
 		i++;

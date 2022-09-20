@@ -33,7 +33,11 @@ int	here_doc_single_m(t_exec_multi *data, char *lim, int nb, t_shell *pack)
 	if (child == 0)
 	{
 		signal(SIGINT, sig_zigma);
-		child_doc(lim, fd, pack);
+		if (!no_command_found(pack, nb))
+			spec_free_m(pack, data);
+		child_doc(ft_strdup(lim), fd, pack);
+		maxi_free(pack);
+		exit(EXIT_SUCCESS);
 	}
 	else
 	{

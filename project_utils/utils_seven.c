@@ -43,6 +43,7 @@ void	wait_all(t_shell *data, t_exec_multi *pack)
 	int	status;
 
 	i = 0;
+	status = 0;
 	while (i < data->nb_cell - 1)
 	{
 		waitpid(pack->c_pid[i], NULL, 0);

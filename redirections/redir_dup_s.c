@@ -6,7 +6,7 @@
 /*   By: wgaspar <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 16:21:44 by wgaspar           #+#    #+#             */
-/*   Updated: 2022/09/19 16:37:49 by wgaspar          ###   ########.fr       */
+/*   Updated: 2022/09/20 15:31:45 by wgaspar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	exec_dup(t_redup *red, t_shell *data, t_exec_single *pack)
 	if (red->c1 == 0 && ft_is_built_in(pack->cmdargs[0]) == 1)
 	{
 		ft_exec_built_in(data, pack->cmdargs);
-        maxi_free(data);
+		maxi_free(data);
+		spec_free(data, pack);
 		exit(data->error_ret);
 	}
 	else if (red->c1 == 0 && ft_is_built_in(pack->cmdargs[0]) != 1)
@@ -30,6 +31,7 @@ void	exec_dup(t_redup *red, t_shell *data, t_exec_single *pack)
 		data->error_ret = WEXITSTATUS(status);
 	if (WIFSIGNALED(status))
 		sig_exit(data, status, red->c1, pack->cmdargs[0]);
+	spec_free(data, pack);
 }
 
 void	dup_case_no_cmd(t_shell *data, t_redup *red, t_exec_single *pack)
@@ -77,5 +79,7 @@ void	redir_dup_single(t_shell *data, t_exec_single *pack)
 		return (dup_case_no_cmd(data, &red, pack));
 	if (data->error_ret != 2)
 		exec_dup(&red, data, pack);
+	if (data->error_ret == 2 && !no_command_found(data, 0))
+		spec_free(data, pack);
 	clean_redir_single(pack, red.savein, red.saveout1);
 }

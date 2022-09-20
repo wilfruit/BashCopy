@@ -85,6 +85,7 @@ open(d->token[n].scmd[nup.i + 1].value, O_CREAT | O_RDWR | O_APPEND, 0644);
 		nup.i += 2;
 		nup.j++;
 	}
+	return (0);
 }
 
 int	treat_redir_in_multi(t_shell *data, t_exec_multi *pack, int cell_nb)
@@ -111,4 +112,5 @@ int	treat_redir_in_multi(t_shell *data, t_exec_multi *pack, int cell_nb)
 		nup.i += 2;
 		nup.j++;
 	}
+	return (0);
 }
