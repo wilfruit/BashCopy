@@ -14,30 +14,6 @@
 
 volatile sig_atomic_t	g_glob = 0;
 
-static void	create_minimum_data(t_shell *data, char **env)
-{
-	t_envi	*temp;
-	t_envi	*cursor;
-
-	cursor = ft_calloc(sizeof(t_envi), 1);
-	cursor->str = ft_strdup("heyarnold\n");
-	cursor->next = NULL;
-	data->our_env = cursor;
-	data->exports = cursor;
-	cursor->str = ft_strdup("PWD=");
-	temp = ft_calloc(sizeof(t_envi), 1);
-	temp->str = ft_strdup("OLDPWD=");
-	temp->next = NULL;
-	cursor->next = temp;
-	cursor = temp;
-	temp = ft_calloc(sizeof(t_envi), 1);
-	temp->str = ft_strdup("PATH=");
-	temp->next = NULL;
-	cursor->next = temp;
-	cursor = temp;
-	return ;
-}
-
 static void	shell_pack_init(t_shell *data, char **env)
 {
 	data->error_ret = 0;
@@ -82,6 +58,12 @@ static void	ft_bash(t_shell *shell_pack, char *line)
 	clean_manage(&shell_pack->mpipe, &shell_pack->token);
 }
 
+void	easy_eof_quit(t_shell *shell_pack)
+{
+	stop_minishell(shell_pack);
+	exit(0);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	char			*line;
@@ -89,7 +71,6 @@ int	main(int argc, char **argv, char **env)
 	t_shell			shell_pack;
 
 	shell_pack_init(&shell_pack, env);
-	shell_pack.exit_switch = 0;
 	line = NULL;
 	while (shell_pack.exit_switch == 0)
 	{
@@ -102,7 +83,7 @@ int	main(int argc, char **argv, char **env)
 		else if (shell_pack.error_ret != 0 && g_glob != -130 && g_glob != 30)
 			line = readline("\e[1;31mmshell> \e[0m");
 		if (check_line(&line) == NULL)
-			exit(0);
+			easy_eof_quit(&shell_pack);
 		if (all_pipe_cmd(&shell_pack.mpipe, line) != NULL)
 			ft_bash(&shell_pack, line);
 		free(line);

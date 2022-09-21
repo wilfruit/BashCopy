@@ -38,24 +38,32 @@ void	free_exec_pack_multi(t_shell *data, t_exec_multi *pack)
 	free(pack->c_pid);
 }
 
-void	cannot_execute_pipex(t_exec_multi *data, char *cmd, t_shell *shell, char **env)
+void	cannot_execute_pipex(t_exec_multi *d, char *c, t_shell *sh, char **env)
 {
 	ft_putstr_fd("minishell: permission denied: ", 2);
-	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(c, 2);
 	ft_putstr_fd("\n", 2);
-	free_exec_pack_multi(shell, data);
-	maxi_free(shell);
+	free_exec_pack_multi(sh, d);
+	maxi_free(sh);
 	ft_free_chr(env);
 	exit(126);
 }
 
-void	cmd_not_found_pipex(t_exec_multi *data, char *argv, t_shell *shell, char **env)
-{	
+void	cmd_not_found_pipex(t_exec_multi *d, char *c, t_shell *sh, char **env)
+{
+	if (c == NULL)
+	{
+		free_exec_pack_multi(sh, d);
+		free_exec_pack_multi(sh, d);
+		maxi_free(sh);
+		ft_free_chr(env);
+		exit(0);
+	}
 	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(argv, 2);
+	ft_putstr_fd(c, 2);
 	ft_putstr_fd(": command not found\n", 2);
-	free_exec_pack_multi(shell, data);
-	maxi_free(shell);
+	free_exec_pack_multi(sh, d);
+	maxi_free(sh);
 	ft_free_chr(env);
 	exit(127);
 }

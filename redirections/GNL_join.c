@@ -21,11 +21,11 @@ void	maxi_free(t_shell *data)
 
 void	spec_free(t_shell *data, t_exec_single *pack)
 {
-	if (pack->cmdargs &&\
-	pack->cmdargs[0] && !ft_is_built_in(pack->cmdargs[0]))
+	if (pack->cmdargs \
+	&& pack->cmdargs[0] && !ft_is_built_in(pack->cmdargs[0]))
 		ft_free_chr(pack->allpaths);
-	if (pack->cmdargs &&\
-	pack->cmdargs[0] && !ft_is_built_in(pack->cmdargs[0]))
+	if (pack->cmdargs \
+	&& pack->cmdargs[0] && !ft_is_built_in(pack->cmdargs[0]))
 		free(pack->cmdstat);
 	ft_free_chr(pack->cmdargs);
 }
@@ -33,8 +33,8 @@ void	spec_free(t_shell *data, t_exec_single *pack)
 void	spec_free_m(t_shell *data, t_exec_multi *pack)
 {
 	ft_free_chr(pack->allpaths);
-	if (pack->cmdargs &&\
-	pack->cmdargs[0] && !ft_is_built_in(pack->cmdargs[0]))
+	if (pack->cmdargs \
+	&& pack->cmdargs[0] && !ft_is_built_in(pack->cmdargs[0]))
 		free(pack->cmdstat);
 	ft_free_chr(pack->cmdargs);
 }

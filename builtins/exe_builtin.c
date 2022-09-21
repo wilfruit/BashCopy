@@ -65,6 +65,9 @@ void	ft_exec_built_in(t_shell *data, char **cmd)
 	if (!strncmp(cmd[0], "exit", ft_strlen("exit")))
 		data->error_ret = my_exit(cmd, data);
 	if (data->nb_cell > 1)
+	{
+		maxi_free(data);
 		exit (data->error_ret);
+	}
 	ft_free_chr(cmd);
 }

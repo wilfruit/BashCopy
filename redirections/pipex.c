@@ -89,7 +89,7 @@ static void	last_child(t_shell *d, t_exec_multi *p, int n)
 
 static void	init_multi_exe(t_shell *data, t_exec_multi *exec_pack)
 {
- 	if (data->our_env->next == NULL)
+	if (data->our_env->next == NULL)
 	{
 		exec_pack->allpaths = (char **)malloc(sizeof(char *));
 		exec_pack->allpaths[0] = NULL;

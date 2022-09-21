@@ -19,11 +19,19 @@ int	count_args(t_shell *data, int cell_nb)
 
 	count = 1;
 	i = 0;
+	while (i < data->token[cell_nb].nb_token \
+	&& data->token[cell_nb].scmd[i].type != 0)
+		i++;
+	i++;
 	while (i < data->token[cell_nb].nb_token)
 	{
-		if (data->token[cell_nb].scmd[i].type == TOKEN_ARG \
-		&& ft_strlen(data->token[cell_nb].scmd[i].value) > 0)
+		if (data->token[cell_nb].scmd[i].type == TOKEN_ARG)
 			count++;
+		if (data->token[cell_nb].scmd[i].type == 0)
+		{
+			count++;
+			data->token[cell_nb].scmd[i].type = 1;
+		}
 		i++;
 	}
 	return (count);
@@ -73,25 +81,29 @@ int	search_in_charray(char **super, char needle)
 
 void	fill_args(t_shell *data, int cell_nb, int i, char **args)
 {
-	int		j;
+	t_fill	box;
 
-	j = 1;
-	while (i < count_args(data, cell_nb) \
-	&& i < data->token[cell_nb].nb_token && \
-	data->token[cell_nb].scmd[i].type == TOKEN_ARG)
+	box.j = 1;
+	box.n = 0;
+	while (i < data->token[cell_nb].nb_token \
+	&& data->token[cell_nb].scmd[i].type != TOKEN_ARG)
+		i++;
+	while (box.n < count_args(data, cell_nb) - 1 \
+	&& i < data->token[cell_nb].nb_token)
 	{
 		if (data->token[cell_nb].scmd[i].type == TOKEN_ARG)
 		{
 			if (data->token[cell_nb].scmd[i].is_dollar == 0)
-				args[j] = ft_strdup(data->token[cell_nb].scmd[i].value);
+				args[box.j] = ft_strdup(data->token[cell_nb].scmd[i].value);
 			else
-				args[j] = dollar_swap(data, \
+				args[box.j] = dollar_swap(data, \
 			ft_strdup(data->token[cell_nb].scmd[i].value));
-			j++;
+			box.j++;
+			box.n++;
 		}
 		i++;
 	}
-	args[j] = NULL;
+	args[box.j] = NULL;
 	if (args[0] == NULL && args[1] != NULL)
 		args++;
 }

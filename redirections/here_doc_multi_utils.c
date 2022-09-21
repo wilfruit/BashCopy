@@ -22,22 +22,19 @@ static int	hd_m_parent(int status, pid_t child, t_shell *pack)
 
 int	here_doc_single_m(t_exec_multi *data, char *lim, int nb, t_shell *pack)
 {
-	pid_t	child;
-	int		fd[2];
-	int		status;
+	t_fullhd	box;
+	int			fd[2];
 
 	pipe(fd);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	child = fork();
-	if (child == 0)
+	box.child = fork();
+	if (box.child == 0)
 	{
 		signal(SIGINT, sig_zigma);
 		if (!no_command_found(pack, nb))
 			spec_free_m(pack, data);
 		child_doc(ft_strdup(lim), fd, pack);
-		maxi_free(pack);
-		exit(EXIT_SUCCESS);
 	}
 	else
 	{
@@ -45,9 +42,9 @@ int	here_doc_single_m(t_exec_multi *data, char *lim, int nb, t_shell *pack)
 		if (nb != pack->nb_cell - 1)
 			dup2(data->pipe_fd[nb][1], STDOUT_FILENO);
 		dup2(fd[0], 0);
-		waitpid(child, &status, 0);
-		if (status == 33280)
-			return (hd_m_parent(status, child, pack));
+		waitpid(box.child, &box.status, 0);
+		if (box.status == 33280)
+			return (hd_m_parent(box.status, box.child, pack));
 		return (0);
 	}
 }
@@ -105,7 +102,7 @@ int	treat_redir_heredoc_m(t_shell *d, t_exec_multi *p, int nb)
 		&& (nup.i + 1) < d->token[nb].nb_token && \
 		d->token[nb].scmd[nup.i + 1].type == 7 && nup.j == p->is_here_doc - 1)
 			nup.ret = here_doc_single_m(p, \
-		ft_strdup(d->token[nb].scmd[nup.i + 1].value), nb, d);
+		d->token[nb].scmd[nup.i + 1].value, nb, d);
 		else if (d->token[nb].scmd[nup.i].type == 5 \
 		&& !((nup.i + 1) < d->token[nb].nb_token))
 			d->error_ret = ft_syntax_error();

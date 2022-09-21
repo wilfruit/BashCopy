@@ -114,7 +114,11 @@ void	execute_single_cmd(t_shell *data)
 void	minishell_operator(t_shell *data)
 {
 	if (data->nb_cell == 1)
+	{
+		if (has_only_monopoly_dollars(data, 0))
+			return ;
 		execute_single_cmd(data);
+	}
 	if (data->nb_cell < 1)
 		return ;
 	if (data->nb_cell > 1)

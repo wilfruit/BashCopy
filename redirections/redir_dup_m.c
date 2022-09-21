@@ -12,10 +12,19 @@
 
 #include "../mini_shell.h"
 
+void	init_redir_dup_single(t_redup *red)
+{
+	red->savein = 0;
+	red->saveout1 = 0;
+}
+
 void	exec_dup_multi(t_shell *data, t_exec_multi *pack)
 {
 	if (ft_is_built_in(pack->cmdargs[0]) == 1)
+	{
+		ft_free_chr(pack->allpaths);
 		ft_exec_built_in(data, pack->cmdargs);
+	}
 	else
 		ft_execve_multi(data, charize_env(data->our_env), pack);
 }
@@ -24,6 +33,7 @@ void	dup_case_no_cmd_m(t_shell *data, t_redup *red, t_exec_multi *pack)
 {
 	if (g_glob == 30)
 		data->error_ret = 1;
+	maxi_free(data);
 	clean_redir_multi(pack, red->savein, red->saveout1);
 	exit (data->error_ret);
 }
@@ -38,6 +48,7 @@ void	dup_case_only_hd_m(t_shell *d, t_redup *red, t_exec_multi *p, int n)
 		if (!no_command_found(d, n))
 			spec_free_m(d, p);
 		clean_redir_multi(p, red->savein, red->saveout1);
+		maxi_free(d);
 		exit(d->error_ret);
 	}
 }

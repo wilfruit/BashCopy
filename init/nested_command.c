@@ -95,6 +95,7 @@ char	**build_nested_command(t_shell *data, int cell_nb, char **args)
 	if (!nest.exp)
 		return (NULL);
 	feed_nest_command(&nest, args);
+	ft_free_chr(nest.split);
 	ft_free_chr(args);
 	return (nest.exp);
 }

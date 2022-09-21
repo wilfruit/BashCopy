@@ -21,7 +21,6 @@ void	exec_dup(t_redup *red, t_shell *data, t_exec_single *pack)
 	{
 		ft_exec_built_in(data, pack->cmdargs);
 		maxi_free(data);
-		spec_free(data, pack);
 		exit(data->error_ret);
 	}
 	else if (red->c1 == 0 && ft_is_built_in(pack->cmdargs[0]) != 1)
@@ -47,10 +46,12 @@ void	dup_case_hd_error(t_shell *data, t_redup *red, t_exec_single *pack)
 	return (clean_redir_single(pack, red->savein, red->saveout1));
 }
 
-void	init_redir_dup_single(t_redup *red)
+static void	only_in_or_out(t_shell *data, t_exec_single *pack, t_redup *red)
 {
-	red->savein = 0;
-	red->saveout1 = 0;
+	if (pack->nb_redirin > 0 && !(pack->is_here_doc > 0))
+		red->savein = ft_only_redin(pack);
+	if (pack->nb_redirout > 0)
+		ft_only_redout(pack, &red->saveout1);
 }
 
 void	redir_dup_single(t_shell *data, t_exec_single *pack)
@@ -71,10 +72,7 @@ void	redir_dup_single(t_shell *data, t_exec_single *pack)
 		if (treat_redir_heredoc(data, pack) == 1)
 			return (dup_case_hd_error(data, &red, pack));
 	}
-	if (pack->nb_redirin > 0 && !(pack->is_here_doc > 0))
-		red.savein = ft_only_redin(pack);
-	if (pack->nb_redirout > 0)
-		ft_only_redout(pack, &red.saveout1);
+	only_in_or_out(data, pack, &red);
 	if (no_command_found(data, 0) == 1)
 		return (dup_case_no_cmd(data, &red, pack));
 	if (data->error_ret != 2)

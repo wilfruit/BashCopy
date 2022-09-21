@@ -96,8 +96,6 @@ int	here_doc_single(t_exec_single *data, char *lim, t_shell *pack)
 		if (!no_command_found(pack, 0))
 			spec_free(pack, data);
 		child_doc(ft_strdup(lim), fd, pack);
-		maxi_free(pack);
-		exit(EXIT_SUCCESS);
 	}
 	else
 	{

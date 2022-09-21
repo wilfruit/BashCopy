@@ -17,7 +17,6 @@ static char	*get_macro(t_shell *shpack, char *str)
 	t_macro	data;
 
 	data.i = 0;
-	data.ret = NULL;
 	data.copy = shpack->our_env;
 	if (str[0] == '$')
 		data.macro = ft_strdup(str + 1);
@@ -29,10 +28,9 @@ static char	*get_macro(t_shell *shpack, char *str)
 	{
 		if (ft_strncmp(data.copy->str, data.macro, data.i) == 0)
 		{
-			data.ret = ft_strdup(data.copy->str + data.i);
 			free(data.macro);
 			free(str);
-			return (data.ret);
+			return (ft_strdup(data.copy->str + data.i));
 		}
 		data.copy = data.copy->next;
 	}
@@ -41,11 +39,11 @@ static char	*get_macro(t_shell *shpack, char *str)
 	return (NULL);
 }
 
-static void	init_box(t_dolret *box)
+static void	itoa_box(t_dolret *box, t_shell *shpack)
 {
-	box->n = 0;
-	box->ret = NULL;
-	box->itoa = NULL;
+	box->itoa = ft_itoa(shpack->error_ret);
+	box->ret = ft_strjoinmod(box->ret, box->itoa);
+	free (box->itoa);
 }
 
 char	*build_dollar_return(t_shell *shpack, char **split, char *str, int i)
@@ -61,17 +59,14 @@ char	*build_dollar_return(t_shell *shpack, char **split, char *str, int i)
 	}
 	while (i < dollar_count(str) + box.n)
 	{
+		if (split[i] != NULL)
+			box.ptr = get_macro(shpack, ft_strdup(split[i]));
 		if (split[i] == NULL)
 			box.ret = ft_strjoinmod(box.ret, "89669");
 		else if (ft_strncmp(split[i], "?", ft_strlen(split[i])) == 0)
-		{
-			box.itoa = ft_itoa(shpack->error_ret);
-			box.ret = ft_strjoinmod(box.ret, box.itoa);
-			free (box.itoa);
-		}
-		else if (get_macro(shpack, ft_strdup(split[i])))
-			box.ret = \
-			ft_strjoinmod(box.ret, get_macro(shpack, ft_strdup(split[i])));
+			itoa_box(&box, shpack);
+		else if (box.ptr)
+			box.ret = ft_strjoinmodtwo(box.ret, box.ptr);
 		i++;
 	}
 	return (box.ret);

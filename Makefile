@@ -21,6 +21,7 @@ redirections/here_doc_multi_utils.c \
 init/dollar_swap_deluxe.c \
 redirections/GNL.c project_utils/utils_four.c \
 init/nested_command.c \
+init/only_fake_dough.c \
 redirections/is_redir_bis.c \
 project_utils/utils_five.c \
 redirections/treat_redir_bis.c \
@@ -31,7 +32,7 @@ project_utils/utils_ten.c \
 redirections/redir_dup_s.c \
 redirections/redir_dup_m.c
 
-CC = gcc  -g -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include
+CC = gcc -g -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include
 
 HEADER = mini_shell.h
 

@@ -112,12 +112,25 @@ typedef struct s_redup
 	int		status;
 }				t_redup;
 
+typedef struct s_fullhd
+{
+	int		status;
+	pid_t	child;
+}				t_fullhd;
+
 typedef struct s_dolret
 {
 	char	*ret;
 	int		n;
 	char	*itoa;
+	char	*ptr;
 }				t_dolret;
+
+typedef struct s_fill
+{
+	int		j;
+	int		n;
+}				t_fill;
 
 typedef struct s_ext
 {
@@ -236,6 +249,8 @@ char	**build_nested_command(t_shell *data, int cell_nb, char **args);
 void	minishell_operator(t_shell *data);
 void	execute_single_cmd(t_shell *data);
 int		is_pathed(char *str);
+void	init_box(t_dolret *box);
+void	init_redir_dup_single(t_redup *red);
 void	cmd_not_found(t_exec_single *data, char *av, char **env, t_shell *pack);
 void	cannot_execute(t_exec_single *data, char *cmd, char **env, t_shell *p);
 char	**charize_env(t_envi *env);
@@ -268,8 +283,8 @@ int		mini_parse_multi(t_shell *data, t_exec_multi *exec_pack, int nb);
 int		wrong_redir_multi(t_exec_multi *exec_pack, t_shell *data, int nb);
 void	ft_execve_multi(t_shell *shpack, char **env, t_exec_multi *data);
 void	free_exec_pack_multi(t_shell *data, t_exec_multi *pack);
-void	cannot_execute_pipex(t_exec_multi *data, char *cmd, t_shell *shell, char **env);
-void	cmd_not_found_pipex(t_exec_multi *data, char *argv, t_shell *shell, char **env);
+void	cannot_execute_pipex(t_exec_multi *d, char *c, t_shell *sh, char **env);
+void	cmd_not_found_pipex(t_exec_multi *d, char *c, t_shell *sh, char **env);
 int		my_unset(char **cmd, t_shell *pack);
 void	sig_exit(t_shell *data, int status, pid_t c1, char *cmd);
 int		has_redir(t_shell *data, int cell_nb);
@@ -292,6 +307,7 @@ void	fake_here_doc(t_exec_single *data, char *lim);
 int		get_last_redirin(t_shell *data, t_exec_single *pack);
 void	fake_redoc(t_shell *data, t_exec_single *pack, int weight);
 void	*ft_memdel(void *ptr);
+char	*ft_strjoinmodtwo(char *s1, char *s2);
 int		is_valid_identifier(char *cmd);
 int		is_in_such_list(t_envi *list, char *str);
 void	add_node_to_env(t_envi *list, char *str);
@@ -333,6 +349,7 @@ int		infile_not_real_m(t_exec_multi *pack, int n, t_shell *data, int i);
 int		infile_not_allowed_m(t_exec_multi *pack, int n, t_shell *data, int i);
 int		outfile_not_allowed_m(t_exec_multi *pack, int n, t_shell *data, int i);
 void	init_sig(void);
+void	create_minimum_data(t_shell *data, char **env);
 int		no_command_found(t_shell *data, int cell_nb);
 void	sig_zigma(int sig);
 int		stop_minishell(t_shell *shell_pack);
@@ -349,5 +366,6 @@ void	init_redir_dup_single(t_redup *red);
 void	maxi_free(t_shell *data);
 void	spec_free(t_shell *data, t_exec_single *pack);
 void	spec_free_m(t_shell *data, t_exec_multi *pack);
+int		has_only_monopoly_dollars(t_shell *data, int num);
 
 #endif
